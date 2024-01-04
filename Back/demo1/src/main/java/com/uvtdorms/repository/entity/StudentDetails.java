@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,16 +19,23 @@ public class StudentDetails {
     private String matriculationNumber;
 
     @Id
+    @GeneratedValue(generator = "UUID")
+    private UUID student_id;
+
     @OneToOne
     @JoinColumn(name = "user_id")
     @MapsId
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "dorm_id")
-    private Dorm dorm;
 
     @ManyToOne
     @JoinColumn(name = "room_id")
     private Room room;
+
+    public StudentDetails(String cnp, String matriculationNumber, User user, Room room) {
+        this.cnp = cnp;
+        this.matriculationNumber = matriculationNumber;
+        this.user = user;
+        this.room = room;
+    }
 }

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -14,10 +15,10 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "wash_machines")
-public class WashMachine {
+public class WashingMachine {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer machineId;
+    @GeneratedValue(generator = "UUID")
+    private UUID machineId;
     private String machineNumber;
 
     @ManyToOne
@@ -27,6 +28,5 @@ public class WashMachine {
     @OneToMany(mappedBy = "washMachine", cascade = CascadeType.ALL)
     private List<LaundryAppointment> laundryAppointments;
 
-    @OneToOne(mappedBy = "washingMachine", cascade = CascadeType.ALL)
-    private WashingMachineStatus washingMachineStatus;
+
 }

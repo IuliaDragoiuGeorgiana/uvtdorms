@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -16,11 +17,14 @@ import java.util.Date;
 @Table(name = "announcements")
 public class Announcement {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer announcementId;
+    @GeneratedValue(generator = "UUID")
+    private UUID announcementId;
+
     private String title;
+
     @Lob
     private String content;
+
     private Date creationDate;
 
     @ManyToOne

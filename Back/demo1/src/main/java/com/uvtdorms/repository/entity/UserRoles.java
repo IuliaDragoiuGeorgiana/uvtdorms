@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -14,7 +16,10 @@ import lombok.Setter;
 @Entity
 @Table(name = "user_roles")
 public class UserRoles {
+
     @Id
+    @GeneratedValue(generator = "UUID")
+    private UUID user_id;
     @OneToOne
     @JoinColumn(name = "user_id")
     @MapsId

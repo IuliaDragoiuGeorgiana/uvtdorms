@@ -1,5 +1,6 @@
 package com.uvtdorms.repository.entity;
 
+import com.uvtdorms.repository.entity.enums.StatusMachine;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.UUID;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -15,8 +18,8 @@ import java.util.List;
 @Table(name = "dryers")
 public class Dryer {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer dryerId;
+    @GeneratedValue(generator = "UUID")
+    private UUID dryerId;
     private String dryerNumber;
 
     @ManyToOne
@@ -26,6 +29,8 @@ public class Dryer {
     @OneToMany(mappedBy = "dryer", cascade = CascadeType.ALL)
     private List<LaundryAppointment> laundryAppointments;
 
-    @OneToOne(mappedBy = "dryer", cascade = CascadeType.ALL)
-    private DryerStatus dryerStatus;
+    @Enumerated(EnumType.STRING)
+    private StatusMachine status;
+
+
 }

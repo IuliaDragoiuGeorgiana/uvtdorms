@@ -1,13 +1,12 @@
 package com.uvtdorms.repository;
 
-import com.uvtdorms.repository.entity.User;
+import com.uvtdorms.repository.entity.Room;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
-import java.util.UUID;
 
 @Repository
-public interface IUserRepository extends JpaRepository<User, UUID> {
-    public Optional<User> getByEmail(String email);
+public interface IRoomRepository extends JpaRepository<Room, Long> {
+    public Optional<Room> getRoomByRoomNumber(String roomNumber);
 }

@@ -1,5 +1,6 @@
 package com.uvtdorms.repository.entity;
 
+import com.uvtdorms.repository.entity.enums.StatusTicket;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -16,8 +18,8 @@ import java.util.Date;
 @Table(name = "repair_tickets")
 public class RepairTicket {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer ticketId;
+    @GeneratedValue(generator = "UUID")
+    private UUID ticketId;
     @Lob
     private String description;
     private Date creationDate;
@@ -27,10 +29,7 @@ public class RepairTicket {
     @JoinColumn(name = "reported_by_user_id")
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "room_id")
-    private Room room;
 
-    @OneToOne(mappedBy = "repairTicket", cascade = CascadeType.ALL)
-    private RepairTicketStatus repairTicketStatus;
+    @Enumerated(EnumType.STRING)
+    private StatusTicket statusTicket;
 }

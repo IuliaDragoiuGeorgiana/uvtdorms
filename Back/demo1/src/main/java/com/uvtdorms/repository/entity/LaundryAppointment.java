@@ -1,25 +1,30 @@
 package com.uvtdorms.repository.entity;
 
+import com.sun.jdi.PrimitiveValue;
+import com.uvtdorms.repository.entity.enums.StatusLaundry;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "laundry_appointments")
 public class LaundryAppointment {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer appointmentId;
-    private Date creationDate;
-    private Date closureDate;
+    @GeneratedValue(generator = "UUID")
+    private UUID appointmentId;
+    private LocalDateTime creationDate;
+    private LocalDateTime intervalEndDate;
+    private LocalDateTime intervalBeginDate;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -27,12 +32,22 @@ public class LaundryAppointment {
 
     @ManyToOne
     @JoinColumn(name = "wash_machine_id")
-    private WashMachine washMachine;
+    private WashingMachine washMachine;
 
     @ManyToOne
     @JoinColumn(name = "dryer_id")
     private Dryer dryer;
 
-    @OneToOne(mappedBy = "laundryAppointment", cascade = CascadeType.ALL)
-    private LaundryAppointmentStatus laundryAppointmentStatus;
+   @Enumerated(EnumType.STRING)
+    private StatusLaundry statusLaundry;
+
+    public LaundryAppointment( LocalDateTime intervalBeginDate, User user, WashingMachine washMachine, Dryer dryer) {
+        this.intervalBeginDate = intervalBeginDate;
+        this.user = user;
+        this.washMachine = washMachine;
+        this.dryer = dryer;
+        this.statusLaundry = StatusLaundry.SCHEDULED;
+        this.intervalEndDate= intervalBeginDate.plusHours(2);
+        this.creationDate=LocalDateTime.now();
+    }
 }

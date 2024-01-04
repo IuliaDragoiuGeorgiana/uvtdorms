@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -15,23 +16,24 @@ import java.util.List;
 @Table(name = "dorms")
 public class Dorm {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer dormId;
-    private String dormName;
-    private String address;
+    @GeneratedValue(generator = "UUID")
+    private UUID dormId;
 
-    @OneToMany(mappedBy = "dorm", cascade = CascadeType.ALL)
-    private List<StudentDetails> studentDetails;
+    private String dormName;
+
+    private String address;
 
     @OneToMany(mappedBy = "dorm", cascade = CascadeType.ALL)
     private List<Room> rooms;
 
     @OneToMany(mappedBy = "dorm", cascade = CascadeType.ALL)
-    private List<WashMachine> washMachines;
+    private List<WashingMachine> washMachines;
 
     @OneToMany(mappedBy = "dorm", cascade = CascadeType.ALL)
     private List<Dryer> dryers;
 
+    @OneToOne(mappedBy = "dorm", cascade = CascadeType.ALL)
+    private DormAdministratorDetails dormAdministratorDetails;
 
 
 }

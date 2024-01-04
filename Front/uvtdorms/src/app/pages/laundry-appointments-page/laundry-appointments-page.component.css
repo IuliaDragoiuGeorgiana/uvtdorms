@@ -9,8 +9,42 @@
 
 .laundry-appointments-form-container
 {
-    width: 40%;
+    width: 55%;
     display: flex;
     flex-direction: column;
 }
 
+.laundry-appointments-form
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.laundry-appointments-form-grid
+{
+    width: 100%;
+    height: 100%;
+}
+
+.laundry-appointments-form-submit-button
+{
+    width: 20vw;
+}
+
+.laundry-appointments-select-machine, .laundry-appointments-select-dryer
+{
+    width: 60%;
+}
+
+.laundry-appointments-datepicker
+{
+    height: 90%;
+    width: 70%;
+}
+
+.laundry-appointments-chips
+{
+    width: 50%;
+}

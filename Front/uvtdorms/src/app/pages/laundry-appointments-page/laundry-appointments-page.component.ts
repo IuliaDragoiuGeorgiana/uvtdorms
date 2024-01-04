@@ -1,16 +1,9 @@
 import { Component } from '@angular/core';
-import {MatSnackBar} from '@angular/material/snack-bar';
-
-interface washingMachine {
-  id: number
-  name: string
-  available: boolean
-}
-
-interface timeInterval {
-  startHour: number,
-  printableValue: string
-}
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { washingMachine } from '../../interfaces/washing-machine';
+import { timeInterval } from '../../interfaces/time-interval';
+import { dryer } from '../../interfaces/dryer';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-laundry-appointments-page',
@@ -19,9 +12,15 @@ interface timeInterval {
 })
 export class LaundryAppointmentsPageComponent {
   washingMachines: washingMachine[] = [
-    {id: 1, name: 'Machine 1', available: true},
-    {id: 2, name: 'Machine 2', available: false},
-    {id: 3, name: 'Machine 3', available: true}
+    {id: 'a', name: 'Machine 1', available: true},
+    {id: 'b', name: 'Machine 2', available: false},
+    {id: 'c', name: 'Machine 3', available: true}
+  ];
+
+  dryers: dryer[] = [
+    {id: 'a', name: 'Dryer 1', available: true},
+    {id: 'b', name: 'Dryer 2', available: false},
+    {id: 'c', name: 'Dryer 3', available: true},
   ];
 
   timeIntervals: timeInterval[] = [
@@ -31,23 +30,30 @@ export class LaundryAppointmentsPageComponent {
     {startHour: 14, printableValue: '14:00-16:00'},
     {startHour: 16, printableValue: '16:00-18:00'},
     {startHour: 18, printableValue: '18:00-20:00'}
-  ]
+  ];
 
+  laundryAppointmentForm = this.formBuilder.group({
+    selectedMachineId: ['', Validators.required],
+    selectedDryerId: ['', Validators.required],
+    selectedDate: [this.getTomorrowDate() || null, Validators.required],
+    selectedIntervalStartHour: [0, Validators.required]
+  });
 
-  selectedMachineId: number | null;
-  selectedDate: Date | null;
-  selectedIntervalStartHour: number | null;
-
-  constructor(private snackBar: MatSnackBar){
-    this.selectedMachineId = null;
-    this.selectedDate = this.getNextSaturday();
-    this.selectedIntervalStartHour = null;
+  constructor(private snackBar: MatSnackBar,
+              private formBuilder: FormBuilder)
+  {
   }
 
-  getNextSaturday(): Date{
+  ngOnInit()
+  {
+    if (this.timeIntervals && this.timeIntervals.length > 0) {
+      this.laundryAppointmentForm.get('selectedIntervalStartHour')?.setValue(this.timeIntervals[0].startHour);
+    }
+  }
+
+  getTomorrowDate(): Date{
     const date = new Date();
     date.setDate(date.getDate() + 1);
-    // date.setDate(date.getDate() + (6 - date.getDay()));
 
     return date;
   }
@@ -59,21 +65,19 @@ export class LaundryAppointmentsPageComponent {
     return date > today && day !== 0;
   }
 
-  makeAppointment(): void{
-    if(this.selectedMachineId === null){
-      this.openSnackBar("Please select a washing machine", "Got it!");
+  onDateChange(newDate: Date | null) {
+    this.laundryAppointmentForm.get('selectedDate')?.setValue(newDate);
+  }
+
+  makeAppointment(): void {
+    console.log(this.laundryAppointmentForm.getRawValue());
+    if(!this.laundryAppointmentForm.valid) return;
+    if(this.laundryAppointmentForm.get('selectedIntervalStartHour')?.value === 0) {
+      this.openSnackBar('Something went wrong. Please try again later.', 'Got it!');
       return;
     }
-    if(this.selectedIntervalStartHour === null){
-      this.openSnackBar("Please select a time interval", "Got it!");
-      return;
-    }
-    console.log("Selected machine:");
-    console.log(this.selectedMachineId);
-    console.log("Selected date:");
-    console.log(this.selectedDate);
-    console.log("Selected interval:");
-    console.log(this.selectedIntervalStartHour);
+
+    console.log("Everything went right");
   }
 
   openSnackBar(message: string, action: string){

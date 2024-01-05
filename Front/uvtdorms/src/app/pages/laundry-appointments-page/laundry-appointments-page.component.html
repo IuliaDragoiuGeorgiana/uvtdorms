@@ -50,8 +50,8 @@
                                 *ngFor="let dryer of dryers">
                                 <mat-option
                                     [value]="dryer.id"
-                                    [disabled]="!dryer.available">
-                                    {{dryer.name}}{{!dryer.available ? ' (not working)' : ''}}
+                                    [disabled]="!dryer.isAvailable">
+                                    {{dryer.name}}{{!dryer.isAvailable ? ' (not working)' : ''}}
                                 </mat-option>
                             </ng-container>
                         </mat-select>

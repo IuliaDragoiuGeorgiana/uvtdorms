@@ -1,5 +1,5 @@
-export interface dryer {
+export interface Dryer {
     id: string;
     name: string;
-    available: boolean;
+    isAvailable: boolean;
 };

@@ -58,6 +58,7 @@ public class LaundryAppointmentService implements ILaundryAppointmentService {
 
 
     }
+    public
 
 
 }

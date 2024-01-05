@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { WashingMachine } from '../../interfaces/washing-machine';
 import { timeInterval } from '../../interfaces/time-interval';
-import { dryer } from '../../interfaces/dryer';
+import { Dryer } from '../../interfaces/dryer';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AppointmentService } from '../../services/appointment.service';
 import { error } from 'console';
 import { WashingMachineService } from '../../services/washing-machine.service';
+import { DryerService } from '../../services/dryer.service';
 
 @Component({
   selector: 'app-laundry-appointments-page',
@@ -16,11 +17,7 @@ import { WashingMachineService } from '../../services/washing-machine.service';
 export class LaundryAppointmentsPageComponent {
   washingMachines: WashingMachine[] = [];
 
-  dryers: dryer[] = [
-    {id: '134129d4-de77-44ee-b412-100a79b0aaa7', name: 'Dryer 1', available: true},
-    {id: '134129d4-de77-44ee-b412-100a79b0aaa7', name: 'Dryer 2', available: false},
-    {id: '134129d4-de77-44ee-b412-100a79b0aaa7', name: 'Dryer 3', available: true},
-  ];
+  dryers: Dryer[] = [];
 
   timeIntervals: timeInterval[] = [
     {startHour: 8, printableValue: '8:00-10:00'},
@@ -31,7 +28,7 @@ export class LaundryAppointmentsPageComponent {
     {startHour: 18, printableValue: '18:00-20:00'}
   ];
   
-  dormId:string ="65460243-9ba3-408d-8c5f-11d89fe1085b";
+  dormId:string ="02432b00-b1fa-481e-aaa6-f1592823cba7";
   laundryAppointmentForm = this.formBuilder.group({
     selectedMachineId: ['', Validators.required],
     selectedDryerId: ['', Validators.required],
@@ -42,7 +39,8 @@ export class LaundryAppointmentsPageComponent {
   constructor(private snackBar: MatSnackBar,
               private formBuilder: FormBuilder,
               private appointmentService: AppointmentService,
-              private washingMachineService: WashingMachineService)
+              private washingMachineService: WashingMachineService,
+              private dryerService: DryerService)
   {
   }
 
@@ -55,6 +53,16 @@ export class LaundryAppointmentsPageComponent {
       next:washingMachines=>{
        this.washingMachines=washingMachines;
        console.log(washingMachines);
+      },
+      error:(error)=>{
+        console.log(error);
+      }
+    })
+
+    this.dryerService.getDryerFromDorm(this.dormId).subscribe({
+      next:dryers=>{
+       this.dryers=dryers;
+       console.log(this.dryers);
       },
       error:(error)=>{
         console.log(error);

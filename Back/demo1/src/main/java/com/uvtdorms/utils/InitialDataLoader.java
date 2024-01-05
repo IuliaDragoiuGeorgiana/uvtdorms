@@ -8,13 +8,15 @@ import jakarta.transaction.Transactional;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 @Component
 public class InitialDataLoader implements CommandLineRunner {
-    // private final ILaundryAppointmentRepository laundryAppointmentRepository;
+    private final ILaundryAppointmentRepository laundryAppointmentRepository;
     private final IDormRepository dormRepository;
     // private final IAnnouncementRepository announcementRepository;
     private final IDryerRepository dryerRepository;
@@ -26,11 +28,11 @@ public class InitialDataLoader implements CommandLineRunner {
     private final IWashingMachineRepository washingMachineRepository;
     private final IDormAdministratorDetails dormAdministratorDetails;
 
-    private List<String> dormsNamesList = Arrays.asList("C13", "C12") ;
-    private List<String> roomsNamesList = Arrays.asList("127","128") ;
+    private List<String> dormsNamesList = Arrays.asList("C13", "C12");
+    private List<String> roomsNamesList = Arrays.asList("127","128");
 
     public InitialDataLoader(
-            // ILaundryAppointmentRepository laundryAppointmentRepository,
+            ILaundryAppointmentRepository laundryAppointmentRepository,
             IDormRepository dormRepository,
             // IAnnouncementRepository announcementRepository,
             IDryerRepository dryerRepository,
@@ -42,7 +44,7 @@ public class InitialDataLoader implements CommandLineRunner {
             IWashingMachineRepository washingMachineRepository,
             IDormAdministratorDetails dormAdministratorDetails)
     {
-        // this.laundryAppointmentRepository = laundryAppointmentRepository;
+        this.laundryAppointmentRepository = laundryAppointmentRepository;
         this.dormRepository = dormRepository;
         // this.announcementRepository = announcementRepository;
         this.dryerRepository = dryerRepository;
@@ -81,7 +83,7 @@ public class InitialDataLoader implements CommandLineRunner {
     private void initializeStudents(){
         Optional<Room> room =roomRepository.getRoomByRoomNumber(roomsNamesList.get(0));
         if(room.isPresent()){
-            User user = new User("Iulia","Dragoiu","iulia.dragiu02@e-uvt.ro","0729616799","iuliad", Role.STUDENT,Boolean.TRUE);
+            User user = new User("Iulia","Dragoiu","iulia.dragoiu02@e-uvt.ro","0729616799","iuliad", Role.STUDENT,Boolean.TRUE);
             userRepository.save(user);
             StudentDetails student=new StudentDetails("6020416203228","I3183",user,room.get());
             studentDetailsRepository.save(student);
@@ -117,6 +119,27 @@ public class InitialDataLoader implements CommandLineRunner {
         }
     }
 
+    private void initializeAppointments(){
+        Optional<User> user = userRepository.getByEmail("iulia.dragoiu02@e-uvt.ro");
+        if(user.isEmpty()) return;
+
+        Optional<StudentDetails> student = studentDetailsRepository.findByUser(user.get());
+        if(student.isEmpty()) return;
+
+        Optional<Dorm> dorm = dormRepository.getByDormName(dormsNamesList.get(0));
+        if(dorm.isEmpty()) return;
+
+        List<WashingMachine> washingMachines = washingMachineRepository.findByDorm(dorm.get());
+        List<Dryer> dryers = dryerRepository.findByDorm(dorm.get());
+
+        for(int i = 0; i < washingMachines.size() && i < dryers.size(); i++)
+        {
+            LocalDateTime intervalBeginDate = LocalDate.now().plusDays(1).atTime(8,0);
+            LaundryAppointment laundryAppointment = new LaundryAppointment(intervalBeginDate, student.get(), washingMachines.get(i), dryers.get(i));
+            laundryAppointmentRepository.save(laundryAppointment);
+        }
+    }
+
     @Transactional
     @Override
     public void run(String... args) throws Exception {
@@ -125,5 +148,6 @@ public class InitialDataLoader implements CommandLineRunner {
         initializeStudents();
         initializeDormsAdministrators();
         initializeMachinesAndDryers();
+        initializeAppointments();
     }
 }

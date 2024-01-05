@@ -1,8 +1,10 @@
 package com.uvtdorms.utils;
 
 import com.uvtdorms.repository.dto.response.DryerDto;
+import com.uvtdorms.repository.dto.response.UserDto;
 import com.uvtdorms.repository.dto.response.WashingMachineDto;
 import com.uvtdorms.repository.entity.Dryer;
+import com.uvtdorms.repository.entity.User;
 import com.uvtdorms.repository.entity.WashingMachine;
 import com.uvtdorms.repository.entity.enums.StatusMachine;
 import org.modelmapper.PropertyMap;
@@ -49,6 +51,13 @@ public class MapperConfig {
                     }
                 };
                 using(statusConverter).map(source.getStatus(), destination.getIsAvailable());
+            }
+        });
+
+        modelMapper.addMappings(new PropertyMap<User, UserDto>() {
+            @Override
+            protected void configure() {
+                map(source.getEmail(), destination.getEmail());
             }
         });
 

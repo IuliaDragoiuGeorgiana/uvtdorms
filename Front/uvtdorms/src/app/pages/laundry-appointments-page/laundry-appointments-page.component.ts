@@ -15,6 +15,7 @@ import { DryerService } from '../../services/dryer.service';
   styleUrl: './laundry-appointments-page.component.css'
 })
 export class LaundryAppointmentsPageComponent {
+  // TODO: autoselect a dryer and a machine
   washingMachines: WashingMachine[] = [];
 
   dryers: Dryer[] = [];
@@ -27,8 +28,8 @@ export class LaundryAppointmentsPageComponent {
     {startHour: 16, printableValue: '16:00-18:00'},
     {startHour: 18, printableValue: '18:00-20:00'}
   ];
-  
-  dormId:string ="02432b00-b1fa-481e-aaa6-f1592823cba7";
+
+  dormId:string ="2b37c0ca-b85c-4f69-be9e-0c3dbd3bf87f";
   laundryAppointmentForm = this.formBuilder.group({
     selectedMachineId: ['', Validators.required],
     selectedDryerId: ['', Validators.required],
@@ -99,11 +100,38 @@ export class LaundryAppointmentsPageComponent {
     this.appointmentService.createAppointment(this.laundryAppointmentForm.getRawValue()).subscribe({
       next:next=>{
         console.log(next)
-        
       },
       error:(error)=>{console.log(error)}
     })
     console.log("Everything went right");
+  }
+
+  updateIntervals(): void {
+    //TODO: create custom dto
+    let tempDto = {
+      dormId: this.dormId,
+      date: this.laundryAppointmentForm.get('selectedDate')?.value?.toISOString().split('T')[0],
+      washingMachineId: this.laundryAppointmentForm.get('selectedMachineId')?.value,
+      dryerId: this.laundryAppointmentForm.get('selectedDryerId')?.value
+    }
+
+    this.appointmentService.getFreeIntervalsForCreatingAppointment(tempDto).subscribe({
+      next: intervals => {
+        console.log(intervals);
+        if (Array.isArray(intervals)) {
+          this.timeIntervals = [];
+          intervals.forEach(startHour => {
+              this.timeIntervals.push({
+                startHour: startHour,
+                printableValue: `${startHour}:00-${startHour+2}:00`
+              });
+          });
+        }
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    });
   }
 
   openSnackBar(message: string, action: string){

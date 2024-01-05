@@ -14,6 +14,7 @@
                     <mat-form-field class="laundry-appointments-select-machine">
                         <mat-label>Choose a washing machine</mat-label>
                         <mat-select
+                            (selectionChange)="updateIntervals()"
                             formControlName="selectedMachineId">
                             <ng-container
                                 *ngFor="let washingMachine of washingMachines">
@@ -34,7 +35,7 @@
                         <mat-calendar
                             [dateFilter]="datePickerFilter"
                             [selected]="laundryAppointmentForm.get('selectedDate')?.value || null"
-                            (selectedChange)="onDateChange($event)">
+                            (selectedChange)="onDateChange($event); updateIntervals()">
                         </mat-calendar>
                     </mat-card>
                 </mat-grid-tile>
@@ -45,6 +46,7 @@
                     <mat-form-field class="laundry-appointments-select-dryer">
                         <mat-label>Choose a dryer</mat-label>
                         <mat-select
+                            (selectionChange)="updateIntervals()"
                             formControlName="selectedDryerId">
                             <ng-container
                                 *ngFor="let dryer of dryers">

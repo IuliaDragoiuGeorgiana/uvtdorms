@@ -12,7 +12,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/dryers")
-
 public class DryerController {
     private final DryerService dryerService;
 

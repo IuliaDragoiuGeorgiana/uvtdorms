@@ -18,7 +18,6 @@ public class WashingMachineController {
 
     @GetMapping("/get-washing-machines-from-dorm/{dormId}")
     public ResponseEntity<?> getWashingMachinesFromDorm(@PathVariable("dormId") String dormId){
-
         try {
             List<WashingMachineDto> washingMachineDtos =  this.washingMachineService.getWashingMachinesFromDorm(dormId);
             return ResponseEntity.ok(washingMachineDtos);

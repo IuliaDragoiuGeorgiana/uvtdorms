@@ -10,6 +10,5 @@ import java.util.UUID;
 
 @Repository
 public interface IWashingMachineRepository extends JpaRepository<WashingMachine, UUID> {
-
     List<WashingMachine> findByDorm(Dorm dorm);
 }

@@ -19,12 +19,12 @@ public class LaundryAppointment {
     @GeneratedValue(generator = "UUID")
     private UUID appointmentId;
     private LocalDateTime creationDate;
-    private LocalDateTime intervalEndDate;
     private LocalDateTime intervalBeginDate;
+    private LocalDateTime intervalEndDate;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "student_id")
+    private StudentDetails student;
 
     @ManyToOne
     @JoinColumn(name = "wash_machine_id")
@@ -37,13 +37,26 @@ public class LaundryAppointment {
    @Enumerated(EnumType.STRING)
     private StatusLaundry statusLaundry;
 
-    public LaundryAppointment( LocalDateTime intervalBeginDate, User user, WashingMachine washMachine, Dryer dryer) {
+    public LaundryAppointment(
+            LocalDateTime intervalBeginDate,
+            StudentDetails student,
+            WashingMachine washMachine,
+            Dryer dryer)
+    {
         this.intervalBeginDate = intervalBeginDate;
-        this.user = user;
+        this.student = student;
         this.washMachine = washMachine;
         this.dryer = dryer;
         this.statusLaundry = StatusLaundry.SCHEDULED;
         this.intervalEndDate= intervalBeginDate.plusHours(2);
         this.creationDate=LocalDateTime.now();
+    }
+
+    @Override
+    public String toString() {
+        return "LaundryAppointment [appointmentId=" + appointmentId + ", creationDate=" + creationDate
+                + ", intervalBeginDate=" + intervalBeginDate + ", intervalEndDate=" + intervalEndDate + ", student="
+                + student + ", washMachine=" + washMachine + ", dryer=" + dryer + ", statusLaundry=" + statusLaundry
+                + "]";
     }
 }

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -27,10 +28,12 @@ public class StudentDetails {
     @MapsId
     private User user;
 
-
     @ManyToOne
     @JoinColumn(name = "room_id")
     private Room room;
+
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    private List<LaundryAppointment> laundryAppointments;
 
     public StudentDetails(String cnp, String matriculationNumber, User user, Room room) {
         this.cnp = cnp;

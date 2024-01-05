@@ -43,8 +43,8 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private StudentDetails studentDetails;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<LaundryAppointment> laundryAppointments;
+    // @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    // private List<LaundryAppointment> laundryAppointments;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<RepairTicket> repairTickets;

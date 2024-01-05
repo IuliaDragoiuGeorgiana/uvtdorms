@@ -42,6 +42,7 @@ public class LaundryAppointmentService implements ILaundryAppointmentService {
         if(user.isEmpty()){
             throw new UserNotFoundException();
         }
+
         Optional<WashingMachine> washingMachine = washingMachineRepository.findById(createLaundryAppointmentDto.getSelectedMachineId());
         if(washingMachine.isEmpty()){
             throw new WashingMachineNotFoundException();
@@ -50,9 +51,11 @@ public class LaundryAppointmentService implements ILaundryAppointmentService {
         if(dryer.isEmpty()){
             throw new DryerNotFoundException();
         }
+
         LocalDateTime intervalBeginDate = createLaundryAppointmentDto.getSelectedDate().atTime(createLaundryAppointmentDto.getSelectedInterval(),0);
         LaundryAppointment laundryAppointment = new LaundryAppointment(intervalBeginDate,user.get(),washingMachine.get(),dryer.get());
         laundryAppointmentRepository.save(laundryAppointment);
+
 
     }
 

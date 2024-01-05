@@ -1,5 +1,6 @@
 package com.uvtdorms.repository.entity;
 
+import com.uvtdorms.repository.entity.enums.StatusMachine;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,5 +29,13 @@ public class WashingMachine {
     @OneToMany(mappedBy = "washMachine", cascade = CascadeType.ALL)
     private List<LaundryAppointment> laundryAppointments;
 
+    @Enumerated(EnumType.STRING)
+    private StatusMachine status;
+
+    public WashingMachine(String machineNumber, Dorm dorm, StatusMachine status) {
+        this.machineNumber = machineNumber;
+        this.dorm = dorm;
+        this.status=status;
+    }
 
 }

@@ -32,5 +32,9 @@ public class Dryer {
     @Enumerated(EnumType.STRING)
     private StatusMachine status;
 
-
+    public Dryer(String dryerNumber, Dorm dorm, StatusMachine status) {
+        this.dryerNumber = dryerNumber;
+        this.dorm = dorm;
+        this.status = status;
+    }
 }

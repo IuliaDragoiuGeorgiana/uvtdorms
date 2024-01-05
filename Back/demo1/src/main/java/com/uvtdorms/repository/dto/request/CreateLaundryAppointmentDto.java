@@ -23,4 +23,5 @@ public class CreateLaundryAppointmentDto {
     private LocalDate selectedDate;
 
     private Integer selectedInterval;
+    
 }

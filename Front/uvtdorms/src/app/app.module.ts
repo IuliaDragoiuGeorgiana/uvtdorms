@@ -21,6 +21,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatChipsModule } from '@angular/material/chips';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -48,7 +49,8 @@ import { MatGridListModule } from '@angular/material/grid-list';
     MatChipsModule,
     FormsModule,
     MatGridListModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [
     // provideClientHydration()

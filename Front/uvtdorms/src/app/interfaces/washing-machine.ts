@@ -1,5 +1,5 @@
-export interface washingMachine {
+export interface WashingMachine {
     id: string;
     name: string;
-    available: boolean;
+    isAvailable: boolean;
 };

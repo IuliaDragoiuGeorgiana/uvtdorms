@@ -1,17 +1,12 @@
 package com.uvtdorms.services.interfaces;
 
+import com.uvtdorms.repository.dto.response.WashingMachineDto;
 import com.uvtdorms.repository.entity.WashingMachine;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface IWashingMachineService {
-
-   public WashingMachine addWashingMachine(WashingMachine washingMachine);
-
-   public void deleteWashingMachine(Long machineId);
-
-   public WashingMachine getWashingMachineById(Long washingMachineID);
-
-   public List<WashingMachine> getAllWashingMachines();
+   public List<WashingMachineDto> getWashingMachinesFromDorm(String dormId) throws Exception;
 
 }

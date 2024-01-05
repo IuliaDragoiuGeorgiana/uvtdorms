@@ -19,8 +19,8 @@
                                 *ngFor="let washingMachine of washingMachines">
                                 <mat-option
                                     [value]="washingMachine.id"
-                                    [disabled]="!washingMachine.available">
-                                    {{washingMachine.name}}{{!washingMachine.available ? ' (not working)' : ''}}
+                                    [disabled]="!washingMachine.isAvailable">
+                                    {{washingMachine.name}}{{!washingMachine.isAvailable ? ' (not working)' : ''}}
                                 </mat-option>
                             </ng-container>
                         </mat-select>

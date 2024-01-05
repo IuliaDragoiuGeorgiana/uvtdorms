@@ -3,6 +3,7 @@ package com.uvtdorms.utils;
 import com.uvtdorms.repository.*;
 import com.uvtdorms.repository.entity.*;
 import com.uvtdorms.repository.entity.enums.Role;
+import com.uvtdorms.repository.entity.enums.StatusMachine;
 import jakarta.transaction.Transactional;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -95,6 +96,27 @@ public class InitialDataLoader implements CommandLineRunner {
 
         }
 
+
+    }
+    private void initializeMachinesAndDryers(){
+        List<String> washingMachinesNames = Arrays.asList("Machine1", "Machine2");
+        List<String> dryersNames = Arrays.asList("Dryer1", "Dryer2");
+        for(String dormsName:dormsNamesList) {
+            Optional<Dorm> dorm= iDormRepository.getByDormName(dormsName);
+            if(dorm.isPresent()){
+                for(String washingMachineName:washingMachinesNames){
+                    WashingMachine washingMachine=new WashingMachine(washingMachineName,dorm.get(), StatusMachine.FUNCTIONAL);
+                    iWashingMachineRepository.save(washingMachine);
+                }
+                for(String dryerName:dryersNames){
+                    Dryer dryer=new Dryer(dryerName,dorm.get(),StatusMachine.FUNCTIONAL);
+                    iDryerRepository.save(dryer);
+                }
+
+
+            }
+        }
+
     }
 
     @Transactional
@@ -104,6 +126,7 @@ public class InitialDataLoader implements CommandLineRunner {
         initializeRooms();
         initializeStudents();
         initializeDormsAdministrators();
+        initializeMachinesAndDryers();
 
     }
     }

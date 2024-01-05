@@ -11,7 +11,6 @@ import com.uvtdorms.services.interfaces.IWashingMachineService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -19,38 +18,31 @@ import java.util.stream.Collectors;
 
 @Service
 public class WashingMachineService implements IWashingMachineService {
-
-
-    private final IWashingMachineRepository iWashingMachineRepository;
-    private final IDormRepository iDormRepository;
+    private final IWashingMachineRepository washingMachineRepository;
+    private final IDormRepository dormRepository;
     private final ModelMapper modelMapper;
 
-
-    public WashingMachineService(IWashingMachineRepository iWashingMachineRepository, IDormRepository dormRepository, ModelMapper modelMapper, ILaundryAppointmentRepository iLaundryAppointmentRepository) {
-        this.iDormRepository = dormRepository;
-        this.iWashingMachineRepository = iWashingMachineRepository;
+    public WashingMachineService(
+            IWashingMachineRepository washingMachineRepository,
+            IDormRepository dormRepository,
+            ModelMapper modelMapper,
+            ILaundryAppointmentRepository laundryAppointmentRepository)
+    {
+        this.dormRepository = dormRepository;
+        this.washingMachineRepository = washingMachineRepository;
         this.modelMapper = modelMapper;
     }
 
     @Override
     public List<WashingMachineDto> getWashingMachinesFromDorm(String dormId) throws Exception {
-
-        Optional<Dorm> dorm = iDormRepository.findById(UUID.fromString(dormId));
+        Optional<Dorm> dorm = dormRepository.findById(UUID.fromString(dormId));
         if(dorm.isEmpty()){
             throw new DormNotFoundException();
         }
-        List<WashingMachine> washingMachines = iWashingMachineRepository.findByDorm(dorm.get());
+
+        List<WashingMachine> washingMachines = washingMachineRepository.findByDorm(dorm.get());
         return washingMachines.stream()
-                .map(WashingMachineDto::new)
+                .map(machine -> modelMapper.map(machine, WashingMachineDto.class))
                 .collect(Collectors.toList());
     }
-
-
-
 }
-
-
-
-
-
-

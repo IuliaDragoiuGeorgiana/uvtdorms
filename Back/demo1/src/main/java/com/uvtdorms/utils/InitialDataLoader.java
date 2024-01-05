@@ -8,115 +8,113 @@ import jakarta.transaction.Transactional;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 @Component
 public class InitialDataLoader implements CommandLineRunner {
-    private final ILaundryAppointmentRepository iLaundryAppointmentRepository;
-    private final IDormRepository iDormRepository;
-    private final IAnnouncementRepository iAnnouncementRepository;
-    private final IDryerRepository iDryerRepository;
-    private  final IRepairTicketRepository iRepairTicketRepository;
-    private final IRoomRepository iRoomRepository;
-    private final IStudentDetailsRepository iStudentDetailsRepository;
-    private final IUserRepository iUserRepository;
-    private final   IUserRolesRepository iUserRolesRepository;
-    private final IWashingMachineRepository iWashingMachineRepository;
-    private final IDormAdministratorDetails iDormAdministratorDetails;
+    // private final ILaundryAppointmentRepository laundryAppointmentRepository;
+    private final IDormRepository dormRepository;
+    // private final IAnnouncementRepository announcementRepository;
+    private final IDryerRepository dryerRepository;
+    // private  final IRepairTicketRepository repairTicketRepository;
+    private final IRoomRepository roomRepository;
+    private final IStudentDetailsRepository studentDetailsRepository;
+    private final IUserRepository userRepository;
+    // private final   IUserRolesRepository userRolesRepository;
+    private final IWashingMachineRepository washingMachineRepository;
+    private final IDormAdministratorDetails dormAdministratorDetails;
 
     private List<String> dormsNamesList = Arrays.asList("C13", "C12") ;
-
     private List<String> roomsNamesList = Arrays.asList("127","128") ;
 
-    public InitialDataLoader(ILaundryAppointmentRepository iLaundryAppointmentRepository, IDormRepository iDormRepository,
-                             IAnnouncementRepository iAnnouncementRepository, IDryerRepository iDryerRepository, IRepairTicketRepository iRepairTicketRepository,
-                             IRoomRepository iRoomRepository, IStudentDetailsRepository iStudentDetailsRepository, IUserRepository iUserRepository, IUserRolesRepository iUserRolesRepository,
-                             IWashingMachineRepository iWashingMachineRepository,IDormAdministratorDetails iDormAdministratorDetails) {
-        this.iLaundryAppointmentRepository = iLaundryAppointmentRepository;
-        this.iDormRepository = iDormRepository;
-        this.iAnnouncementRepository = iAnnouncementRepository;
-        this.iDryerRepository = iDryerRepository;
-        this.iRepairTicketRepository = iRepairTicketRepository;
-        this.iRoomRepository = iRoomRepository;
-        this.iStudentDetailsRepository = iStudentDetailsRepository;
-        this.iUserRepository = iUserRepository;
-        this.iUserRolesRepository = iUserRolesRepository;
-        this.iWashingMachineRepository = iWashingMachineRepository;
-        this.iDormAdministratorDetails = iDormAdministratorDetails;
+    public InitialDataLoader(
+            // ILaundryAppointmentRepository laundryAppointmentRepository,
+            IDormRepository dormRepository,
+            // IAnnouncementRepository announcementRepository,
+            IDryerRepository dryerRepository,
+            // IRepairTicketRepository repairTicketRepository,
+            IRoomRepository roomRepository,
+            IStudentDetailsRepository studentDetailsRepository,
+            IUserRepository userRepository,
+            // IUserRolesRepository userRolesRepository,
+            IWashingMachineRepository washingMachineRepository,
+            IDormAdministratorDetails dormAdministratorDetails)
+    {
+        // this.laundryAppointmentRepository = laundryAppointmentRepository;
+        this.dormRepository = dormRepository;
+        // this.announcementRepository = announcementRepository;
+        this.dryerRepository = dryerRepository;
+        // this.repairTicketRepository = repairTicketRepository;
+        this.roomRepository = roomRepository;
+        this.studentDetailsRepository = studentDetailsRepository;
+        this.userRepository = userRepository;
+        // this.userRolesRepository = userRolesRepository;
+        this.washingMachineRepository = washingMachineRepository;
+        this.dormAdministratorDetails = dormAdministratorDetails;
     }
+
     private void initializeDorms(){
         List<String> adressesNamesList= Arrays.asList("F.C. Ripesnsia", "Studentilor");
         for(int i=0;i<dormsNamesList.size();i++){
             Dorm dorm = new Dorm();
             dorm.setDormName(dormsNamesList.get(i));
             dorm.setAddress(adressesNamesList.get(i));
-            iDormRepository.save(dorm);
+            dormRepository.save(dorm);
         }
-
     }
-    private void initializeRooms(){
 
+    private void initializeRooms(){
         for(int i=0;i<roomsNamesList.size();i++)
         {
-            Optional<Dorm> dorm=iDormRepository.getByDormName(dormsNamesList.get(i));
+            Optional<Dorm> dorm=dormRepository.getByDormName(dormsNamesList.get(i));
             if(dorm.isPresent()){
                 Room room= new Room();
                 room.setRoomNumber(roomsNamesList.get(i));
                 room.setDorm(dorm.get());
-                iRoomRepository.save(room);
+                roomRepository.save(room);
             }
-
         }
     }
-    private void initializeStudents(){
 
-        Optional<Room> room =iRoomRepository.getRoomByRoomNumber(roomsNamesList.get(0));
+    private void initializeStudents(){
+        Optional<Room> room =roomRepository.getRoomByRoomNumber(roomsNamesList.get(0));
         if(room.isPresent()){
             User user = new User("Iulia","Dragoiu","iulia.dragiu02@e-uvt.ro","0729616799","iuliad", Role.STUDENT,Boolean.TRUE);
-            iUserRepository.save(user);
+            userRepository.save(user);
             StudentDetails student=new StudentDetails("6020416203228","I3183",user,room.get());
-            iStudentDetailsRepository.save(student);
-
+            studentDetailsRepository.save(student);
         }
-
     }
+
     private void initializeDormsAdministrators(){
-        Optional<Dorm> dorm= iDormRepository.getByDormName(dormsNamesList.get(0));
+        Optional<Dorm> dorm= dormRepository.getByDormName(dormsNamesList.get(0));
         if(dorm.isPresent()){
             User user= new User("Iulia123","Dragoiu123","iulia.dragiu02123@e-uvt.ro","07295540479","iuliad123", Role.ADMINISTRATOR,Boolean.TRUE);
-            iUserRepository.save(user);
+            userRepository.save(user);
             System.out.println(dorm);
             DormAdministratorDetails administrator = new DormAdministratorDetails(user,dorm.get());
-            iDormAdministratorDetails.save(administrator);
-
-
-
+            dormAdministratorDetails.save(administrator);
         }
-
-
     }
+
     private void initializeMachinesAndDryers(){
         List<String> washingMachinesNames = Arrays.asList("Machine1", "Machine2");
         List<String> dryersNames = Arrays.asList("Dryer1", "Dryer2");
         for(String dormsName:dormsNamesList) {
-            Optional<Dorm> dorm= iDormRepository.getByDormName(dormsName);
+            Optional<Dorm> dorm= dormRepository.getByDormName(dormsName);
             if(dorm.isPresent()){
                 for(String washingMachineName:washingMachinesNames){
                     WashingMachine washingMachine=new WashingMachine(washingMachineName,dorm.get(), StatusMachine.FUNCTIONAL);
-                    iWashingMachineRepository.save(washingMachine);
+                    washingMachineRepository.save(washingMachine);
                 }
                 for(String dryerName:dryersNames){
                     Dryer dryer=new Dryer(dryerName,dorm.get(),StatusMachine.FUNCTIONAL);
-                    iDryerRepository.save(dryer);
+                    dryerRepository.save(dryer);
                 }
-
-
             }
         }
-
     }
 
     @Transactional
@@ -127,7 +125,5 @@ public class InitialDataLoader implements CommandLineRunner {
         initializeStudents();
         initializeDormsAdministrators();
         initializeMachinesAndDryers();
-
     }
-    }
-
+}

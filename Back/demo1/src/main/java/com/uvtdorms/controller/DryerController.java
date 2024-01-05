@@ -1,7 +1,6 @@
 package com.uvtdorms.controller;
 
 import com.uvtdorms.repository.dto.response.DryerDto;
-import com.uvtdorms.repository.dto.response.WashingMachineDto;
 import com.uvtdorms.services.DryerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

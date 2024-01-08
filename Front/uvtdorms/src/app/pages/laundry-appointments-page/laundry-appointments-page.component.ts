@@ -8,6 +8,7 @@ import { AppointmentService } from '../../services/appointment.service';
 import { error } from 'console';
 import { WashingMachineService } from '../../services/washing-machine.service';
 import { DryerService } from '../../services/dryer.service';
+import { StudentDetailsService } from '../../services/student-details.service';
 
 @Component({
   selector: 'app-laundry-appointments-page',
@@ -29,11 +30,11 @@ export class LaundryAppointmentsPageComponent {
     {startHour: 18, printableValue: '18:00-20:00'}
   ];
 
-  dormId:string ="2b37c0ca-b85c-4f69-be9e-0c3dbd3bf87f";
+  dormId:string ="";
   laundryAppointmentForm = this.formBuilder.group({
     selectedMachineId: ['', Validators.required],
     selectedDryerId: ['', Validators.required],
-    selectedDate: [this.getTomorrowDate() || null, Validators.required],
+    selectedDate: [this.getTomorrowDate() || '', Validators.required],
     selectedIntervalStartHour: [0, Validators.required]
   });
 
@@ -41,7 +42,8 @@ export class LaundryAppointmentsPageComponent {
               private formBuilder: FormBuilder,
               private appointmentService: AppointmentService,
               private washingMachineService: WashingMachineService,
-              private dryerService: DryerService)
+              private dryerService: DryerService,
+              private studentService:StudentDetailsService)
   {
   }
 
@@ -50,6 +52,20 @@ export class LaundryAppointmentsPageComponent {
     if (this.timeIntervals && this.timeIntervals.length > 0) {
       this.laundryAppointmentForm.get('selectedIntervalStartHour')?.setValue(this.timeIntervals[0].startHour);
     }
+    this.studentService.getStudentDormId("iulia.dragoiu02@e-uvt.ro").subscribe({
+      next:dormId=>{
+        console.log(dormId);
+        this.dormId=dormId.id;
+        this.getDryers();
+        this.getWashingMachines();
+      }, 
+      error:(error) =>{
+        console.log(error);
+      }
+    });
+
+  }
+  getWashingMachines():void{
     this.washingMachineService.getWashingMachinesFromDorm(this.dormId).subscribe({
       next:washingMachines=>{
        this.washingMachines=washingMachines;
@@ -60,6 +76,8 @@ export class LaundryAppointmentsPageComponent {
       }
     })
 
+  }
+  getDryers():void{
     this.dryerService.getDryerFromDorm(this.dormId).subscribe({
       next:dryers=>{
        this.dryers=dryers;
@@ -97,7 +115,21 @@ export class LaundryAppointmentsPageComponent {
       this.openSnackBar('Something went wrong. Please try again later.', 'Got it!');
       return;
     }
-    this.appointmentService.createAppointment(this.laundryAppointmentForm.getRawValue()).subscribe({
+
+    let formDataCopy = { ...this.laundryAppointmentForm.getRawValue() };
+
+    const selectedDate = new Date(formDataCopy.selectedDate!);
+    const formattedDate = selectedDate.toISOString().split('T')[0];
+
+    let x = {
+      userEmail: "iulia.dragoiu02@e-uvt.ro",
+      selectedMachineId: formDataCopy.selectedMachineId,
+      selectedDryerId: formDataCopy.selectedDryerId,
+      selectedDate: formattedDate,
+      selectedInterval: formDataCopy.selectedIntervalStartHour,
+    }
+
+    this.appointmentService.createAppointment(x).subscribe({
       next:next=>{
         console.log(next)
       },

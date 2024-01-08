@@ -117,6 +117,11 @@ public class InitialDataLoader implements CommandLineRunner {
                 }
             }
         }
+        Optional<Dorm> dorm=dormRepository.getByDormName("C12");
+        if(dorm.isPresent()){
+             WashingMachine washingMachine=new WashingMachine("Machine3",dorm.get(),StatusMachine.FUNCTIONAL);
+             washingMachineRepository.save(washingMachine);
+        }
     }
 
     private void initializeAppointments(){

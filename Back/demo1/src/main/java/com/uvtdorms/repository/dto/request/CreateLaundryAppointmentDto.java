@@ -11,7 +11,6 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
-
 public class CreateLaundryAppointmentDto {
 
     private String userEmail;

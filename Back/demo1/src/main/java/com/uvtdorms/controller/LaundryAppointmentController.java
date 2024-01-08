@@ -28,6 +28,7 @@ public class LaundryAppointmentController {
 
     @PostMapping("/create")
     public ResponseEntity<?> createLaundryAppointment(@RequestBody CreateLaundryAppointmentDto createLaundryAppointmentDto){
+        System.out.println("In controller\n");
         try {
             laundryAppointmentService.createLaundryAppointment(createLaundryAppointmentDto);
             return ResponseEntity.ok().build();

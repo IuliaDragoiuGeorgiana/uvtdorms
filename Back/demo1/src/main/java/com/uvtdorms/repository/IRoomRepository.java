@@ -1,6 +1,7 @@
 package com.uvtdorms.repository;
 
 import com.uvtdorms.repository.entity.Room;
+import com.uvtdorms.repository.entity.StudentDetails;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

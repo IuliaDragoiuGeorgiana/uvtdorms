@@ -98,26 +98,15 @@ public class LaundryAppointmentService implements ILaundryAppointmentService {
         LocalDateTime startOfDay = freeIntervalDto.getDate().atStartOfDay();
         LocalDateTime endOfDay = freeIntervalDto.getDate().atTime(23, 59, 59);
 
-        // List<Predicate> predicates = new ArrayList<>();
-        // predicates.add(cb.equal(appointment.get("washMachine").get("id"), UUID.fromString(freeIntervalDto.getWashingMachineId())));
-        // predicates.add(cb.equal(appointment.get("dryer").get("id"), UUID.fromString(freeIntervalDto.getDryerId())));
-        // predicates.add(cb.equal(appointment.get("student").get("room").get("dorm").get("dormId"), UUID.fromString(freeIntervalDto.getDormId())));
-        // predicates.add(cb.greaterThanOrEqualTo(appointment.get("intervalBeginDate"), startOfDay));
-        // predicates.add(cb.lessThanOrEqualTo(appointment.get("intervalBeginDate"), endOfDay));
-
         Predicate dormPredicate = cb.equal(appointment.get("student").get("room").get("dorm").get("dormId"), UUID.fromString(freeIntervalDto.getDormId()));
         Predicate datePredicate = cb.greaterThanOrEqualTo(appointment.get("intervalBeginDate"), startOfDay);
         Predicate endDatePredicate = cb.lessThanOrEqualTo(appointment.get("intervalBeginDate"), endOfDay);
 
-        // New predicates for washing machine and dryer with OR condition
         Predicate washMachinePredicate = cb.equal(appointment.get("washMachine").get("id"), UUID.fromString(freeIntervalDto.getWashingMachineId()));
         Predicate dryerPredicate = cb.equal(appointment.get("dryer").get("id"), UUID.fromString(freeIntervalDto.getDryerId()));
         Predicate machineOrDryerPredicate = cb.or(washMachinePredicate, dryerPredicate);
 
-        // Combine all predicates
         cq.where(dormPredicate, datePredicate, endDatePredicate, machineOrDryerPredicate);
-
-        // cq.where(predicates.toArray(new Predicate[0]));
 
         List<LaundryAppointment> appointments = entityManager.createQuery(cq).getResultList();
 

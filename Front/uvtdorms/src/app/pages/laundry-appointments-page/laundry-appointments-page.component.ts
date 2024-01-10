@@ -5,10 +5,11 @@ import { timeInterval } from '../../interfaces/time-interval';
 import { Dryer } from '../../interfaces/dryer';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AppointmentService } from '../../services/appointment.service';
-import { error } from 'console';
 import { WashingMachineService } from '../../services/washing-machine.service';
 import { DryerService } from '../../services/dryer.service';
 import { StudentDetailsService } from '../../services/student-details.service';
+import { format } from 'date-fns';
+import { start } from 'repl';
 
 @Component({
   selector: 'app-laundry-appointments-page',
@@ -98,10 +99,17 @@ export class LaundryAppointmentsPageComponent {
   }
 
   datePickerFilter = (d: Date | null): boolean => {
-    const today = new Date().getDate();
-    const date = (d || new Date()).getDate();
-    const day = (d || new Date()).getDay();
-    return date > today && day !== 0;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const startOfWeek = new Date(today);
+    startOfWeek.setDate(today.getDate() - today.getDay() + (today.getDay() === 0 ? -6 : 1));
+
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 6);
+
+    const date = (d || new Date());
+    return date >= startOfWeek && date <= endOfWeek && date.getDay() !== 0 && date >= today;
   }
 
   onDateChange(newDate: Date | null) {
@@ -119,7 +127,8 @@ export class LaundryAppointmentsPageComponent {
     let formDataCopy = { ...this.laundryAppointmentForm.getRawValue() };
 
     const selectedDate = new Date(formDataCopy.selectedDate!);
-    const formattedDate = selectedDate.toISOString().split('T')[0];
+    // const formattedDate = selectedDate.toISOString().split('T')[0];
+    const formattedDate = format(selectedDate, 'yyyy-MM-dd');
 
     let x = {
       userEmail: "iulia.dragoiu02@e-uvt.ro",
@@ -131,7 +140,8 @@ export class LaundryAppointmentsPageComponent {
 
     this.appointmentService.createAppointment(x).subscribe({
       next:next=>{
-        console.log(next)
+        console.log(next);
+        this.updateIntervals();
       },
       error:(error)=>{console.log(error)}
     })
@@ -142,17 +152,24 @@ export class LaundryAppointmentsPageComponent {
     //TODO: create custom dto
     let tempDto = {
       dormId: this.dormId,
-      date: this.laundryAppointmentForm.get('selectedDate')?.value?.toISOString().split('T')[0],
+      date: format(this.laundryAppointmentForm.get('selectedDate')?.value!, 'yyyy-MM-dd'),
       washingMachineId: this.laundryAppointmentForm.get('selectedMachineId')?.value,
       dryerId: this.laundryAppointmentForm.get('selectedDryerId')?.value
     }
 
+    const intervalsDay = this.laundryAppointmentForm.get('selectedDate')?.value?.getDate();
+    const today = new Date().getDate();
+
+    console.log(tempDto);
     this.appointmentService.getFreeIntervalsForCreatingAppointment(tempDto).subscribe({
       next: intervals => {
         console.log(intervals);
         if (Array.isArray(intervals)) {
           this.timeIntervals = [];
           intervals.forEach(startHour => {
+              let currentHour = new Date().getHours();
+              // console.log(currentHour);
+              if(startHour > currentHour || intervalsDay != today)
               this.timeIntervals.push({
                 startHour: startHour,
                 printableValue: `${startHour}:00-${startHour+2}:00`

@@ -22,5 +22,15 @@ public class CreateLaundryAppointmentDto {
     private LocalDate selectedDate;
 
     private Integer selectedInterval;
-    
+
+    @Override
+    public String toString() {
+        return "CreateLaundryAppointmentDto{" +
+                "userEmail='" + userEmail + '\'' +
+                ", selectedMachineId=" + selectedMachineId +
+                ", selectedDryerId=" + selectedDryerId +
+                ", selectedDate=" + selectedDate +
+                ", selectedInterval=" + selectedInterval +
+                '}';
+    }
 }

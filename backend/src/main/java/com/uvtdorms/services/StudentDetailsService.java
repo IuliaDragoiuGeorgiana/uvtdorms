@@ -7,7 +7,6 @@ import com.uvtdorms.repository.IRoomRepository;
 import com.uvtdorms.repository.IStudentDetailsRepository;
 import com.uvtdorms.repository.IUserRepository;
 import com.uvtdorms.repository.dto.response.DormIdDto;
-import com.uvtdorms.repository.dto.response.UserDto;
 import com.uvtdorms.repository.entity.StudentDetails;
 import com.uvtdorms.repository.entity.User;
 import com.uvtdorms.services.interfaces.IStudentDetailsService;

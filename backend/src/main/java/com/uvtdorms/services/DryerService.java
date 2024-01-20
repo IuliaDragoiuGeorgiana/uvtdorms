@@ -1,12 +1,14 @@
 package com.uvtdorms.services;
 
 import com.uvtdorms.exception.DormNotFoundException;
+import com.uvtdorms.exception.WrongUuidException;
 import com.uvtdorms.repository.IDormRepository;
 import com.uvtdorms.repository.IDryerRepository;
 import com.uvtdorms.repository.dto.response.DryerDto;
 import com.uvtdorms.repository.entity.Dorm;
 import com.uvtdorms.repository.entity.Dryer;
 import com.uvtdorms.services.interfaces.IDryerService;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +37,12 @@ public class DryerService implements IDryerService {
 
     @Override
     public List<DryerDto> getDryerFromDorm(String dormId) throws Exception {
-        Optional<Dorm> dorm = dormRepository.findById(UUID.fromString(dormId));
+        UUID dormUuid = UUID.fromString(dormId);
+
+        if(dormUuid == null)
+            throw new WrongUuidException();
+
+        Optional<Dorm> dorm = dormRepository.findById(dormUuid);
         if(dorm.isEmpty()){
             throw new DormNotFoundException();
         }

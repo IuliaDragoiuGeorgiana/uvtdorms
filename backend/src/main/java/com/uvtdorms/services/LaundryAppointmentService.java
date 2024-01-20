@@ -4,6 +4,7 @@ import com.uvtdorms.exception.DryerNotFoundException;
 import com.uvtdorms.exception.StudentNotFoundException;
 import com.uvtdorms.exception.UserNotFoundException;
 import com.uvtdorms.exception.WashingMachineNotFoundException;
+import com.uvtdorms.exception.WrongUuidException;
 import com.uvtdorms.repository.IDryerRepository;
 import com.uvtdorms.repository.ILaundryAppointmentRepository;
 import com.uvtdorms.repository.IStudentDetailsRepository;
@@ -74,11 +75,18 @@ public class LaundryAppointmentService implements ILaundryAppointmentService {
             throw new StudentNotFoundException();
         }
 
-        Optional<WashingMachine> washingMachine = washingMachineRepository.findById(createLaundryAppointmentDto.getSelectedMachineId());
+        UUID machineUuid = createLaundryAppointmentDto.getSelectedMachineId();
+        if(machineUuid == null) throw new WrongUuidException();
+
+        Optional<WashingMachine> washingMachine = washingMachineRepository.findById(machineUuid);
         if(washingMachine.isEmpty()){
             throw new WashingMachineNotFoundException();
         }
-        Optional<Dryer> dryer = dryerRepository.findById(createLaundryAppointmentDto.getSelectedDryerId());
+
+        UUID dryerUuid = createLaundryAppointmentDto.getSelectedDryerId();
+        if(dryerUuid == null) throw new WrongUuidException();
+
+        Optional<Dryer> dryer = dryerRepository.findById(dryerUuid);
         if(dryer.isEmpty()){
             throw new DryerNotFoundException();
         }

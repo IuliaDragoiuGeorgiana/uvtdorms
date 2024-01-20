@@ -1,6 +1,7 @@
 package com.uvtdorms.services;
 
 import com.uvtdorms.exception.DormNotFoundException;
+import com.uvtdorms.exception.WrongUuidException;
 import com.uvtdorms.repository.IDormRepository;
 import com.uvtdorms.repository.ILaundryAppointmentRepository;
 import com.uvtdorms.repository.IWashingMachineRepository;
@@ -35,7 +36,10 @@ public class WashingMachineService implements IWashingMachineService {
 
     @Override
     public List<WashingMachineDto> getWashingMachinesFromDorm(String dormId) throws Exception {
-        Optional<Dorm> dorm = dormRepository.findById(UUID.fromString(dormId));
+        UUID dormUuid = UUID.fromString(dormId);
+        if(dormUuid == null) throw new WrongUuidException();
+
+        Optional<Dorm> dorm = dormRepository.findById(dormUuid);
         if(dorm.isEmpty()){
             throw new DormNotFoundException();
         }

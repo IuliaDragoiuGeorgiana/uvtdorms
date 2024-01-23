@@ -2,11 +2,12 @@
 
 .navbar-container
 {
-    background-color: rgb(46, 113, 184);
+    background-color: var(--uvt-blue);
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: flex-start; 
+    height: 6vh;
 }
 
 .navbar-container *

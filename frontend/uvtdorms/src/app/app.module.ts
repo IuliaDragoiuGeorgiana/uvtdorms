@@ -22,7 +22,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { HttpClientModule } from '@angular/common/http';
-
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   declarations: [
@@ -50,7 +50,8 @@ import { HttpClientModule } from '@angular/common/http';
     FormsModule,
     MatGridListModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    MatTabsModule
   ],
   providers: [
     // provideClientHydration()

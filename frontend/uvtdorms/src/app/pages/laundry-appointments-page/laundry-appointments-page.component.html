@@ -1,0 +1,179 @@
+<div class="laundry-appointments-main-container">
+    <div class="laundry-appointments-form-container">
+        <div class="laundry-appointments-form-header">
+            <h1 class="laundry-appiontments-form-header-content">
+                Laundry Appointment
+            </h1>
+        </div>
+        <form
+            [formGroup]="laundryAppointmentForm"
+            (submit)="makeAppointment()"
+            class="laundry-appointments-form-content">
+            <div class="laundry-appointments-form-content-left">
+                <div class="laundry-appointments-form-content-left-days">
+                    <!-- <h2 class="laundry-appointments-form-content-left-days-header">
+                        Choose a day
+                    </h2> -->
+                    <mat-tab-group [selectedIndex]="currentDay"
+                                (selectedIndexChange)="selectedDay.setValue($event)">
+                        @for (tab of tabs; track tab; let index = $index) {
+                            <mat-tab [label]="tab" [disabled]="index < currentDay">
+                            </mat-tab>
+                        }
+                    </mat-tab-group>
+                </div>
+
+                <mat-form-field class="laundry-appointments-select-machine">
+                    <mat-label>Choose a washing machine</mat-label>
+                    <mat-select
+                        (selectionChange)="updateIntervals()"
+                        formControlName="selectedMachineId">
+                        <ng-container
+                            *ngFor="let machine of machines">
+                            <mat-option
+                                [value]="machine.washingMachine.id"
+                                [disabled]="!machine.washingMachine.isAvailable">
+                                {{machine.washingMachine.name}}{{!machine.washingMachine.isAvailable ? ' (not working)' : ''}}
+                            </mat-option>
+                        </ng-container>
+                    </mat-select>
+                </mat-form-field>
+
+                <!-- <mat-form-field class="laundry-appointments-select-dryer">
+                    <mat-label>Choose a dryer</mat-label>
+                    <mat-select
+                        (selectionChange)="updateIntervals()"
+                        formControlName="selectedDryerId">
+                        <ng-container
+                            *ngFor="let dryer of dryers">
+                            <mat-option
+                                [value]="dryer.id"
+                                [disabled]="!dryer.isAvailable">
+                                {{dryer.name}}{{!dryer.isAvailable ? ' (not working)' : ''}}
+                            </mat-option>
+                        </ng-container>
+                    </mat-select>
+                </mat-form-field> -->
+                <!-- <div class="laundry-appointments-selected-dryer">
+                    <h1 class="laundry-appointments-selected-dryer-content">Associated dryer: {{ selectedMachines?.dryer?.name }}</h1>
+                </div> -->
+                <mat-form-field class="laundry-appointments-select-dryer">
+                    <mat-label>Associated dryer</mat-label>
+                    <input [readonly]="true" type="email" matInput  placeholder="Ex. pat@example.com" [value]="selectedMachines?.dryer?.name">
+                </mat-form-field>
+            </div>
+            <div class="laundry-appointments-form-content-right">
+                <div class="laundry-appointments-form-content-intervals-container">
+                    <div class="laundry-appointments-form-content-intervals-header">
+                        <h1 class="laundry-appointments-form-content-intervals-header-content">
+                            {{ getSelectedDayName() }}
+                        </h1>
+                    </div>
+                    <div class="laundry-appointments-form-content-intervals-container-content">
+                        <div
+                            *ngFor="let interval of intervals"
+                            [ngClass]="{'available-interval': isIntervalAvailable(interval), 'unavailable-interval': !isIntervalAvailable(interval)}"
+                            class="laundry-appointments-form-content-interval">
+                            <h2 class="laundry-appointments-form-content-interval-text">
+                                {{ interval }}:00
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="laundry-appointments-form-footer">
+            <button
+                mat-raised-button
+                class="laundry-appointments-form-submit-button">
+                Make an appointment
+            </button>
+        </div>
+        <!-- <form
+            class="laundry-appointments-form"
+            [formGroup]="laundryAppointmentForm"
+            (submit)="makeAppointment()">
+            <mat-grid-list
+                class="laundry-appointments-form-grid"
+                cols="2"
+                rowHeight="8vh">
+                <mat-grid-tile
+                    [colspan]="1"
+                    [rowspan]="1">
+                    <mat-form-field class="laundry-appointments-select-machine">
+                        <mat-label>Choose a washing machine</mat-label>
+                        <mat-select
+                            (selectionChange)="updateIntervals()"
+                            formControlName="selectedMachineId">
+                            <ng-container
+                                *ngFor="let washingMachine of washingMachines">
+                                <mat-option
+                                    [value]="washingMachine.id"
+                                    [disabled]="!washingMachine.isAvailable">
+                                    {{washingMachine.name}}{{!washingMachine.isAvailable ? ' (not working)' : ''}}
+                                </mat-option>
+                            </ng-container>
+                        </mat-select>
+                    </mat-form-field>
+                </mat-grid-tile>
+
+                <mat-grid-tile
+                    [colspan]="1"
+                    [rowspan]="6">
+                    <mat-card class="laundry-appointments-datepicker">
+                        <mat-calendar
+                            [dateFilter]="datePickerFilter"
+                            [selected]="laundryAppointmentForm.get('selectedDate')?.value || null"
+                            (selectedChange)="onDateChange($event); updateIntervals()">
+                        </mat-calendar>
+                    </mat-card>
+                </mat-grid-tile>
+
+                <mat-grid-tile
+                    [colspan]="1"
+                    [rowspan]="1">
+                    <mat-form-field class="laundry-appointments-select-dryer">
+                        <mat-label>Choose a dryer</mat-label>
+                        <mat-select
+                            (selectionChange)="updateIntervals()"
+                            formControlName="selectedDryerId">
+                            <ng-container
+                                *ngFor="let dryer of dryers">
+                                <mat-option
+                                    [value]="dryer.id"
+                                    [disabled]="!dryer.isAvailable">
+                                    {{dryer.name}}{{!dryer.isAvailable ? ' (not working)' : ''}}
+                                </mat-option>
+                            </ng-container>
+                        </mat-select>
+                    </mat-form-field>
+                </mat-grid-tile>
+
+                <mat-grid-tile
+                    [colspan]="1"
+                    [rowspan]="4">
+                    <mat-chip-listbox
+                        class="mat-mdc-chip-set-stacked laundry-appointments-chips"
+                        formControlName="selectedIntervalStartHour">
+                        <ng-container
+                            *ngFor="let timeInterval of timeIntervals; let first = first">
+                            <mat-chip-option
+                                [selected]="first"
+                                [value]="timeInterval.startHour">
+                                {{timeInterval.printableValue}}
+                            </mat-chip-option>
+                        </ng-container>
+                    </mat-chip-listbox>
+                </mat-grid-tile>
+            </mat-grid-list>
+
+            <button
+                class="laundry-appointments-form-submit-button"
+                mat-raised-button
+                type="submit">
+                <mat-icon>assignment</mat-icon>
+                Make appointment
+            </button>
+        </form> -->
+    </div>
+</div>

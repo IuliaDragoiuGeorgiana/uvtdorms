@@ -1,0 +1,22 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* .mdc-evolution-chip-set__chips
+{
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr);
+} */
+
+*
+{
+    box-sizing: border-box;
+    margin: 0;
+}
+
+:root {
+    --uvt-blue: rgb(46, 113, 184);
+    --uvt-yellow: rgb(228, 172, 34);
+    --uvt-gray:  rgb(240, 240, 240);
+  }

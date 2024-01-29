@@ -1,0 +1,44 @@
+package com.uvtdorms.repository.entity;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.List;
+import java.util.UUID;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "students_details")
+public class StudentDetails {
+    private String cnp;
+    private String matriculationNumber;
+
+    @Id
+    @GeneratedValue(generator = "UUID")
+    private UUID student_id;
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    @MapsId
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "room_id")
+    private Room room;
+
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    private List<LaundryAppointment> laundryAppointments;
+
+    public StudentDetails(String cnp, String matriculationNumber, User user, Room room) {
+        this.cnp = cnp;
+        this.matriculationNumber = matriculationNumber;
+        this.user = user;
+        this.room = room;
+    }
+}

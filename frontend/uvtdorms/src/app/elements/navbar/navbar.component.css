@@ -2,34 +2,76 @@
 
 .navbar-container
 {
-    background-color: var(--uvt-blue);
+    background-color: var(--uvt-gray);
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: flex-start; 
     height: 6vh;
+    padding: 0 !important;
+}
+.right-wing
+{
+    height: 100%;
+    width: 25%;
+
+}
+.center
+{
+    height: 100%;
+    width: 50%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  
+
+}
+.center *
+{
+    margin: 0 0.5vw;
+}
+.left-wing
+{
+    height: 100%;
+    width: 25%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding-left: 1.5vw;
+
+}
+.uvt-logo
+{
+    height: 100%;
 }
 
-.navbar-container *
-{
-    margin: 0 1vw;
-}
 
-.navbar-logo
+
+.navbar-logo-text
 {
-    font-family: 'Kalam', cursive;
-    font-weight: bolder;
-    color: rgb(228, 172, 34);
-    font-size: 1.7rem;
+    color: var(--uvt-blue);
+    font-size: 2rem;
 }
 
 .navbar-button
 {
-    color: white !important;
+    color: var(--uvt-blue)!important;
+    font-size: 1.1vw;
+    border: none;
+    cursor: pointer;
+    padding: 1vh 1vw;
+    width: fit-content;
+    border-radius: 5px;
 }
 
 .navbar-button:hover
 {
-    background-color: rgb(60, 142, 230) !important;
+    background: rgb(223, 223, 223); 
 }
 
+.navbar-button.active {
+    text-decoration: underline;
+    text-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
+}

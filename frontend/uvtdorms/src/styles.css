@@ -18,4 +18,5 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 :root {
     --uvt-blue: rgb(46, 113, 184);
     --uvt-yellow: rgb(228, 172, 34);
+    --uvt-gray:  rgb(240, 240, 240);
   }

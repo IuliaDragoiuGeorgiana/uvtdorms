@@ -9,6 +9,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class LoginPageComponent {
   hide = true;
+  showLogin = false;
 
   constructor(private authService: AuthService){}
 
@@ -17,7 +18,23 @@ export class LoginPageComponent {
     password: new FormControl('', [Validators.required]),
   });
 
-  get email() {
+  registerForm = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email]),
+    firstName:new FormControl('', [Validators.required]),
+    lastName:new FormControl('', [Validators.required]),
+    dormName:new FormControl('', [Validators.required]),
+    roomNumber:new FormControl('', [Validators.required, Validators.min(0)]),
+    matriculationNumber: new FormControl('', [
+      Validators.required,
+      Validators.pattern('^[A-Za-z]{1,3}\\d{1,4}$')
+    ]),
+    phoneNumber: new FormControl('', [
+      Validators.required,
+      Validators.pattern('^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$')
+    ])
+  });
+
+  get loginEmail() {
     return this.loginForm.get('email');
   }
 
@@ -25,16 +42,51 @@ export class LoginPageComponent {
     return this.loginForm.get('password');
   }
 
+  get registerEmail()
+  {
+    return this.registerForm.get('email');
+  }
+
+  get firstName()
+  {
+    return this.registerForm.get('firstName');
+  }
+
+  get lastName()
+  {
+    return this.registerForm.get('lastName');
+  }
+
+  get roomNumber()
+  {
+    return this.registerForm.get('roomNumber');
+  }
+
+  get matriculationNumber()
+  {
+    return this.registerForm.get('matriculationNumber');
+  }
+
+  get phoneNumber()
+  {
+    return this.registerForm.get('phoneNumber');
+  }
+
   onLogin() {
     if (!this.loginForm.valid) {
       return;
     }
 
-    this.authService.login({email: this.email?.value, password: this.password?.value}).subscribe({
+    this.authService.login({email: this.loginEmail?.value, password: this.password?.value}).subscribe({
       next: (tokenDto) => {
         this.authService.setAuthToken(tokenDto.token);
       }
     });
+  }
+
+  onRegister()
+  {
+
   }
 }
 

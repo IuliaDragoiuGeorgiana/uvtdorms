@@ -38,7 +38,10 @@ export class LoginPageComponent {
         "password": this.password?.value
       }
     ).then(
-      (response) => console.log(response)
+      (response) => {
+        console.log(response);
+        this.axiosService.setAuthToken(response.data.token);
+      }
     );
   }
 }

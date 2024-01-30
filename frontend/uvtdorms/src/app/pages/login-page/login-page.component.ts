@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AxiosService } from '../../services/axios.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login-page',
@@ -9,6 +9,8 @@ import { AxiosService } from '../../services/axios.service';
 })
 export class LoginPageComponent {
   hide = true;
+
+  constructor(private authService: AuthService){}
 
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -22,27 +24,17 @@ export class LoginPageComponent {
   get password() {
     return this.loginForm.get('password');
   }
-  constructor(private axiosService: AxiosService){}
 
   onLogin() {
-    // Add login logic here
-    console.log(this.loginForm.value);
     if (!this.loginForm.valid) {
       return;
     }
-    this.axiosService.request(
-      "POST",
-      "/login",
-      {
-        "email": this.email?.value,
-        "password": this.password?.value
+
+    this.authService.login({email: this.email?.value, password: this.password?.value}).subscribe({
+      next: (tokenDto) => {
+        this.authService.setAuthToken(tokenDto.token);
       }
-    ).then(
-      (response) => {
-        console.log(response);
-        this.axiosService.setAuthToken(response.data.token);
-      }
-    );
+    });
   }
 }
 

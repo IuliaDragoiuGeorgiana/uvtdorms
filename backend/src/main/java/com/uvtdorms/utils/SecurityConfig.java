@@ -24,7 +24,7 @@ public class SecurityConfig {
                 .addFilterBefore(new JwtAuthFilter(userAuthProvider), BasicAuthenticationFilter.class)
                 .sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((requests) ->
-                        requests.requestMatchers(HttpMethod.POST, "/login").permitAll()
+                        requests.requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
                                 .anyRequest().authenticated()
                 );
         return http.build();

@@ -1,6 +1,5 @@
 package com.uvtdorms.utils;
 
-import com.uvtdorms.repository.entity.User;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,7 +18,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String header = request.getHeader(HttpHeaders.AUTHORIZATION);
-
+        System.out.println(header);
         if(header != null)
         {
             String[] authElements = header.split(" ");

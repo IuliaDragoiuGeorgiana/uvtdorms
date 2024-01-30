@@ -28,6 +28,7 @@ export class LaundryAppointmentsPageComponent {
   washingMachines: WashingMachine[] = [];
   dryers: Dryer[] = [];
   machines: MachinePair[] = [];
+  timeIntervals: timeInterval[] = [];
   selectedMachines: MachinePair | null = null;
   @ViewChild('dryer') dryer!: MatInput;
 
@@ -35,17 +36,6 @@ export class LaundryAppointmentsPageComponent {
   currentDay = new Date().getDay();
   selectedDay = new FormControl(this.currentDay);
   intervals = [8, 10, 12, 14, 16, 18, 20];
-
-
-  timeIntervals: timeInterval[] = [
-    {startHour: 8, printableValue: '8:00'},
-    // {startHour: 10, printableValue: '10:00'},
-    // {startHour: 12, printableValue: '12:00'},
-    {startHour: 14, printableValue: '14:00'},
-    {startHour: 16, printableValue: '16:00'},
-    {startHour: 18, printableValue: '18:00'},
-    {startHour: 20, printableValue: '20:00'}
-  ];
 
   dormId:string ="";
   laundryAppointmentForm = this.formBuilder.group({
@@ -62,7 +52,6 @@ export class LaundryAppointmentsPageComponent {
               private dryerService: DryerService,
               private studentService:StudentDetailsService)
   {
-    console.log(this.tabs.slice(this.currentDay, 7));
   }
 
   ngOnInit()
@@ -70,9 +59,9 @@ export class LaundryAppointmentsPageComponent {
     if (this.timeIntervals && this.timeIntervals.length > 0) {
       this.laundryAppointmentForm.get('selectedIntervalStartHour')?.setValue(this.timeIntervals[0].startHour);
     }
-    this.studentService.getStudentDormId("iulia.dragoiu02@e-uvt.ro").subscribe({
+
+    this.studentService.getStudentDormId().subscribe({
       next:dormId=>{
-        console.log(dormId);
         this.dormId=dormId.id;
         this.getDryers();
         this.getWashingMachines();
@@ -81,7 +70,6 @@ export class LaundryAppointmentsPageComponent {
         console.log(error);
       }
     });
-
   }
 
   getWashingMachines(): void{
@@ -89,7 +77,6 @@ export class LaundryAppointmentsPageComponent {
       next:washingMachines=>{
        this.washingMachines=washingMachines;
        this.joinMachines();
-       console.log(washingMachines);
       },
       error:(error)=>{
         console.log(error);
@@ -102,7 +89,6 @@ export class LaundryAppointmentsPageComponent {
       next:dryers=>{
        this.dryers=dryers;
        this.joinMachines();
-       console.log(this.dryers);
       },
       error:(error)=>{
         console.log(error);
@@ -116,7 +102,6 @@ export class LaundryAppointmentsPageComponent {
     {
       this.machines.push({washingMachine: this.washingMachines[i], dryer: this.dryers[i]});
     }
-    console.log(this.machines);
   }
 
   getTomorrowDate(): Date{
@@ -145,7 +130,6 @@ export class LaundryAppointmentsPageComponent {
   }
 
   makeAppointment(): void {
-    console.log(this.laundryAppointmentForm.getRawValue());
     if(!this.laundryAppointmentForm.valid) return;
     if(this.laundryAppointmentForm.get('selectedIntervalStartHour')?.value === 0) {
       this.openSnackBar('Something went wrong. Please try again later.', 'Got it!');
@@ -155,7 +139,6 @@ export class LaundryAppointmentsPageComponent {
     let formDataCopy = { ...this.laundryAppointmentForm.getRawValue() };
 
     const selectedDate = new Date(formDataCopy.selectedDate!);
-    // const formattedDate = selectedDate.toISOString().split('T')[0];
     const formattedDate = format(selectedDate, 'yyyy-MM-dd');
 
     let x = {
@@ -167,13 +150,11 @@ export class LaundryAppointmentsPageComponent {
     }
 
     this.appointmentService.createAppointment(x).subscribe({
-      next:next=>{
-        console.log(next);
+      next: () => {
         this.updateIntervals();
       },
-      error:(error)=>{console.log(error)}
-    })
-    console.log("Everything went right");
+      error:(error)=>{ console.log(error) }
+    });
   }
 
   updateIntervals(): void {
@@ -194,20 +175,15 @@ export class LaundryAppointmentsPageComponent {
       dryerId: this.selectedMachines?.dryer.id
     }
 
-    console.log(tempDto);
-
     const intervalsDay = this.laundryAppointmentForm.get('selectedDate')?.value?.getDate();
     const today = new Date().getDate();
 
-    console.log(tempDto);
     this.appointmentService.getFreeIntervalsForCreatingAppointment(tempDto).subscribe({
       next: intervals => {
-        console.log(intervals);
         if (Array.isArray(intervals)) {
           this.timeIntervals = [];
           intervals.forEach(startHour => {
               let currentHour = new Date().getHours();
-              // console.log(currentHour);
               if(startHour > currentHour || intervalsDay != today)
               this.timeIntervals.push({
                 startHour: startHour,

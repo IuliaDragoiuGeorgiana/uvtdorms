@@ -1,7 +1,7 @@
 package com.uvtdorms.utils;
 
 import com.uvtdorms.repository.dto.response.DryerDto;
-import com.uvtdorms.repository.dto.response.UserDto;
+import com.uvtdorms.repository.dto.response.EmailDto;
 import com.uvtdorms.repository.dto.response.WashingMachineDto;
 import com.uvtdorms.repository.entity.Dryer;
 import com.uvtdorms.repository.entity.User;
@@ -54,7 +54,7 @@ public class MapperConfig {
             }
         });
 
-        modelMapper.addMappings(new PropertyMap<User, UserDto>() {
+        modelMapper.addMappings(new PropertyMap<User, EmailDto>() {
             @Override
             protected void configure() {
                 map(source.getEmail(), destination.getEmail());

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.uvtdorms.repository.dto.response.UserDto;
+import com.uvtdorms.repository.dto.response.EmailDto;
 import com.uvtdorms.services.UserService;
 
 @RestController
@@ -25,7 +25,7 @@ public class UserController {
     public ResponseEntity<?> getTestUser()
     {
         try {
-            UserDto user = userService.getTestUser();
+            EmailDto user = userService.getTestUser();
             return ResponseEntity.ok(user);
         }
         catch(Exception e)

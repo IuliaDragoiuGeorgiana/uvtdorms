@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
+import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './root/app.component';
@@ -10,7 +10,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { LaundryAppointmentsPageComponent } from './pages/laundry-appointments-page/laundry-appointments-page.component';
 import { NavbarComponent } from './elements/navbar/navbar.component';
-import { HomePageComponent } from './pages/home-page/home-page.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -31,7 +30,6 @@ import {MatMenuModule} from '@angular/material/menu';
     AppComponent,
     LaundryAppointmentsPageComponent,
     NavbarComponent,
-    HomePageComponent,
     LoginPageComponent
   ],
   imports: [

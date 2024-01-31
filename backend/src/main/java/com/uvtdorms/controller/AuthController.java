@@ -28,8 +28,6 @@ public class AuthController
     public ResponseEntity<UserDto> loginWithToken(Authentication authentication){
         UserDto user = (UserDto) authentication.getPrincipal();
         user = userService.verifyUserDto(user);
-    return ResponseEntity.ok(user);
-
-
-}
+        return ResponseEntity.ok(user);
+    }
 }

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -8,11 +9,19 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'uvtdorms';
 
+  constructor(private authService: AuthService){}
+
   ngOnInit(){
-    console.log("ceau bau");
+    if(this.authService.getAuthToken() != null)
+    {
+      this.authService.loginWithToken().subscribe({
+        next: (tokenDto) => {
+          console.log(tokenDto);
+        }
+      });
+    } else {
+      console.log("token not found"); 
+    }
   }
 
-  constructor(){
-    console.log("ceau bau2");
-  }
 }

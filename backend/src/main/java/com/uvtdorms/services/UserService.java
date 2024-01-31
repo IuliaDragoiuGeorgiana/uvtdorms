@@ -48,4 +48,13 @@ public class UserService implements IUserService {
         }
         throw new AppException("Invalid password", HttpStatus.BAD_REQUEST);
     }
+    public UserDto verifyUserDto(UserDto userDto)
+    {
+        User user = userRepository.getByEmail(userDto.getEmail())
+                .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
+        if(user.getRole()!=userDto.getRole())
+            throw new AppException("roll changed", HttpStatus.BAD_REQUEST);
+    return userDto;
+
+    }
 }

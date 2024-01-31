@@ -7,4 +7,12 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'uvtdorms';
+
+  ngOnInit(){
+    console.log("ceau bau");
+  }
+
+  constructor(){
+    console.log("ceau bau2");
+  }
 }

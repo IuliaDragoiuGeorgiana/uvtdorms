@@ -6,10 +6,8 @@ import com.uvtdorms.services.UserService;
 import com.uvtdorms.utils.UserAuthProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,4 +23,13 @@ public class AuthController
         userDto.setToken(userAuthProvider.createToken(userDto));
         return ResponseEntity.ok(userDto);
     }
+
+    @GetMapping("/login-with-token")
+    public ResponseEntity<UserDto> loginWithToken(Authentication authentication){
+        UserDto user = (UserDto) authentication.getPrincipal();
+        user = userService.verifyUserDto(user);
+    return ResponseEntity.ok(user);
+
+
+}
 }

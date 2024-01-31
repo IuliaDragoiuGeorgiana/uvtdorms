@@ -10,6 +10,7 @@ export class AuthService {
 
   private authServiceUrl: string = "http://localhost:8080/api/auth";
   private loginUrl: string = "/login";
+  private loginWithTokenUrl: string = "/login-with-token";
 
   constructor(private http: HttpClient) { }
 
@@ -40,5 +41,10 @@ export class AuthService {
   login(data: {}): Observable<TokenDto>
   {
     return this.http.post<TokenDto>(this.authServiceUrl + this.loginUrl, data);
+  }
+
+  loginWithToken(): Observable<TokenDto>
+  {
+    return this.http.get<TokenDto>(this.authServiceUrl+this.loginWithTokenUrl,{headers: this.getHeader()});
   }
 }

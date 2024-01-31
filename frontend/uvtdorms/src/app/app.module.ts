@@ -24,6 +24,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { HttpClientModule } from '@angular/common/http';
 import { MatTabsModule } from '@angular/material/tabs';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
+import {MatMenuModule} from '@angular/material/menu';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { LoginPageComponent } from './pages/login-page/login-page.component';
     MatGridListModule,
     ReactiveFormsModule,
     HttpClientModule,
-    MatTabsModule
+    MatTabsModule,
+    MatMenuModule
   ],
   providers: [
     // provideClientHydration()

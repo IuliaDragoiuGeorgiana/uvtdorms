@@ -15,7 +15,11 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   getAuthToken(): string | null {
-    return window.localStorage.getItem("uvtdorms_auth_token");
+    if (typeof window !== 'undefined') {
+      return window.localStorage.getItem("uvtdorms_auth_token");
+    } else {
+      return null;
+    }
   }
 
   setAuthToken(token: string | null) {

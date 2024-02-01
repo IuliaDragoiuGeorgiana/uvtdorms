@@ -20,7 +20,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatChipsModule } from '@angular/material/chips';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
 import { MatTabsModule } from '@angular/material/tabs';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
 import {MatMenuModule} from '@angular/material/menu';
@@ -56,7 +56,7 @@ import {MatMenuModule} from '@angular/material/menu';
     MatMenuModule
   ],
   providers: [
-    // provideClientHydration()
+    provideHttpClient(withFetch())
   ],
   bootstrap: [AppComponent]
 })

@@ -24,13 +24,19 @@ import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/
 import { MatTabsModule } from '@angular/material/tabs';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
 import {MatMenuModule} from '@angular/material/menu';
+import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
+import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
+import { UserAdministrationPageComponent } from './pages/user-administration-page/user-administration-page.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LaundryAppointmentsPageComponent,
     NavbarComponent,
-    LoginPageComponent
+    LoginPageComponent,
+    ProfilePageComponent,
+    NotFoundPageComponent,
+    UserAdministrationPageComponent
   ],
   imports: [
     BrowserModule,

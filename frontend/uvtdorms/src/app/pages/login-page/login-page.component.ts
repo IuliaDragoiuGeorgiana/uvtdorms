@@ -84,7 +84,7 @@ export class LoginPageComponent {
         next: (tokenDto) => {
           this.authService.setAuthToken(tokenDto.token);
           this.userService.setRole(convertStringRoleToEnum(tokenDto.role)!);
-          this.router.navigate(['laundry-appointments']);
+          this.router.navigate(['/profile']);
         },
       });
   }

@@ -34,6 +34,4 @@ public class Dorm {
 
     @OneToOne(mappedBy = "dorm", cascade = CascadeType.ALL)
     private DormAdministratorDetails dormAdministratorDetails;
-
-
 }

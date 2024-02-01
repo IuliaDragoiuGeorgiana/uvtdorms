@@ -13,20 +13,33 @@ import { NavbarComponent } from './elements/navbar/navbar.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatCheckboxModule } from '@angular/material/checkbox'
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatCardModule } from '@angular/material/card';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatChipsModule } from '@angular/material/chips';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
+import {
+  HttpClientModule,
+  provideHttpClient,
+  withFetch,
+} from '@angular/common/http';
 import { MatTabsModule } from '@angular/material/tabs';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
-import {MatMenuModule} from '@angular/material/menu';
+import { MatMenuModule } from '@angular/material/menu';
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
 import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
 import { UserAdministrationPageComponent } from './pages/user-administration-page/user-administration-page.component';
+
+import {
+  MatDialogTitle,
+  MatDialogContent,
+  MatDialogActions,
+  MatDialogClose,
+} from '@angular/material/dialog';
+import { RegisterErrorDialogComponent } from './elements/dialogs/register/register-error-dialog/register-error-dialog.component';
+import { RegisterConfirmDialogComponent } from './elements/dialogs/register/register-confirm-dialog/register-confirm-dialog.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +49,9 @@ import { UserAdministrationPageComponent } from './pages/user-administration-pag
     LoginPageComponent,
     ProfilePageComponent,
     NotFoundPageComponent,
-    UserAdministrationPageComponent
+    UserAdministrationPageComponent,
+    RegisterErrorDialogComponent,
+    RegisterConfirmDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -59,11 +74,13 @@ import { UserAdministrationPageComponent } from './pages/user-administration-pag
     ReactiveFormsModule,
     HttpClientModule,
     MatTabsModule,
-    MatMenuModule
+    MatMenuModule,
+    MatDialogTitle,
+    MatDialogContent,
+    MatDialogActions,
+    MatDialogClose,
   ],
-  providers: [
-    provideHttpClient(withFetch())
-  ],
-  bootstrap: [AppComponent]
+  providers: [provideHttpClient(withFetch())],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

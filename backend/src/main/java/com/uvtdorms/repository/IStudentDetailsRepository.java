@@ -11,5 +11,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IStudentDetailsRepository extends JpaRepository<StudentDetails, UUID> {
-    Optional<StudentDetails> findByUser(User user);
+    public Optional<StudentDetails> findByUser(User user);
+
+    public Optional<StudentDetails> findByMatriculationNumber(String matriculationNumber);
 }

@@ -20,7 +20,10 @@
                 placeholder="Enter your email"
               />
               <mat-error
-                *ngIf="loginEmail?.invalid && (loginEmail?.dirty || loginEmail?.touched)"
+                *ngIf="
+                  loginEmail?.invalid &&
+                  (loginEmail?.dirty || loginEmail?.touched)
+                "
               >
                 <span *ngIf="loginEmail?.errors?.['required']"
                   >Email is required</span
@@ -83,8 +86,10 @@
           class="register-form-container"
         >
           <div class="form-inputs register-form-inputs">
-            
-            <mat-form-field class="form-container-input register-form-container-input" appearance="fill">
+            <mat-form-field
+              class="form-container-input register-form-container-input"
+              appearance="fill"
+            >
               <mat-label>Email</mat-label>
               <input
                 matInput
@@ -92,7 +97,10 @@
                 placeholder="Enter your email"
               />
               <mat-error
-                *ngIf="registerEmail?.invalid && (registerEmail?.dirty || registerEmail?.touched)"
+                *ngIf="
+                  registerEmail?.invalid &&
+                  (registerEmail?.dirty || registerEmail?.touched)
+                "
               >
                 <span *ngIf="registerEmail?.errors?.['required']"
                   >Email is required</span
@@ -102,8 +110,11 @@
                 >
               </mat-error>
             </mat-form-field>
-            
-            <mat-form-field class="form-container-input register-form-container-input" appearance="fill">
+
+            <mat-form-field
+              class="form-container-input register-form-container-input"
+              appearance="fill"
+            >
               <mat-label>First name</mat-label>
               <input
                 matInput
@@ -111,7 +122,9 @@
                 placeholder="Enter your first name"
               />
               <mat-error
-                *ngIf="firstName?.invalid && (firstName?.dirty || firstName?.touched)"
+                *ngIf="
+                  firstName?.invalid && (firstName?.dirty || firstName?.touched)
+                "
               >
                 <span *ngIf="firstName?.errors?.['required']"
                   >First name is required</span
@@ -119,7 +132,10 @@
               </mat-error>
             </mat-form-field>
 
-            <mat-form-field class="form-container-input register-form-container-input" appearance="fill">
+            <mat-form-field
+              class="form-container-input register-form-container-input"
+              appearance="fill"
+            >
               <mat-label>Last name</mat-label>
               <input
                 matInput
@@ -127,7 +143,9 @@
                 placeholder="Enter your last name"
               />
               <mat-error
-                *ngIf="lastName?.invalid && (lastName?.dirty || lastName?.touched)"
+                *ngIf="
+                  lastName?.invalid && (lastName?.dirty || lastName?.touched)
+                "
               >
                 <span *ngIf="lastName?.errors?.['required']"
                   >Last name is required</span
@@ -136,14 +154,27 @@
             </mat-form-field>
 
             <div class="register-form-combined-inputs">
-              <mat-form-field class="form-container-input form-container-combined-input  register-form-container-input" appearance="fill">
+              <mat-form-field
+                class="form-container-input form-container-combined-input register-form-container-input"
+                appearance="fill"
+              >
                 <mat-label>Dorm name</mat-label>
-                <mat-select formControlName="dormName">
-                  <mat-option value="dorm">{{ 1 }}</mat-option>
+                <mat-select
+                  (selectionChange)="onDormSelected()"
+                  formControlName="dormName"
+                >
+                  <mat-option
+                    *ngFor="let dormName of dormsNames"
+                    [value]="dormName"
+                    >{{ dormName }}</mat-option
+                  >
                 </mat-select>
               </mat-form-field>
-  
-              <mat-form-field class="form-container-input form-container-combined-input register-form-container-input" appearance="fill">
+
+              <mat-form-field
+                class="form-container-input form-container-combined-input register-form-container-input"
+                appearance="fill"
+              >
                 <mat-label>Room number</mat-label>
                 <input
                   matInput
@@ -152,19 +183,25 @@
                   placeholder="Enter room number"
                 />
                 <mat-error
-                  *ngIf="roomNumber?.invalid && (roomNumber?.dirty || roomNumber?.touched)"
+                  *ngIf="
+                    roomNumber?.invalid &&
+                    (roomNumber?.dirty || roomNumber?.touched)
+                  "
                 >
                   <span *ngIf="roomNumber?.errors?.['required']"
                     >Room number is required</span
                   >
-                  <span *ngIf="roomNumber?.errors?.['min']"
+                  <span *ngIf="roomNumber?.errors?.['invalidRoomNumber']"
                     >Invalid room number</span
                   >
                 </mat-error>
               </mat-form-field>
             </div>
 
-            <mat-form-field class="form-container-input register-form-container-input" appearance="fill">
+            <mat-form-field
+              class="form-container-input register-form-container-input"
+              appearance="fill"
+            >
               <mat-label>Matriculation number</mat-label>
               <input
                 matInput
@@ -172,7 +209,10 @@
                 placeholder="Enter your matriculation number"
               />
               <mat-error
-                *ngIf="matriculationNumber?.invalid && (matriculationNumber?.dirty || matriculationNumber?.touched)"
+                *ngIf="
+                  matriculationNumber?.invalid &&
+                  (matriculationNumber?.dirty || matriculationNumber?.touched)
+                "
               >
                 <span *ngIf="matriculationNumber?.errors?.['required']"
                   >Matriculation number is required</span
@@ -183,7 +223,10 @@
               </mat-error>
             </mat-form-field>
 
-            <mat-form-field class="form-container-input register-form-container-input" appearance="fill">
+            <mat-form-field
+              class="form-container-input register-form-container-input"
+              appearance="fill"
+            >
               <mat-label>Phone number</mat-label>
               <input
                 matInput
@@ -191,7 +234,10 @@
                 placeholder="Enter your phone number"
               />
               <mat-error
-                *ngIf="phoneNumber?.invalid && (phoneNumber?.dirty || phoneNumber?.touched)"
+                *ngIf="
+                  phoneNumber?.invalid &&
+                  (phoneNumber?.dirty || phoneNumber?.touched)
+                "
               >
                 <span *ngIf="phoneNumber?.errors?.['required']"
                   >Phone number is required</span
@@ -201,7 +247,6 @@
                 >
               </mat-error>
             </mat-form-field>
-
           </div>
           <div class="register-form-actions">
             <button
@@ -210,21 +255,27 @@
               color="primary"
               type="submit"
             >
-              Sign 
+              Sign
             </button>
           </div>
         </form>
       </div>
     </div>
-  <div class="login-panel-slider" [ngClass]="{'showLogin': showLogin, 'showRegister': !showLogin}">
-    
-    <div class="login-panel-slider-header">
-
-      </div>
+    <div
+      class="login-panel-slider"
+      [ngClass]="{ showLogin: showLogin, showRegister: !showLogin }"
+    >
+      <div class="login-panel-slider-header"></div>
       <div class="login-panel-slider-content">
         <div class="login-panel-slider-content-text">
-          <h1 class="login-panel-slider-text1">{{ showLogin ? 'Welcome to Login!' : 'Welcome to UVTDorms' }} </h1>
-          <h1 class="login-panel-slider-text2">{{ showLogin ? 'Don \'t have an account?' : 'Already have an account?'}}</h1>
+          <h1 class="login-panel-slider-text1">
+            {{ showLogin ? "Welcome to Login!" : "Welcome to UVTDorms" }}
+          </h1>
+          <h1 class="login-panel-slider-text2">
+            {{
+              showLogin ? "Don 't have an account?" : "Already have an account?"
+            }}
+          </h1>
         </div>
         <div class="login-panel-slider-content-actions">
           <button
@@ -234,9 +285,8 @@
             color="primary"
             type="submit"
           >
-            {{showLogin ? 'Sign up' : 'Login'}}
+            {{ showLogin ? "Sign up" : "Login" }}
           </button>
-
         </div>
       </div>
     </div>

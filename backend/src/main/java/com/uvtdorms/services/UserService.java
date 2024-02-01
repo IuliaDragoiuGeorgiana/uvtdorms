@@ -6,6 +6,7 @@ import java.util.Optional;
 import com.uvtdorms.exception.AppException;
 import com.uvtdorms.repository.dto.TokenDto;
 import com.uvtdorms.repository.dto.request.CredentialsDto;
+
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -26,32 +27,27 @@ public class UserService implements IUserService {
     private final ModelMapper modelMapper;
 
     @Override
-    public EmailDto getTestUser() throws Exception
-    {
+    public EmailDto getTestUser() throws Exception {
         Optional<User> user = userRepository.getByEmail("iulia.dragoiu02@e-uvt.ro");
-        if(user.isEmpty())
-        {
+        if (user.isEmpty()) {
             throw new UserNotFoundException();
         }
 
         return modelMapper.map(user, EmailDto.class);
     }
 
-    public TokenDto login(CredentialsDto credentialsDto)
-    {
+    public TokenDto login(CredentialsDto credentialsDto) {
         User user = userRepository.getByEmail(credentialsDto.email())
                 .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
 
-        if(passwordEncoder.matches(CharBuffer.wrap(credentialsDto.password()), user.getPassword()))
-        {
+        if (passwordEncoder.matches(CharBuffer.wrap(credentialsDto.password()), user.getPassword())) {
             return modelMapper.map(user, TokenDto.class);
         }
         throw new AppException("Invalid password", HttpStatus.BAD_REQUEST);
     }
 
-    public TokenDto verifyToken(TokenDto token)
-    {
-        User user = userRepository.getByEmail(token.getEmail())
+    public TokenDto verifyToken(TokenDto token) {
+        userRepository.getByEmail(token.getEmail())
                 .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
 
         return token;

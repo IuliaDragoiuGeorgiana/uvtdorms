@@ -16,7 +16,6 @@ import java.util.UUID;
 @Entity
 @Table(name = "students_details")
 public class StudentDetails {
-    private String cnp;
     private String matriculationNumber;
 
     @Id
@@ -35,8 +34,7 @@ public class StudentDetails {
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     private List<LaundryAppointment> laundryAppointments;
 
-    public StudentDetails(String cnp, String matriculationNumber, User user, Room room) {
-        this.cnp = cnp;
+    public StudentDetails(String matriculationNumber, User user, Room room) {
         this.matriculationNumber = matriculationNumber;
         this.user = user;
         this.room = room;

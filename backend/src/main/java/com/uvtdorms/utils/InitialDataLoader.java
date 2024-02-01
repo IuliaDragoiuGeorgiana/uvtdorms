@@ -23,21 +23,21 @@ public class InitialDataLoader implements CommandLineRunner {
     private final IDormRepository dormRepository;
     // private final IAnnouncementRepository announcementRepository;
     private final IDryerRepository dryerRepository;
-    // private  final IRepairTicketRepository repairTicketRepository;
+    // private final IRepairTicketRepository repairTicketRepository;
     private final IRoomRepository roomRepository;
     private final IStudentDetailsRepository studentDetailsRepository;
     private final IUserRepository userRepository;
-    // private final   IUserRolesRepository userRolesRepository;
+    // private final IUserRolesRepository userRolesRepository;
     private final IWashingMachineRepository washingMachineRepository;
     private final IDormAdministratorDetails dormAdministratorDetails;
     private final PasswordEncoder passwordEncoder;
 
     private List<String> dormsNamesList = Arrays.asList("C13", "C12");
-    private List<String> roomsNamesList = Arrays.asList("127","128");
+    private List<String> roomsNamesList = Arrays.asList("127", "128");
 
-    private void initializeDorms(){
-        List<String> adressesNamesList= Arrays.asList("F.C. Ripesnsia", "Studentilor");
-        for(int i=0;i<dormsNamesList.size();i++){
+    private void initializeDorms() {
+        List<String> adressesNamesList = Arrays.asList("F.C. Ripesnsia", "Studentilor");
+        for (int i = 0; i < dormsNamesList.size(); i++) {
             Dorm dorm = new Dorm();
             dorm.setDormName(dormsNamesList.get(i));
             dorm.setAddress(adressesNamesList.get(i));
@@ -45,80 +45,75 @@ public class InitialDataLoader implements CommandLineRunner {
         }
     }
 
-    private void initializeRooms(){
-        for(int i=0;i<roomsNamesList.size();i++)
-        {
-            Optional<Dorm> dorm=dormRepository.getByDormName(dormsNamesList.get(i));
-            if(dorm.isPresent()){
-                Room room= new Room();
-                room.setRoomNumber(roomsNamesList.get(i));
-                room.setDorm(dorm.get());
-                roomRepository.save(room);
-            }
+    private void initializeRooms() {
+        for (int i = 0; i < roomsNamesList.size(); i++) {
+            Dorm dorm = dormRepository.getByDormName(dormsNamesList.get(i));
+            Room room = new Room();
+            room.setRoomNumber(roomsNamesList.get(i));
+            room.setDorm(dorm);
+            roomRepository.save(room);
         }
     }
 
-    private void initializeStudents(){
-        Optional<Room> room =roomRepository.getRoomByRoomNumber(roomsNamesList.get(0));
-        if(room.isPresent()){
-            User user = new User("Iulia","Dragoiu","iulia.dragoiu02@e-uvt.ro","0729616799",passwordEncoder.encode("iuliad"), Role.STUDENT,Boolean.TRUE);
+    private void initializeStudents() {
+        Optional<Room> room = roomRepository.getRoomByRoomNumber(roomsNamesList.get(0));
+        if (room.isPresent()) {
+            User user = new User("Iulia", "Dragoiu", "iulia.dragoiu02@e-uvt.ro", "0729616799",
+                    passwordEncoder.encode("iuliad"), Role.STUDENT, Boolean.TRUE);
             userRepository.save(user);
-            StudentDetails student=new StudentDetails("6020416203228","I3183",user,room.get());
+            StudentDetails student = new StudentDetails("I3183", user, room.get());
             studentDetailsRepository.save(student);
         }
     }
 
-    private void initializeDormsAdministrators(){
-        Optional<Dorm> dorm= dormRepository.getByDormName(dormsNamesList.get(0));
-        if(dorm.isPresent()){
-            User user= new User("Iulia123","Dragoiu123","iulia.dragiu02123@e-uvt.ro","07295540479", passwordEncoder.encode("iuliad123"), Role.ADMINISTRATOR,Boolean.TRUE);
-            userRepository.save(user);
-            System.out.println(dorm);
-            DormAdministratorDetails administrator = new DormAdministratorDetails(user,dorm.get());
-            dormAdministratorDetails.save(administrator);
-        }
+    private void initializeDormsAdministrators() {
+        Dorm dorm = dormRepository.getByDormName(dormsNamesList.get(0));
+
+        User user = new User("Iulia123", "Dragoiu123", "iulia.dragiu02123@e-uvt.ro", "07295540479",
+                passwordEncoder.encode("iuliad123"), Role.ADMINISTRATOR, Boolean.TRUE);
+        userRepository.save(user);
+        DormAdministratorDetails administrator = new DormAdministratorDetails(user, dorm);
+        dormAdministratorDetails.save(administrator);
+
     }
 
-    private void initializeMachinesAndDryers(){
+    private void initializeMachinesAndDryers() {
         List<String> washingMachinesNames = Arrays.asList("Machine1", "Machine2");
         List<String> dryersNames = Arrays.asList("Dryer1", "Dryer2");
-        for(String dormsName:dormsNamesList) {
-            Optional<Dorm> dorm= dormRepository.getByDormName(dormsName);
-            if(dorm.isPresent()){
-                for(String washingMachineName:washingMachinesNames){
-                    WashingMachine washingMachine=new WashingMachine(washingMachineName,dorm.get(), StatusMachine.FUNCTIONAL);
-                    washingMachineRepository.save(washingMachine);
-                }
-                for(String dryerName:dryersNames){
-                    Dryer dryer=new Dryer(dryerName,dorm.get(),StatusMachine.FUNCTIONAL);
-                    dryerRepository.save(dryer);
-                }
+        for (String dormsName : dormsNamesList) {
+            Dorm dorm = dormRepository.getByDormName(dormsName);
+            for (String washingMachineName : washingMachinesNames) {
+                WashingMachine washingMachine = new WashingMachine(washingMachineName, dorm, StatusMachine.FUNCTIONAL);
+                washingMachineRepository.save(washingMachine);
+            }
+            for (String dryerName : dryersNames) {
+                Dryer dryer = new Dryer(dryerName, dorm, StatusMachine.FUNCTIONAL);
+                dryerRepository.save(dryer);
             }
         }
-        Optional<Dorm> dorm=dormRepository.getByDormName("C12");
-        if(dorm.isPresent()){
-             WashingMachine washingMachine=new WashingMachine("Machine3",dorm.get(),StatusMachine.FUNCTIONAL);
-             washingMachineRepository.save(washingMachine);
-        }
+        Dorm dorm = dormRepository.getByDormName("C12");
+        WashingMachine washingMachine = new WashingMachine("Machine3", dorm, StatusMachine.FUNCTIONAL);
+        washingMachineRepository.save(washingMachine);
     }
 
-    private void initializeAppointments(){
+    private void initializeAppointments() {
         Optional<User> user = userRepository.getByEmail("iulia.dragoiu02@e-uvt.ro");
-        if(user.isEmpty()) return;
+        if (user.isEmpty())
+            return;
 
         Optional<StudentDetails> student = studentDetailsRepository.findByUser(user.get());
-        if(student.isEmpty()) return;
+        if (student.isEmpty())
+            return;
 
-        Optional<Dorm> dorm = dormRepository.getByDormName(dormsNamesList.get(0));
-        if(dorm.isEmpty()) return;
+        Dorm dorm = dormRepository.getByDormName(dormsNamesList.get(0));
 
-        List<WashingMachine> washingMachines = washingMachineRepository.findByDorm(dorm.get());
-        List<Dryer> dryers = dryerRepository.findByDorm(dorm.get());
+        List<WashingMachine> washingMachines = washingMachineRepository.findByDorm(dorm);
+        List<Dryer> dryers = dryerRepository.findByDorm(dorm);
 
-        for(int i = 0; i < washingMachines.size() && i < dryers.size(); i++)
-        {
-            LocalDateTime intervalBeginDate = LocalDate.now().plusDays(1).atTime(8,0);
-            LaundryAppointment laundryAppointment = new LaundryAppointment(intervalBeginDate, student.get(), washingMachines.get(i), dryers.get(i));
+        for (int i = 0; i < washingMachines.size() && i < dryers.size(); i++) {
+            LocalDateTime intervalBeginDate = LocalDate.now().plusDays(1).atTime(8, 0);
+            LaundryAppointment laundryAppointment = new LaundryAppointment(intervalBeginDate, student.get(),
+                    washingMachines.get(i), dryers.get(i));
             laundryAppointmentRepository.save(laundryAppointment);
         }
     }

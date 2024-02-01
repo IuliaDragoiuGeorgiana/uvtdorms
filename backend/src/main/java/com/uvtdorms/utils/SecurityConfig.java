@@ -17,16 +17,18 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 public class SecurityConfig {
 
     private final UserAuthProvider userAuthProvider;
+
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception
-    {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .addFilterBefore(new JwtAuthFilter(userAuthProvider), BasicAuthenticationFilter.class)
                 .sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests((requests) ->
-                        requests.requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
-                                .anyRequest().authenticated()
-                );
+                .authorizeHttpRequests((requests) -> requests.requestMatchers(HttpMethod.POST, "/api/auth/login")
+                        .permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/dorms/dorms-names").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/auth/register-student").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/rooms/get-rooms-numbers-from-dorm/**").permitAll()
+                        .anyRequest().authenticated());
         return http.build();
     }
 }

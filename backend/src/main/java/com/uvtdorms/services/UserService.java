@@ -4,7 +4,7 @@ import java.nio.CharBuffer;
 import java.util.Optional;
 
 import com.uvtdorms.exception.AppException;
-import com.uvtdorms.repository.dto.UserDto;
+import com.uvtdorms.repository.dto.TokenDto;
 import com.uvtdorms.repository.dto.request.CredentialsDto;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -37,24 +37,23 @@ public class UserService implements IUserService {
         return modelMapper.map(user, EmailDto.class);
     }
 
-    public UserDto login(CredentialsDto credentialsDto)
+    public TokenDto login(CredentialsDto credentialsDto)
     {
         User user = userRepository.getByEmail(credentialsDto.email())
                 .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
 
         if(passwordEncoder.matches(CharBuffer.wrap(credentialsDto.password()), user.getPassword()))
         {
-            return modelMapper.map(user, UserDto.class);
+            return modelMapper.map(user, TokenDto.class);
         }
         throw new AppException("Invalid password", HttpStatus.BAD_REQUEST);
     }
-    public UserDto verifyUserDto(UserDto userDto)
-    {
-        User user = userRepository.getByEmail(userDto.getEmail())
-                .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
-        if(user.getRole()!=userDto.getRole())
-            throw new AppException("roll changed", HttpStatus.BAD_REQUEST);
-    return userDto;
 
+    public TokenDto verifyToken(TokenDto token)
+    {
+        User user = userRepository.getByEmail(token.getEmail())
+                .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
+
+        return token;
     }
 }

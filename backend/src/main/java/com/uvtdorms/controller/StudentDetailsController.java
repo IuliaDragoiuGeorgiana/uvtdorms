@@ -1,6 +1,6 @@
 package com.uvtdorms.controller;
 
-import com.uvtdorms.repository.dto.UserDto;
+import com.uvtdorms.repository.dto.TokenDto;
 import com.uvtdorms.repository.dto.response.DormIdDto;
 import com.uvtdorms.services.StudentDetailsService;
 
@@ -16,14 +16,13 @@ public class StudentDetailsController {
 
     StudentDetailsService studentDetailsService;
 
-
     public StudentDetailsController(StudentDetailsService studentDetailsService) {
         this.studentDetailsService = studentDetailsService;
     }
 
     @GetMapping("/get-student-dorm-id")
     public ResponseEntity<DormIdDto> getStudentDormId(Authentication authentication) {
-        UserDto user = (UserDto) authentication.getPrincipal();
+        TokenDto user = (TokenDto) authentication.getPrincipal();
         DormIdDto dormId = studentDetailsService.getStudentDormId(user.getEmail());
 
         return ResponseEntity.ok(dormId);

@@ -6,7 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.uvtdorms.exception.AppException;
 import com.uvtdorms.repository.IUserRepository;
-import com.uvtdorms.repository.dto.UserDto;
+import com.uvtdorms.repository.dto.TokenDto;
 import com.uvtdorms.repository.entity.User;
 import com.uvtdorms.repository.entity.enums.Role;
 import jakarta.annotation.PostConstruct;
@@ -39,7 +39,7 @@ public class UserAuthProvider {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    public String createToken(UserDto dto)
+    public String createToken(TokenDto dto)
     {
         Date now = new Date();
         Date validity = new Date(now.getTime() + 3_600_000);
@@ -60,7 +60,7 @@ public class UserAuthProvider {
 
         DecodedJWT decoded = verifier.verify(token);
 
-        UserDto user = UserDto.builder()
+        TokenDto user = TokenDto.builder()
                 .email(decoded.getIssuer())
                 .role(Role.valueOf(decoded.getClaim("role").asString()))
                 .build();
@@ -79,6 +79,6 @@ public class UserAuthProvider {
         User user = userRepository.getByEmail(decoded.getIssuer())
                 .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
 
-        return new UsernamePasswordAuthenticationToken(modelMapper.map(user, UserDto.class), null, Collections.emptyList());    
+        return new UsernamePasswordAuthenticationToken(modelMapper.map(user, TokenDto.class), null, Collections.emptyList());
     }
 }

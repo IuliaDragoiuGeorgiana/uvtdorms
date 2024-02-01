@@ -6,16 +6,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserDto {
-    private UUID id;
-    private String firstName;
-    private String lastName;
+public class TokenDto {
     private String email;
     private String token;
     private Role role;

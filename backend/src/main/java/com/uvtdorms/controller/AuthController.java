@@ -1,6 +1,6 @@
 package com.uvtdorms.controller;
 
-import com.uvtdorms.repository.dto.UserDto;
+import com.uvtdorms.repository.dto.TokenDto;
 import com.uvtdorms.repository.dto.request.CredentialsDto;
 import com.uvtdorms.services.UserService;
 import com.uvtdorms.utils.UserAuthProvider;
@@ -18,16 +18,17 @@ public class AuthController
     private final UserAuthProvider userAuthProvider;
 
     @PostMapping("/login")
-    public ResponseEntity<UserDto> login(@RequestBody CredentialsDto credentialsDto){
-        UserDto userDto = userService.login(credentialsDto);
-        userDto.setToken(userAuthProvider.createToken(userDto));
-        return ResponseEntity.ok(userDto);
+    public ResponseEntity<TokenDto> login(@RequestBody CredentialsDto credentialsDto){
+        TokenDto tokenDto = userService.login(credentialsDto);
+        tokenDto.setToken(userAuthProvider.createToken(tokenDto));
+        return ResponseEntity.ok(tokenDto);
     }
 
     @GetMapping("/login-with-token")
-    public ResponseEntity<UserDto> loginWithToken(Authentication authentication){
-        UserDto user = (UserDto) authentication.getPrincipal();
-        user = userService.verifyUserDto(user);
-        return ResponseEntity.ok(user);
+    public ResponseEntity<TokenDto> loginWithToken(Authentication authentication){
+        TokenDto token = (TokenDto) authentication.getPrincipal();
+        token = userService.verifyToken(token);
+        token.setToken(userAuthProvider.createToken(token));
+        return ResponseEntity.ok(token);
     }
 }

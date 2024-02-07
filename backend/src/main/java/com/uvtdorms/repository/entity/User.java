@@ -1,9 +1,9 @@
 package com.uvtdorms.repository.entity;
 
-
 import com.uvtdorms.repository.entity.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,6 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Builder
 @Table(name = "users")
 public class User {
     @Id
@@ -29,22 +30,8 @@ public class User {
     private String phoneNumber;
     private String password;
 
-    //Just for testing--InitialDataLoader
-    public User(String firstName, String lastName, String email, String phoneNumber, String password, Role role, Boolean isActive) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.password = password;
-        this.role = role;
-        this.isActive = isActive;
-    }
-
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private StudentDetails studentDetails;
-
-    // @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    // private List<LaundryAppointment> laundryAppointments;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<RepairTicket> repairTickets;
@@ -55,10 +42,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private  DormAdministratorDetails dormAdministratorDetails;
+    @OneToOne(mappedBy = "administrator", cascade = CascadeType.ALL)
+    private DormAdministratorDetails dormAdministratorDetails;
 
-    private  Boolean isActive;
-
-
+    private Boolean isActive;
 }

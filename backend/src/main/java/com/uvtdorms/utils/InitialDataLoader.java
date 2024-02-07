@@ -2,6 +2,7 @@ package com.uvtdorms.utils;
 
 import com.uvtdorms.repository.*;
 import com.uvtdorms.repository.entity.*;
+import com.uvtdorms.repository.entity.User.UserBuilder;
 import com.uvtdorms.repository.entity.enums.Role;
 import com.uvtdorms.repository.entity.enums.StatusMachine;
 import jakarta.transaction.Transactional;
@@ -29,7 +30,7 @@ public class InitialDataLoader implements CommandLineRunner {
     private final IUserRepository userRepository;
     // private final IUserRolesRepository userRolesRepository;
     private final IWashingMachineRepository washingMachineRepository;
-    private final IDormAdministratorDetails dormAdministratorDetails;
+    private final IDormAdministratorDetailsRepository dormAdministratorDetailsRepository;
     private final PasswordEncoder passwordEncoder;
 
     private List<String> dormsNamesList = Arrays.asList("C13", "C12");
@@ -58,8 +59,16 @@ public class InitialDataLoader implements CommandLineRunner {
     private void initializeStudents() {
         Optional<Room> room = roomRepository.getRoomByRoomNumber(roomsNamesList.get(0));
         if (room.isPresent()) {
-            User user = new User("Iulia", "Dragoiu", "iulia.dragoiu02@e-uvt.ro", "0729616799",
-                    passwordEncoder.encode("iuliad"), Role.STUDENT, Boolean.TRUE);
+            User user = User.builder()
+                    .firstName("Iulia")
+                    .lastName("Dragoiu")
+                    .email("iulia.dragoiu02@e-uvt.ro")
+                    .phoneNumber("0729616799")
+                    .password(passwordEncoder.encode("iuliad"))
+                    .role(Role.STUDENT)
+                    .isActive(true)
+                    .build();
+
             userRepository.save(user);
             StudentDetails student = new StudentDetails("I3183", user, room.get());
             studentDetailsRepository.save(student);
@@ -69,11 +78,20 @@ public class InitialDataLoader implements CommandLineRunner {
     private void initializeDormsAdministrators() {
         Dorm dorm = dormRepository.getByDormName(dormsNamesList.get(0));
 
-        User user = new User("Iulia123", "Dragoiu123", "iulia.dragiu02123@e-uvt.ro", "07295540479",
-                passwordEncoder.encode("iuliad123"), Role.ADMINISTRATOR, Boolean.TRUE);
+        User user = User.builder()
+                .firstName("Iulia123")
+                .lastName("Dragoiu123")
+                .email("iulia.dragoiu02123@e-uvt.ro")
+                .phoneNumber("07295540479")
+                .password(passwordEncoder.encode("iuliad123"))
+                .role(Role.ADMINISTRATOR)
+                .isActive(true)
+                .build();
+
         userRepository.save(user);
-        DormAdministratorDetails administrator = new DormAdministratorDetails(user, dorm);
-        dormAdministratorDetails.save(administrator);
+        DormAdministratorDetails administrator = DormAdministratorDetails.builder().administrator(user).dorm(dorm).build();
+
+        dormAdministratorDetailsRepository.save(administrator);
 
     }
 
@@ -118,9 +136,46 @@ public class InitialDataLoader implements CommandLineRunner {
         }
     }
 
-    @Transactional
+    private Dorm createDorm(String dormName, String address) {
+        Dorm dorm = Dorm.builder()
+                .dormName(dormName)
+                .address(address)
+                .build();
+
+        dormRepository.save(dorm);
+
+        return dorm;
+    }
+
+    private User createDormAdministrator(String firstName, String lastName, String email, String phoneNumber,
+            String password, Dorm dorm) {
+        User admin = User.builder()
+                .firstName(firstName)
+                .lastName(lastName)
+                .email(email)
+                .phoneNumber(phoneNumber)
+                .password(passwordEncoder.encode(password))
+                .role(Role.ADMINISTRATOR)
+                .isActive(true)
+                .build();
+
+        userRepository.save(admin);
+
+        DormAdministratorDetails dormAdministratorDetails = DormAdministratorDetails.builder()
+                .administrator(admin)
+                .dorm(dorm)
+                .build();
+
+        dormAdministratorDetailsRepository.save(dormAdministratorDetails);
+
+        return admin;
+    }
+
     @Override
+    @Transactional
     public void run(String... args) throws Exception {
+        Dorm dorm1 = createDorm("D13", "Street1");
+        User admin1 = createDormAdministrator("Tom", "Hanks", "tom.hanks@e-uvt.ro", "0712345678", "hello", dorm1);
         initializeDorms();
         initializeRooms();
         initializeStudents();

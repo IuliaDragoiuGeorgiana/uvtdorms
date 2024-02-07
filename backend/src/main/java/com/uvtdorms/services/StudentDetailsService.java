@@ -59,14 +59,17 @@ public class StudentDetailsService implements IStudentDetailsService {
                 Dorm dorm = dormRepository.getByDormName(registerStudentDto.dormName());
                 Room room = roomRepository.findByDormAndRoomNumber(dorm, registerStudentDto.roomNumber());
 
-                User user = new User(
-                                registerStudentDto.firtName(),
-                                registerStudentDto.lastName(),
-                                registerStudentDto.email(),
-                                registerStudentDto.phoneNumber(),
-                                passwordEncoder.encode(PasswordGenerator.generateRandomPassword()),
-                                Role.STUDENT,
-                                false);
+                String generatedPassword = PasswordGenerator.generateRandomPassword();
+
+                User user = User.builder()
+                                .firstName(registerStudentDto.firtName())
+                                .lastName(registerStudentDto.lastName())
+                                .email(registerStudentDto.email())
+                                .phoneNumber(registerStudentDto.email())
+                                .password(passwordEncoder.encode(generatedPassword))
+                                .role(Role.STUDENT)
+                                .isActive(false)
+                                .build();
 
                 userRepository.save(user);
 

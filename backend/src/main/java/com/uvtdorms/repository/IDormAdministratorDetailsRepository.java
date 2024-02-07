@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
 
-public interface IDormAdministratorDetails extends JpaRepository<DormAdministratorDetails, UUID> {
+public interface IDormAdministratorDetailsRepository extends JpaRepository<DormAdministratorDetails, UUID> {
 }

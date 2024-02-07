@@ -7,5 +7,5 @@ import com.uvtdorms.repository.dto.request.FreeIntervalDto;
 
 public interface ILaundryAppointmentService {
     public void createLaundryAppointment(CreateLaundryAppointmentDto createLaundryAppointmentDto) throws Exception;
-    public List<Integer> getFreeIntervalsForCreatingAppointment(FreeIntervalDto freeIntervalDto) throws Exception;
+    public List<Integer> getFreeIntervalsForCreatingAppointment(FreeIntervalDto freeIntervalDto);
 }

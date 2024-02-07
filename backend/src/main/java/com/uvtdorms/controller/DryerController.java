@@ -1,8 +1,11 @@
 package com.uvtdorms.controller;
 
+import com.uvtdorms.repository.dto.response.DryerDto;
 import com.uvtdorms.services.DryerService;
 
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +20,7 @@ public class DryerController {
     private final DryerService dryerService;
 
     @GetMapping("/get-dryer-from-dorm/{dormId}")
-    public ResponseEntity<?> getDyerFromDorm(@PathVariable("dormId") String dormId) {
+    public ResponseEntity<List<DryerDto>> getDyerFromDorm(@PathVariable("dormId") String dormId) {
         return ResponseEntity.ok(this.dryerService.getDryerFromDorm(dormId));
     }
 }

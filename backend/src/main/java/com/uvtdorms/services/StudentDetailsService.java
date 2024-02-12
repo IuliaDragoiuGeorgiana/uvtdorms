@@ -29,6 +29,7 @@ public class StudentDetailsService implements IStudentDetailsService {
         private final IRoomRepository roomRepository;
         private final IDormRepository dormRepository;
         private final PasswordEncoder passwordEncoder;
+        private final EmailService emailService;
 
         @Override
         public DormIdDto getStudentDormId(String email) throws AppException {
@@ -85,5 +86,8 @@ public class StudentDetailsService implements IStudentDetailsService {
 
                 room.getStudentDetails().add(student);
                 roomRepository.save(room);
+
+                emailService.sendPassword(user.getEmail(), "Register confirm",
+                                user.getFirstName() + " " + user.getLastName(), generatedPassword);
         }
 }

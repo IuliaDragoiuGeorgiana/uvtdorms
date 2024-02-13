@@ -49,4 +49,27 @@ public class EmailService {
             throw new RuntimeException(e);
         }
     }
+
+    public void sendRegisterConfirm(String to, String name) {
+        String  subject = "Confirm registration request";
+        Context context = new Context();
+        context.setVariable("subject", subject);
+        context.setVariable("name", name);
+         String htmlContent = templateEngine.process("confirm-register-request.html", context);
+
+        try {
+            MimeMessage mimeMessage = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage,
+                    MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
+                    StandardCharsets.UTF_8.name());
+
+            helper.setTo(to);
+            helper.setSubject(subject);
+            helper.setText(htmlContent, true);
+
+            mailSender.send(mimeMessage);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

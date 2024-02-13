@@ -37,7 +37,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         String requestURI = request.getRequestURI();
 
-        // Check if the request URI is in the list of public endpoints
         boolean isPublicEndpoint = publicEndpoints.stream().anyMatch(uri -> pathMatcher.match(uri, requestURI));
 
         if (!isPublicEndpoint) {
@@ -46,7 +45,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 String[] authElements = header.split(" ");
                 if (authElements.length == 2 && "Bearer".equals(authElements[0])) {
                     try {
-                        // Authenticate based on the request method
                         if ("GET".equals(request.getMethod())) {
                             SecurityContextHolder.getContext()
                                     .setAuthentication(userAuthProvider.validateToken(authElements[1]));

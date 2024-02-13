@@ -86,8 +86,6 @@ public class StudentDetailsService implements IStudentDetailsService {
 
                 room.getStudentDetails().add(student);
                 roomRepository.save(room);
-
-                emailService.sendPassword(user.getEmail(), "Register confirm",
-                                user.getFirstName() + " " + user.getLastName(), generatedPassword);
+                emailService.sendRegisterConfirm(user.getEmail(), user.getFirstName() + " " + user.getLastName());
         }
 }

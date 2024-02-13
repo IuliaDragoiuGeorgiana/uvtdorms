@@ -40,6 +40,7 @@ import {
 } from '@angular/material/dialog';
 import { RegisterErrorDialogComponent } from './elements/dialogs/register/register-error-dialog/register-error-dialog.component';
 import { RegisterConfirmDialogComponent } from './elements/dialogs/register/register-confirm-dialog/register-confirm-dialog.component';
+import { StudentsAdministationPageComponent } from './students-administation-page/students-administation-page.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { RegisterConfirmDialogComponent } from './elements/dialogs/register/regi
     UserAdministrationPageComponent,
     RegisterErrorDialogComponent,
     RegisterConfirmDialogComponent,
+    StudentsAdministationPageComponent,
   ],
   imports: [
     BrowserModule,

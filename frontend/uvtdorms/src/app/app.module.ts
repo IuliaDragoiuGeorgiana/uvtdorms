@@ -30,7 +30,6 @@ import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
 import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
-import { UserAdministrationPageComponent } from './pages/user-administration-page/user-administration-page.component';
 
 import {
   MatDialogTitle,
@@ -40,8 +39,10 @@ import {
 } from '@angular/material/dialog';
 import { RegisterErrorDialogComponent } from './elements/dialogs/register/register-error-dialog/register-error-dialog.component';
 import { RegisterConfirmDialogComponent } from './elements/dialogs/register/register-confirm-dialog/register-confirm-dialog.component';
-import { StudentsAdministationPageComponent } from './students-administation-page/students-administation-page.component';
-
+import { RegisterRequestDetailsPopupComponent } from './elements/dialogs/studentsAdministration/register-request-details-popup/register-request-details-popup.component';
+import { StudentsAdministationPageComponent } from './pages/students-administation-page/students-administation-page.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
 @NgModule({
   declarations: [
     AppComponent,
@@ -50,10 +51,10 @@ import { StudentsAdministationPageComponent } from './students-administation-pag
     LoginPageComponent,
     ProfilePageComponent,
     NotFoundPageComponent,
-    UserAdministrationPageComponent,
     RegisterErrorDialogComponent,
     RegisterConfirmDialogComponent,
     StudentsAdministationPageComponent,
+    RegisterRequestDetailsPopupComponent,
   ],
   imports: [
     BrowserModule,
@@ -81,6 +82,8 @@ import { StudentsAdministationPageComponent } from './students-administation-pag
     MatDialogContent,
     MatDialogActions,
     MatDialogClose,
+    MatTableModule,
+    MatPaginatorModule,
   ],
   providers: [provideHttpClient(withFetch())],
   bootstrap: [AppComponent],

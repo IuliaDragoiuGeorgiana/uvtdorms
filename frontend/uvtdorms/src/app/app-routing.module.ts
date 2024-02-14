@@ -4,12 +4,14 @@ import { LaundryAppointmentsPageComponent } from './pages/laundry-appointments-p
 import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
 import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
+import { StudentsAdministationPageComponent } from './pages/students-administation-page/students-administation-page.component';
 
 const routes: Routes = [
   {path: 'laundry-appointments', component: LaundryAppointmentsPageComponent},
   {path: 'login', component: LoginPageComponent},
   {path: 'profile', component: ProfilePageComponent},
   {path: 'not-found', component: NotFoundPageComponent},
+  {path: 'students-administration', component: StudentsAdministationPageComponent},
 
   {path: '', redirectTo: '/login', pathMatch: 'full'}
 ];

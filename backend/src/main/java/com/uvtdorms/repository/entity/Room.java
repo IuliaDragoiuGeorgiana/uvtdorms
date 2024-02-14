@@ -27,4 +27,7 @@ public class Room {
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
     private List<StudentDetails> studentDetails;
+
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
+    private List<RegisterRequest> roomRegisterRequests;
 }

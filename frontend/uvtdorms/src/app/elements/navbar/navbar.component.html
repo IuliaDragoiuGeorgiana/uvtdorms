@@ -10,6 +10,9 @@
         <button routerLink="/laundry-appointments" routerLinkActive="active" class="navbar-button" *ngIf="isStudent()">
             Appointments
         </button> 
+        <button routerLink="/students-administration" routerLinkActive="active" class="navbar-button" *ngIf="isDormAdmistrator()">
+         Students
+      </button> 
     </div>
     <div class="right-wing">
         
@@ -25,6 +28,7 @@
               <mat-icon>exit_to_app</mat-icon>
               <span>Log out</span>
             </button>
+  
           </mat-menu>
     </div>
 </mat-toolbar>

@@ -161,7 +161,7 @@ export class LoginPageComponent {
   convertRegisterFormToRegisterStudentDto(): RegisterStudentDto {
     let registerStudentDto: RegisterStudentDto = {
       email: this.registerEmail?.value!,
-      firtName: this.firstName?.value!,
+      firstName: this.firstName?.value!,
       lastName: this.lastName?.value!,
       dormName: this.registerForm.get('dormName')?.value!,
       roomNumber: this.roomNumber?.value!,

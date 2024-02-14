@@ -2,8 +2,10 @@ package com.uvtdorms.utils;
 
 import com.uvtdorms.repository.dto.response.DryerDto;
 import com.uvtdorms.repository.dto.response.EmailDto;
+import com.uvtdorms.repository.dto.response.RegisterRequestDto;
 import com.uvtdorms.repository.dto.response.WashingMachineDto;
 import com.uvtdorms.repository.entity.Dryer;
+import com.uvtdorms.repository.entity.RegisterRequest;
 import com.uvtdorms.repository.entity.User;
 import com.uvtdorms.repository.entity.WashingMachine;
 import com.uvtdorms.repository.entity.enums.StatusMachine;
@@ -13,7 +15,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
-
 
 import java.util.UUID;
 
@@ -58,6 +59,20 @@ public class MapperConfig {
             @Override
             protected void configure() {
                 map(source.getEmail(), destination.getEmail());
+            }
+        });
+
+        modelMapper.addMappings(new PropertyMap<RegisterRequest,RegisterRequestDto>() {
+            @Override
+            protected void configure() {
+                map(source.getStudent().getUser().getFirstName(), destination.getFirstName());
+                map(source.getStudent().getUser().getLastName(), destination.getLastName());
+                map(source.getStudent().getUser().getEmail(), destination.getEmail());
+                map(source.getStudent().getUser().getPhoneNumber(), destination.getPhoneNumber());
+                map(source.getRoom().getDorm().getDormName(), destination.getDormName());
+                map(source.getRoom().getRoomNumber(), destination.getRoomNumber());
+                map(source.getStudent().getMatriculationNumber(), destination.getMatriculationNumber());
+                map(source.getStatus(), destination.getStatus());
             }
         });
 

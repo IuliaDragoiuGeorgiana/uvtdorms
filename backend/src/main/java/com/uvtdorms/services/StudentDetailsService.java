@@ -2,20 +2,26 @@ package com.uvtdorms.services;
 
 import com.uvtdorms.exception.AppException;
 import com.uvtdorms.repository.IDormRepository;
+import com.uvtdorms.repository.IRegisterRequestRepository;
 import com.uvtdorms.repository.IRoomRepository;
 import com.uvtdorms.repository.IStudentDetailsRepository;
 import com.uvtdorms.repository.IUserRepository;
 import com.uvtdorms.repository.dto.request.RegisterStudentDto;
 import com.uvtdorms.repository.dto.response.DormIdDto;
 import com.uvtdorms.repository.entity.Dorm;
+import com.uvtdorms.repository.entity.RegisterRequest;
 import com.uvtdorms.repository.entity.Room;
 import com.uvtdorms.repository.entity.StudentDetails;
 import com.uvtdorms.repository.entity.User;
+import com.uvtdorms.repository.entity.enums.RegisterRequestStatus;
 import com.uvtdorms.repository.entity.enums.Role;
 import com.uvtdorms.services.interfaces.IStudentDetailsService;
 import com.uvtdorms.utils.PasswordGenerator;
 
 import lombok.RequiredArgsConstructor;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,6 +34,7 @@ public class StudentDetailsService implements IStudentDetailsService {
         private final IUserRepository userRepository;
         private final IRoomRepository roomRepository;
         private final IDormRepository dormRepository;
+        private final IRegisterRequestRepository registerRequestRepository;
         private final PasswordEncoder passwordEncoder;
         private final EmailService emailService;
 
@@ -63,7 +70,7 @@ public class StudentDetailsService implements IStudentDetailsService {
                 String generatedPassword = PasswordGenerator.generateRandomPassword();
 
                 User user = User.builder()
-                                .firstName(registerStudentDto.firtName())
+                                .firstName(registerStudentDto.firstName())
                                 .lastName(registerStudentDto.lastName())
                                 .email(registerStudentDto.email())
                                 .phoneNumber(registerStudentDto.email())
@@ -74,12 +81,29 @@ public class StudentDetailsService implements IStudentDetailsService {
 
                 userRepository.save(user);
 
-                StudentDetails student = new StudentDetails(
-                                registerStudentDto.matriculationNumber(),
-                                user,
-                                room);
+                StudentDetails student = StudentDetails.builder()
+                                .matriculationNumber(registerStudentDto.matriculationNumber())
+                                .user(user)
+                                .room(null)
+                                .studentRegisterRequests(new ArrayList<>())
+                                .build();
 
                 studentDetailsRepository.save(student);
+
+                RegisterRequest registerRequest = RegisterRequest.builder()
+                                .student(student)
+                                .room(room)
+                                .createdOn(LocalDateTime.now())
+                                .status(RegisterRequestStatus.RECEIVED)
+                                .build();
+
+                registerRequestRepository.save(registerRequest);
+
+                student.getStudentRegisterRequests().add(registerRequest);
+                studentDetailsRepository.save(student);
+
+                room.getRoomRegisterRequests().add(registerRequest);
+                roomRepository.save(room);
 
                 user.setStudentDetails(student);
                 userRepository.save(user);

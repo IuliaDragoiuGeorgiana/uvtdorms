@@ -1,9 +1,10 @@
 export interface RegisterStudentDto {
-  email: string;
-  firtName: string;
+  firstName: string;
   lastName: string;
+  email: string;
   dormName: string;
   roomNumber: string;
   matriculationNumber: string;
   phoneNumber: string;
+  
 }

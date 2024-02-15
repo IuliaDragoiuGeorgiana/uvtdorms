@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @ControllerAdvice
 public class RestExceptionHandler {
+    @SuppressWarnings("null")
     @ExceptionHandler(value = { AppException.class })
     @ResponseBody
     public ResponseEntity<ErrorDto> handleException(AppException ex)

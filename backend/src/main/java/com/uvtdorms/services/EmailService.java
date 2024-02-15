@@ -26,6 +26,7 @@ public class EmailService {
         mailSender.send(message);
     }
 
+    @SuppressWarnings("null")
     public void sendPassword(String to, String subject, String name, String password) {
         Context context = new Context();
         context.setVariable("subject", subject);
@@ -50,12 +51,13 @@ public class EmailService {
         }
     }
 
+    @SuppressWarnings("null")
     public void sendRegisterConfirm(String to, String name) {
-        String  subject = "Confirm registration request";
+        String subject = "Confirm registration request";
         Context context = new Context();
         context.setVariable("subject", subject);
         context.setVariable("name", name);
-         String htmlContent = templateEngine.process("confirm-register-request.html", context);
+        String htmlContent = templateEngine.process("confirm-register-request.html", context);
 
         try {
             MimeMessage mimeMessage = mailSender.createMimeMessage();

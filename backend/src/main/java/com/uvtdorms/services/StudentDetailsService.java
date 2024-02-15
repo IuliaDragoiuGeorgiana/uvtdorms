@@ -53,6 +53,7 @@ public class StudentDetailsService implements IStudentDetailsService {
                 return dormIdDto;
         }
 
+        @SuppressWarnings("null")
         public void registerStudent(RegisterStudentDto registerStudentDto) throws AppException {
                 if (userRepository.getByEmail(registerStudentDto.email()).isPresent())
                         throw new AppException("Account already exists with this email.", HttpStatus.CONFLICT);

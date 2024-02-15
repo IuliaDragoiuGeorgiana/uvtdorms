@@ -2,7 +2,6 @@ package com.uvtdorms.utils;
 
 import com.uvtdorms.repository.*;
 import com.uvtdorms.repository.entity.*;
-import com.uvtdorms.repository.entity.User.UserBuilder;
 import com.uvtdorms.repository.entity.enums.Role;
 import com.uvtdorms.repository.entity.enums.StatusMachine;
 import jakarta.transaction.Transactional;
@@ -56,6 +55,7 @@ public class InitialDataLoader implements CommandLineRunner {
         }
     }
 
+    @SuppressWarnings("null")
     private void initializeStudents() {
         Optional<Room> room = roomRepository.getRoomByRoomNumber(roomsNamesList.get(0));
         if (room.isPresent()) {
@@ -75,6 +75,7 @@ public class InitialDataLoader implements CommandLineRunner {
         }
     }
 
+    @SuppressWarnings("null")
     private void initializeDormsAdministrators() {
         Dorm dorm = dormRepository.getByDormName(dormsNamesList.get(0));
 
@@ -136,6 +137,7 @@ public class InitialDataLoader implements CommandLineRunner {
         }
     }
 
+    @SuppressWarnings("null")
     private Dorm createDorm(String dormName, String address) {
         Dorm dorm = Dorm.builder()
                 .dormName(dormName)
@@ -147,6 +149,7 @@ public class InitialDataLoader implements CommandLineRunner {
         return dorm;
     }
 
+    @SuppressWarnings("null")
     private User createDormAdministrator(String firstName, String lastName, String email, String phoneNumber,
             String password, Dorm dorm) {
         User admin = User.builder()
@@ -175,7 +178,7 @@ public class InitialDataLoader implements CommandLineRunner {
     @Transactional
     public void run(String... args) throws Exception {
         Dorm dorm1 = createDorm("D13", "Street1");
-        User admin1 = createDormAdministrator("Tom", "Hanks", "tom.hanks@e-uvt.ro", "0712345678", "hello", dorm1);
+        createDormAdministrator("Tom", "Hanks", "tom.hanks@e-uvt.ro", "0712345678", "hello", dorm1);
         initializeDorms();
         initializeRooms();
         initializeStudents();

@@ -1,6 +1,6 @@
 package com.uvtdorms.repository.entity;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.UUID;
 
 import com.uvtdorms.repository.entity.enums.RegisterRequestStatus;
@@ -37,6 +37,6 @@ public class RegisterRequest {
     @JoinColumn(name = "roomId")
     private Room room;
 
-    private LocalDateTime createdOn;
+    private LocalDate createdOn;
     private RegisterRequestStatus status;
 }

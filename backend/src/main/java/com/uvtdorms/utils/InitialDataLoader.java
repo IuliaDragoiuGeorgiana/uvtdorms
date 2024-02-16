@@ -2,6 +2,7 @@ package com.uvtdorms.utils;
 
 import com.uvtdorms.repository.*;
 import com.uvtdorms.repository.entity.*;
+import com.uvtdorms.repository.entity.enums.RegisterRequestStatus;
 import com.uvtdorms.repository.entity.enums.Role;
 import com.uvtdorms.repository.entity.enums.StatusMachine;
 import jakarta.transaction.Transactional;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +33,7 @@ public class InitialDataLoader implements CommandLineRunner {
     private final IWashingMachineRepository washingMachineRepository;
     private final IDormAdministratorDetailsRepository dormAdministratorDetailsRepository;
     private final PasswordEncoder passwordEncoder;
+    private final IRegisterRequestRepository registerRequestRepository;
 
     private List<String> dormsNamesList = Arrays.asList("C13", "C12");
     private List<String> roomsNamesList = Arrays.asList("127", "128");
@@ -90,7 +93,8 @@ public class InitialDataLoader implements CommandLineRunner {
                 .build();
 
         userRepository.save(user);
-        DormAdministratorDetails administrator = DormAdministratorDetails.builder().administrator(user).dorm(dorm).build();
+        DormAdministratorDetails administrator = DormAdministratorDetails.builder().administrator(user).dorm(dorm)
+                .build();
 
         dormAdministratorDetailsRepository.save(administrator);
 
@@ -150,6 +154,15 @@ public class InitialDataLoader implements CommandLineRunner {
     }
 
     @SuppressWarnings("null")
+    private Room createRoom(String roomNumber, Dorm dorm) {
+        Room room = Room.builder().dorm(dorm).roomNumber(roomNumber).build();
+
+        roomRepository.save(room);
+
+        return room;
+    }
+
+    @SuppressWarnings("null")
     private User createDormAdministrator(String firstName, String lastName, String email, String phoneNumber,
             String password, Dorm dorm) {
         User admin = User.builder()
@@ -174,11 +187,73 @@ public class InitialDataLoader implements CommandLineRunner {
         return admin;
     }
 
+    @SuppressWarnings("null")
+    private void createRegisterRequest(String firstName, String lastName, String email, String phoneNumber,
+            String password, Room room, String matriculationNumber) {
+        User user = User.builder()
+                .firstName(firstName)
+                .lastName(lastName)
+                .email(email)
+                .phoneNumber(phoneNumber)
+                .password(passwordEncoder.encode(password))
+                .isActive(false)
+                .role(Role.STUDENT)
+                .build();
+
+        userRepository.save(user);
+
+        StudentDetails student = StudentDetails.builder().studentRegisterRequests(new ArrayList<>()).room(null)
+                .matriculationNumber(matriculationNumber).user(user).build();
+
+        studentDetailsRepository.save(student);
+
+        user.setStudentDetails(student);
+        userRepository.save(user);
+
+        RegisterRequest registerRequest = RegisterRequest.builder().createdOn(LocalDate.now()).room(room)
+                .student(student).status(RegisterRequestStatus.RECEIVED).build();
+
+        registerRequestRepository.save(registerRequest);
+
+        student.getStudentRegisterRequests().add(registerRequest);
+        studentDetailsRepository.save(student);
+    }
+
+    @SuppressWarnings("null")
+    private StudentDetails createStudent(String firstName, String lastName, String email, String phoneNumber,
+            String password, Room room, String matriculationNumber) {
+        User user = User.builder()
+                .firstName(firstName)
+                .lastName(lastName)
+                .email(email)
+                .phoneNumber(phoneNumber)
+                .password(passwordEncoder.encode(password))
+                .isActive(true)
+                .role(Role.STUDENT)
+                .build();
+
+        userRepository.save(user);
+
+        StudentDetails student = StudentDetails.builder().room(room).matriculationNumber(matriculationNumber).user(user)
+                .build();
+
+        studentDetailsRepository.save(student);
+
+        user.setStudentDetails(student);
+        userRepository.save(user);
+
+        return student;
+    }
+
     @Override
     @Transactional
     public void run(String... args) throws Exception {
         Dorm dorm1 = createDorm("D13", "Street1");
         createDormAdministrator("Tom", "Hanks", "tom.hanks@e-uvt.ro", "0712345678", "hello", dorm1);
+        Room room1 = createRoom("1", dorm1);
+        Room room2 = createRoom("2", dorm1);
+        createStudent("Taylor", "Swift", "taylor.swift@e-uvt.ro", "0765891234", "hello", room1, "I2345");
+        createRegisterRequest("Vin", "Diesel", "vin.diesel@e-uvt.ro", "0789123456", "hello", room1, "I1234");
         initializeDorms();
         initializeRooms();
         initializeStudents();

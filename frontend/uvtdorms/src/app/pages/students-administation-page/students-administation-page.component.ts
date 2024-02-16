@@ -6,6 +6,8 @@ import { StudentDetailsDto } from '../../interfaces/student-details-dto';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { RegisterRequestService } from '../../services/register-request.service';
+import { StudentDetailsService } from '../../services/student-details.service';
+import { EditRoomNumberDialogComponent } from '../../elements/dialogs/studentsAdministration/edit-room-number-dialog/edit-room-number-dialog.component';
 
 @Component({
   selector: 'app-students-administation-page',
@@ -34,37 +36,35 @@ export class StudentsAdministationPageComponent implements AfterViewInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  constructor(public dialog: MatDialog, private registerRequestService: RegisterRequestService) {
+  constructor(
+    public dialog: MatDialog,
+    private registerRequestService: RegisterRequestService,
+    private studentDetailsService: StudentDetailsService
+  ) {
     registerRequestService.getRegisterRequestsFromDrom().subscribe({
       next: (requests) => {
         console.log(requests);
+        this.registerRequests = requests;
+        console.log(this.registerRequests);
       },
       error: (error) => {
         console.log(error);
-      }
-    })
-    for (let i = 0; i < 8; i++)
-      this.registerRequests.push({
-        firstName: 'Iulia',
-        lastName: 'Dragoiu',
-        email: 'iulia.dragoiu02@e-uvt.ro',
-        dormName: 'C13',
-        roomNumber: '127',
-        matriculationNumber: 'I3183',
-        phoneNumber: '0729616799',
-        requestDate: new Date(),
-      });
+      },
+    });
 
-    for (let i = 0; i < 80; i++)
-      this.studentsList.push({
-        firstName: 'Iulia' + i,
-        lastName: 'Dragoiu',
-        email: 'iulia.dragoiu02@e-uvt.ro',
-        dormName: 'C13',
-        roomNumber: '127' + i,
-        matriculationNumber: 'I3183',
-        phoneNumber: '0729616799',
-      });
+    studentDetailsService.getAllStudentsFromDorm().subscribe({
+      next: (students) => {
+        console.log(students);
+        this.studentsList = students;
+        this.dataSource = new MatTableDataSource<StudentDetailsDto>(
+          this.studentsList
+        );
+        this.openEditRoomNumberDialog(students[0]);
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
   }
 
   openRegisterRequestDialog(registerRequestDto: RegisterRequestDto): void {
@@ -72,9 +72,16 @@ export class StudentsAdministationPageComponent implements AfterViewInit {
       data: registerRequestDto,
     });
   }
+  openEditRoomNumberDialog (student: StudentDetailsDto): void {
+    this.dialog.open(EditRoomNumberDialogComponent, {
+      data: {
+        studentEmail: student.email,
+        dormName: student.dormName
+      },
+    });
+  }
 
-  applyFilter(event: Event) : void
-  {
+  applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;
     console.log(filterValue);
     this.dataSource.filter = filterValue.trim().toLowerCase();

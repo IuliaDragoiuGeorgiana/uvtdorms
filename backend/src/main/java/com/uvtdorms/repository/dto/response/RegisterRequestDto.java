@@ -1,5 +1,8 @@
 package com.uvtdorms.repository.dto.response;
 
+import java.time.LocalDate;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.uvtdorms.repository.entity.enums.RegisterRequestStatus;
 
 import lombok.AllArgsConstructor;
@@ -13,13 +16,8 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegisterRequestDto {
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String phoneNumber;
-    private String dormName;
-    private String roomNumber;
-    private String matriculationNumber;
+public class RegisterRequestDto extends StudentDetailsDto {
     private RegisterRequestStatus status;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate createdOn;
 }

@@ -14,7 +14,7 @@
               {{ request.firstName + " " + request.lastName }}
             </div>
             <div class="request-details-date">
-              {{ request.requestDate.toLocaleDateString() }}
+              {{ request.createdOn }}
             </div>
           </div>
           <div class="request-actions">
@@ -93,7 +93,7 @@
           <ng-container matColumnDef="Edit">
             <th mat-header-cell *matHeaderCellDef>Edit</th>
             <td mat-cell *matCellDef="let element">
-              <button mat-button class="student-table-edit-button">
+              <button  (click)="openEditRoomNumberDialog(element)" mat-button class="student-table-edit-button">
                 <mat-icon class="student-table-edit-button-icon">edit</mat-icon>
               </button>
             </td>

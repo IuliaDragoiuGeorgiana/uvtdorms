@@ -6,8 +6,10 @@ import com.uvtdorms.repository.IRegisterRequestRepository;
 import com.uvtdorms.repository.IRoomRepository;
 import com.uvtdorms.repository.IStudentDetailsRepository;
 import com.uvtdorms.repository.IUserRepository;
+import com.uvtdorms.repository.dto.request.EditRoomDto;
 import com.uvtdorms.repository.dto.request.RegisterStudentDto;
 import com.uvtdorms.repository.dto.response.DormIdDto;
+import com.uvtdorms.repository.dto.response.StudentDetailsDto;
 import com.uvtdorms.repository.entity.Dorm;
 import com.uvtdorms.repository.entity.RegisterRequest;
 import com.uvtdorms.repository.entity.Room;
@@ -20,9 +22,12 @@ import com.uvtdorms.utils.PasswordGenerator;
 
 import lombok.RequiredArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -37,6 +42,7 @@ public class StudentDetailsService implements IStudentDetailsService {
         private final IRegisterRequestRepository registerRequestRepository;
         private final PasswordEncoder passwordEncoder;
         private final EmailService emailService;
+        private final ModelMapper modelMapper;
 
         @Override
         public DormIdDto getStudentDormId(String email) throws AppException {
@@ -66,7 +72,7 @@ public class StudentDetailsService implements IStudentDetailsService {
                         throw new AppException("Phone number already in use.", HttpStatus.CONFLICT);
 
                 Dorm dorm = dormRepository.getByDormName(registerStudentDto.dormName());
-                Room room = roomRepository.findByDormAndRoomNumber(dorm, registerStudentDto.roomNumber());
+                Room room = roomRepository.findByDormAndRoomNumber(dorm, registerStudentDto.roomNumber()).orElseThrow(() -> new AppException("Room not found", HttpStatus.NOT_FOUND));                 
 
                 String generatedPassword = PasswordGenerator.generateRandomPassword();
 
@@ -94,7 +100,7 @@ public class StudentDetailsService implements IStudentDetailsService {
                 RegisterRequest registerRequest = RegisterRequest.builder()
                                 .student(student)
                                 .room(room)
-                                .createdOn(LocalDateTime.now())
+                                .createdOn(LocalDate.now())
                                 .status(RegisterRequestStatus.RECEIVED)
                                 .build();
 
@@ -112,5 +118,27 @@ public class StudentDetailsService implements IStudentDetailsService {
                 room.getStudentDetails().add(student);
                 roomRepository.save(room);
                 emailService.sendRegisterConfirm(user.getEmail(), user.getFirstName() + " " + user.getLastName());
+        }
+
+        public List<StudentDetailsDto> getAllStudentsFromDorm(Dorm dorm) {
+                List<StudentDetails> students = studentDetailsRepository.findByRoomDorm(dorm);
+
+                return students.stream()
+                                .filter(student -> student.getUser().getIsActive())
+                                .map(student -> modelMapper.map(student, StudentDetailsDto.class))
+                                .collect(Collectors.toList());
+        }
+
+        public void updateRoomNumber(EditRoomDto editRoomDto) {
+               
+                StudentDetails student = studentDetailsRepository.findByUserEmail(editRoomDto.studentEmail())
+                                .orElseThrow(() -> new AppException("Student not found", HttpStatus.NOT_FOUND));
+                  
+                Room room = roomRepository
+                                .findByDormAndRoomNumber(student.getRoom().getDorm(), editRoomDto.roomNumber())
+                                .orElseThrow(() -> new AppException("Room not found", HttpStatus.NOT_FOUND));                 
+                student.setRoom(room);
+                studentDetailsRepository.save(student);
+                
         }
 }

@@ -43,6 +43,7 @@ import { RegisterRequestDetailsPopupComponent } from './elements/dialogs/student
 import { StudentsAdministationPageComponent } from './pages/students-administation-page/students-administation-page.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
+import { EditRoomNumberDialogComponent } from './elements/dialogs/studentsAdministration/edit-room-number-dialog/edit-room-number-dialog.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -55,6 +56,7 @@ import { MatTableModule } from '@angular/material/table';
     RegisterConfirmDialogComponent,
     StudentsAdministationPageComponent,
     RegisterRequestDetailsPopupComponent,
+    EditRoomNumberDialogComponent,
   ],
   imports: [
     BrowserModule,

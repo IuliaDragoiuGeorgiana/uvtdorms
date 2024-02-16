@@ -1,8 +1,10 @@
 package com.uvtdorms.repository;
 
+import com.uvtdorms.repository.entity.Dorm;
 import com.uvtdorms.repository.entity.StudentDetails;
 import com.uvtdorms.repository.entity.User;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -14,4 +16,8 @@ public interface IStudentDetailsRepository extends JpaRepository<StudentDetails,
     public Optional<StudentDetails> findByUser(User user);
 
     public Optional<StudentDetails> findByMatriculationNumber(String matriculationNumber);
+
+    public List<StudentDetails> findByRoomDorm(Dorm dorm);
+    
+    public Optional<StudentDetails> findByUserEmail(String email);
 }

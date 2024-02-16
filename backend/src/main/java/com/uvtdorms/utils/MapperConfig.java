@@ -3,9 +3,11 @@ package com.uvtdorms.utils;
 import com.uvtdorms.repository.dto.response.DryerDto;
 import com.uvtdorms.repository.dto.response.EmailDto;
 import com.uvtdorms.repository.dto.response.RegisterRequestDto;
+import com.uvtdorms.repository.dto.response.StudentDetailsDto;
 import com.uvtdorms.repository.dto.response.WashingMachineDto;
 import com.uvtdorms.repository.entity.Dryer;
 import com.uvtdorms.repository.entity.RegisterRequest;
+import com.uvtdorms.repository.entity.StudentDetails;
 import com.uvtdorms.repository.entity.User;
 import com.uvtdorms.repository.entity.WashingMachine;
 import com.uvtdorms.repository.entity.enums.StatusMachine;
@@ -73,6 +75,20 @@ public class MapperConfig {
                 map(source.getRoom().getRoomNumber(), destination.getRoomNumber());
                 map(source.getStudent().getMatriculationNumber(), destination.getMatriculationNumber());
                 map(source.getStatus(), destination.getStatus());
+                map(source.getCreatedOn(), destination.getCreatedOn());
+            }
+        });
+        
+        modelMapper.addMappings(new PropertyMap<StudentDetails,StudentDetailsDto>() {
+            @Override
+            protected void configure() {
+                map(source.getUser().getFirstName(), destination.getFirstName());
+                map(source.getUser().getLastName(), destination.getLastName());
+                map(source.getUser().getEmail(), destination.getEmail());
+                map(source.getUser().getPhoneNumber(), destination.getPhoneNumber());
+                map(source.getRoom().getDorm().getDormName(), destination.getDormName());
+                map(source.getRoom().getRoomNumber(), destination.getRoomNumber());
+                map(source.getMatriculationNumber(), destination.getMatriculationNumber());
             }
         });
 

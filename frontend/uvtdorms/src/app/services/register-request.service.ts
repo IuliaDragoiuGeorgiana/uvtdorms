@@ -12,12 +12,34 @@ export class RegisterRequestService {
     'http://localhost:8080/api/register-requests';
   private getRegisterRequestsFromDromUrl: string =
     '/get-register-requests-from-dorm';
+  private acceptRegisterRequestUrl: string = '/accept-register-request';
+  private declineRegisterRequestUrl: string = '/decline-register-request';
 
   constructor(private http: HttpClient, private auth: AuthService) {}
 
   getRegisterRequestsFromDrom(): Observable<RegisterRequestDto[]> {
     return this.http.get<RegisterRequestDto[]>(
       this.registerRequestServiceUrl + this.getRegisterRequestsFromDromUrl,
+      { headers: this.auth.getHeader() }
+    );
+  }
+
+  acceptRegisterRequest(
+    registerRequestDto: RegisterRequestDto
+  ): Observable<void> {
+    return this.http.post<void>(
+      this.registerRequestServiceUrl + this.acceptRegisterRequestUrl,
+      registerRequestDto,
+      { headers: this.auth.getHeader() }
+    );
+  }
+
+  declineRegisterRequest(
+    registerRequestDto: RegisterRequestDto
+  ): Observable<void> {
+    return this.http.post<void>(
+      this.registerRequestServiceUrl + this.declineRegisterRequestUrl,
+      registerRequestDto,
       { headers: this.auth.getHeader() }
     );
   }

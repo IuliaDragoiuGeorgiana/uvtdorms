@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    <title>Register request accepted</title>
+  </head>
+  <body style="width: 100%">
+    <div
+      style="
+        width: 500px;
+        height: 500px;
+        border: 1px solid grey;
+        border-radius: 20px;
+        margin: auto;
+      "
+    >
+      <div
+        style="
+          width: 100%;
+          height: 20%;
+          background-color: #2e71b8;
+          border-radius: 20px 20px 0 0;
+          position: relative;
+        "
+      >
+        <div style="width: 100%; height: 20%"></div>
+        <h1
+          style="
+            color: white;
+            font-size: 3rem;
+            font-family: 'Lato', sans-serif;
+            width: 100%;
+            text-align: center;
+          "
+        >
+          UVTDorms
+        </h1>
+      </div>
+      <div
+        style="
+          width: 100%;
+          height: 60%;
+          padding: 30px;
+          box-sizing: border-box;
+          position: relative;
+        "
+      >
+        <h1
+          style="
+            font-family: 'Lato', sans-serif;
+            margin-bottom: 60px;
+            margin-top: 20px;
+            width: 100%;
+            text-align: center;
+          "
+        >
+          Welcome!
+        </h1>
+        <p
+          style="
+            font-family: 'Lato', sans-serif;
+            text-align: center;
+            width: 70%;
+            margin-left: 15%;
+          "
+        >
+         
+          <span th:text="${name}">Name Placeholder</span>, your registration request was accepted by the dormitory's administrator.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

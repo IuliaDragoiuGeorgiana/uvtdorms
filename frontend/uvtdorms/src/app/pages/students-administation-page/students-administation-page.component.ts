@@ -41,25 +41,29 @@ export class StudentsAdministationPageComponent implements AfterViewInit {
     private registerRequestService: RegisterRequestService,
     private studentDetailsService: StudentDetailsService
   ) {
-    registerRequestService.getRegisterRequestsFromDrom().subscribe({
+    this.getRegisterRequestsFromDorm();
+    this.getAllStudentsFromDorm();
+  }
+
+  getRegisterRequestsFromDorm(): void {
+    this.registerRequestService.getRegisterRequestsFromDrom().subscribe({
       next: (requests) => {
-        console.log(requests);
         this.registerRequests = requests;
-        console.log(this.registerRequests);
+        console.log(requests);
       },
       error: (error) => {
         console.log(error);
       },
     });
+  }
 
-    studentDetailsService.getAllStudentsFromDorm().subscribe({
+  getAllStudentsFromDorm(): void {
+    this.studentDetailsService.getAllStudentsFromDorm().subscribe({
       next: (students) => {
-        console.log(students);
         this.studentsList = students;
         this.dataSource = new MatTableDataSource<StudentDetailsDto>(
           this.studentsList
         );
-        this.openEditRoomNumberDialog(students[0]);
       },
       error: (error) => {
         console.log(error);
@@ -72,11 +76,12 @@ export class StudentsAdministationPageComponent implements AfterViewInit {
       data: registerRequestDto,
     });
   }
-  openEditRoomNumberDialog (student: StudentDetailsDto): void {
+
+  openEditRoomNumberDialog(student: StudentDetailsDto): void {
     this.dialog.open(EditRoomNumberDialogComponent, {
       data: {
         studentEmail: student.email,
-        dormName: student.dormName
+        dormName: student.dormName,
       },
     });
   }

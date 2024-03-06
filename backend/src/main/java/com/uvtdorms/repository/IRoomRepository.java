@@ -15,4 +15,6 @@ public interface IRoomRepository extends JpaRepository<Room, Long> {
     public List<Room> findByDormDormName(String dormName);
 
     public Optional<Room> findByDormAndRoomNumber(Dorm dorm, String roomNumber);
+
+    public Optional<Room> findByDormDormNameAndRoomNumber(String dormName, String roomNumber);
 }

@@ -86,7 +86,7 @@
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <div class="register-request-popup-actions">
-    <button class="register-request-popup-actions-decline" mat-button>Decline</button>
-    <button class="register-request-popup-actions-accept" mat-button>Accept</button>
+    <button class="register-request-popup-actions-decline" mat-button (click)="decline()">Decline</button>
+    <button class="register-request-popup-actions-accept" mat-button (click)="accept()">Accept</button>
   </div>
 </mat-dialog-actions>

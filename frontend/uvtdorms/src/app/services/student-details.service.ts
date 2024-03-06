@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DormId } from '../interfaces/dorm-id';
@@ -31,7 +31,11 @@ export class StudentDetailsService {
     );
   }
 
-  updateRoomNumber(editRoomDto: EditRoomDto):Observable< void >{
-    return this.http.post<void>(this.studentsDetailsServiceUrl + this.updateRoomNumberUrl, editRoomDto, { headers: this.auth.getHeader() });
+  updateRoomNumber(editRoomDto: EditRoomDto): Observable<void> {
+    return this.http.post<void>(
+      this.studentsDetailsServiceUrl + this.updateRoomNumberUrl,
+      editRoomDto,
+      { headers: this.auth.getHeader() }
+    );
   }
 }

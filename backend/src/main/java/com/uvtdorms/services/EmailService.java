@@ -2,7 +2,6 @@ package com.uvtdorms.services;
 
 import java.nio.charset.StandardCharsets;
 
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -10,6 +9,7 @@ import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
 import jakarta.mail.internet.MimeMessage;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -18,16 +18,24 @@ public class EmailService {
     private final JavaMailSender mailSender;
     private final SpringTemplateEngine templateEngine;
 
-    public void sendMail(String to, String subject, String text) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(to);
-        message.setSubject(subject);
-        message.setText(text);
-        mailSender.send(message);
+    public void sendMail(final @NonNull String to, final @NonNull String subject, final @NonNull String htmlContent) {
+        try {
+            MimeMessage mimeMessage = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage,
+                    MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
+                    StandardCharsets.UTF_8.name());
+
+            helper.setTo(to);
+            helper.setSubject(subject);
+            helper.setText(htmlContent, true);
+
+            mailSender.send(mimeMessage);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    @SuppressWarnings("null")
-    public void sendPassword(String to, String subject, String name, String password) {
+    public void sendPassword(final String to, final String subject, final String name, final String password) {
         Context context = new Context();
         context.setVariable("subject", subject);
         context.setVariable("name", name);
@@ -35,43 +43,40 @@ public class EmailService {
 
         String htmlContent = templateEngine.process("example-email.html", context);
 
-        try {
-            MimeMessage mimeMessage = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage,
-                    MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
-                    StandardCharsets.UTF_8.name());
-
-            helper.setTo(to);
-            helper.setSubject(subject);
-            helper.setText(htmlContent, true);
-
-            mailSender.send(mimeMessage);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        sendMail(to, subject, htmlContent);
     }
 
-    @SuppressWarnings("null")
-    public void sendRegisterConfirm(String to, String name) {
+    public void sendRegisterConfirm(final String to, final String name) {
         String subject = "Confirm registration request";
         Context context = new Context();
         context.setVariable("subject", subject);
         context.setVariable("name", name);
         String htmlContent = templateEngine.process("confirm-register-request.html", context);
 
-        try {
-            MimeMessage mimeMessage = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage,
-                    MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
-                    StandardCharsets.UTF_8.name());
+        sendMail(to, subject, htmlContent);
+    }
 
-            helper.setTo(to);
-            helper.setSubject(subject);
-            helper.setText(htmlContent, true);
+    public void sendRegisterRequestAcceptedEmail(final String to, final String name)
+    {
+        String subject = "Registration request accepted";
+        Context context = new Context();
+        context.setVariable("subject", subject);
+        context.setVariable("name", name);
 
-            mailSender.send(mimeMessage);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        String htmlContent = templateEngine.process("register-request-accepted.html", context);
+
+        sendMail(to, subject, htmlContent);
+    }
+
+    public void sendRegisterRequestDeclinedEmail(final String to, final String name)
+    {
+        String subject = "Registration request declined";
+        Context context = new Context();
+        context.setVariable("subject", subject);
+        context.setVariable("name", name);
+    
+        String htmlContent = templateEngine.process("register-request-declined.html", context);
+
+        sendMail(to, subject, htmlContent);
     }
 }

@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.security.core.Authentication;
@@ -30,5 +32,21 @@ public class RegisterRequestController {
         Dorm dorm = dormAdministratorService.getAdministratorDormByEmail(token.getEmail());
 
         return ResponseEntity.ok(registerRequestService.getRegisterRequestsFromDorm(dorm));
+    }
+
+    @PostMapping("/accept-register-request")
+    public ResponseEntity<Void> acceptRegisterRequest(@RequestBody RegisterRequestDto registerRequestDto)
+    {
+        registerRequestService.acceptRegisterRequest(registerRequestDto);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/decline-register-request")
+    public ResponseEntity<Void> declineRegisterRequest(@RequestBody RegisterRequestDto registerRequestDto)
+    {
+        registerRequestService.declineRegisterRequest(registerRequestDto);
+
+        return ResponseEntity.ok().build();
     }
 }

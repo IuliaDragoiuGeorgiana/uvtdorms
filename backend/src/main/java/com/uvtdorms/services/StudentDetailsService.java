@@ -61,19 +61,8 @@ public class StudentDetailsService implements IStudentDetailsService {
 
         @SuppressWarnings("null")
         public void registerStudent(RegisterStudentDto registerStudentDto) throws AppException {
-                if (userRepository.getByEmail(registerStudentDto.email()).isPresent())
-                        throw new AppException("Account already exists with this email.", HttpStatus.CONFLICT);
-
-                if (studentDetailsRepository.findByMatriculationNumber(registerStudentDto.matriculationNumber())
-                                .isPresent())
-                        throw new AppException("Student already exists.", HttpStatus.CONFLICT);
-
-                if (userRepository.findByPhoneNumber(registerStudentDto.phoneNumber()).isPresent())
-                        throw new AppException("Phone number already in use.", HttpStatus.CONFLICT);
-
-                Dorm dorm = dormRepository.getByDormName(registerStudentDto.dormName());
-                Room room = roomRepository.findByDormAndRoomNumber(dorm, registerStudentDto.roomNumber()).orElseThrow(() -> new AppException("Room not found", HttpStatus.NOT_FOUND));                 
-
+                verifyDataUniqueness(registerStudentDto);
+                Room room = getSelectedRoomOnRegister(registerStudentDto.dormName(), registerStudentDto.roomNumber());
                 String generatedPassword = PasswordGenerator.generateRandomPassword();
 
                 User user = User.builder()
@@ -117,7 +106,27 @@ public class StudentDetailsService implements IStudentDetailsService {
 
                 room.getStudentDetails().add(student);
                 roomRepository.save(room);
-                emailService.sendRegisterConfirm(user.getEmail(), user.getFirstName() + " " + user.getLastName());
+                emailService.sendRegisterConfirm(user.getEmail(), user.getFirstName() + " " + user.getLastName(),
+                                generatedPassword);
+        }
+
+        private void verifyDataUniqueness(final RegisterStudentDto registerStudentDto) {
+                if (userRepository.getByEmail(registerStudentDto.email()).isPresent())
+                        throw new AppException("Account already exists with this email.", HttpStatus.CONFLICT);
+
+                if (studentDetailsRepository.findByMatriculationNumber(registerStudentDto.matriculationNumber())
+                                .isPresent())
+                        throw new AppException("Student already exists.", HttpStatus.CONFLICT);
+
+                if (userRepository.findByPhoneNumber(registerStudentDto.phoneNumber()).isPresent())
+                        throw new AppException("Phone number already in use.", HttpStatus.CONFLICT);
+        }
+
+        private Room getSelectedRoomOnRegister(final String dormName, final String roomNumber) {
+                Dorm dorm = dormRepository.getByDormName(dormName);
+
+                return roomRepository.findByDormAndRoomNumber(dorm, roomNumber)
+                                .orElseThrow(() -> new AppException("Room not found", HttpStatus.NOT_FOUND));
         }
 
         public List<StudentDetailsDto> getAllStudentsFromDorm(Dorm dorm) {
@@ -130,15 +139,14 @@ public class StudentDetailsService implements IStudentDetailsService {
         }
 
         public void updateRoomNumber(EditRoomDto editRoomDto) {
-               
                 StudentDetails student = studentDetailsRepository.findByUserEmail(editRoomDto.studentEmail())
                                 .orElseThrow(() -> new AppException("Student not found", HttpStatus.NOT_FOUND));
-                  
+
                 Room room = roomRepository
                                 .findByDormAndRoomNumber(student.getRoom().getDorm(), editRoomDto.roomNumber())
-                                .orElseThrow(() -> new AppException("Room not found", HttpStatus.NOT_FOUND));                 
+                                .orElseThrow(() -> new AppException("Room not found", HttpStatus.NOT_FOUND));
                 student.setRoom(room);
                 studentDetailsRepository.save(student);
-                
+
         }
 }

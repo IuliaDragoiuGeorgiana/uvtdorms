@@ -46,11 +46,12 @@ public class EmailService {
         sendMail(to, subject, htmlContent);
     }
 
-    public void sendRegisterConfirm(final String to, final String name) {
+    public void sendRegisterConfirm(final String to, final String name, final String generatedPassword) {
         String subject = "Confirm registration request";
         Context context = new Context();
         context.setVariable("subject", subject);
         context.setVariable("name", name);
+        context.setVariable("password", generatedPassword);
         String htmlContent = templateEngine.process("confirm-register-request.html", context);
 
         sendMail(to, subject, htmlContent);

@@ -5,6 +5,7 @@ import java.nio.CharBuffer;
 import com.uvtdorms.exception.AppException;
 import com.uvtdorms.repository.dto.TokenDto;
 import com.uvtdorms.repository.dto.request.CredentialsDto;
+import com.uvtdorms.repository.dto.response.UserDetailsDto;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -38,5 +39,12 @@ public class UserService implements IUserService {
                 .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
 
         return token;
+    }
+
+    public UserDetailsDto getUserDetails(final String email) {
+        User user = userRepository.getByEmail(email)
+                .orElseThrow(() -> new AppException("User not found!", HttpStatus.NOT_FOUND));
+
+        return modelMapper.map(user, UserDetailsDto.class);
     }
 }

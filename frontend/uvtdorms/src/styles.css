@@ -1,5 +1,6 @@
 @import "primeng/resources/themes/lara-light-blue/theme.css";
 @import "primeng/resources/primeng.css";
+@import "primeicons/primeicons.css";
 
 html,
 body {
@@ -18,7 +19,7 @@ body {
 
 * {
   box-sizing: border-box;
-  margin: 0;
+  /* margin: 0; */
 }
 
 :root {

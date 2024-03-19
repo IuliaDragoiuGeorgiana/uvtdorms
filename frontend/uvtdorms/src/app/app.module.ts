@@ -48,6 +48,8 @@ import { EditRoomNumberDialogComponent } from './elements/dialogs/studentsAdmini
 // PrimeNG
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
+import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
 
 @NgModule({
   declarations: [
@@ -95,6 +97,8 @@ import { TagModule } from 'primeng/tag';
     // PrimeNG
     TableModule,
     TagModule,
+    ButtonModule,
+    DialogModule,
   ],
   providers: [provideHttpClient(withFetch())],
   bootstrap: [AppComponent],

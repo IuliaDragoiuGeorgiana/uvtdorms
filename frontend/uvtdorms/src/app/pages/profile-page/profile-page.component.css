@@ -83,34 +83,11 @@
   height: 100% !important;
 }
 
-.p-element {
-  height: 100%;
-}
-
-.p-datatable {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.p-datatable tbody {
-  flex: 1;
-}
-
-@layer primeng {
-  .p-datatable tfoot {
-    margin-top: auto;
-    color: red !important;
-  }
-
-  .p-datatable-footer {
-    color: red !important;
-  }
-
+@layer primeng
+{
   .p-paginator
   {
-    color: red !important;
-    background-color: red !important;
+    justify-content: space-between !important;
   }
 }
 
@@ -120,9 +97,13 @@
   justify-content: center;
 }
 
-.userRegisterRequestsSummary {
-  position: absolute !important;
-  top: 90% !important;
-  background-color: red !important;
-  color: red !important;
+.dialog-popup-background
+{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 4;
 }

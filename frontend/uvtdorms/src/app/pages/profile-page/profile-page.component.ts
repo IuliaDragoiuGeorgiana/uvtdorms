@@ -12,6 +12,7 @@ import { RegisterRequestService } from '../../services/register-request.service'
 export class ProfilePageComponent {
   public user: UserDetailsDto | undefined = undefined;
   public registerRequests: ListedRegisterRequestDto[] = [];
+  public isRegisterRequestDialogVisible: boolean = false;
 
   constructor(
     private userService: UserService,
@@ -49,5 +50,9 @@ export class ProfilePageComponent {
       default:
         return 'info';
     }
+  }
+
+  showRegisterRequestDialog() {
+    this.isRegisterRequestDialogVisible = true;
   }
 }

@@ -30,7 +30,7 @@
         </ng-template>
         <p-table
           [value]="registerRequests"
-          [tableStyle]="{ 'min-width': '100%'}"
+          [tableStyle]="{ 'min-width': '100%' }"
           [paginator]="true"
           [rows]="10"
           [showCurrentPageReport]="true"
@@ -81,9 +81,14 @@
               </td>
             </tr>
           </ng-template>
-          <!-- <ng-template pTemplate="summary" class="userRegisterRequestsSummary">
-            In total there are {{registerRequests ? registerRequests.length : 0}} requests.
-          </ng-template> -->
+          <ng-template pTemplate="paginatorright">
+            <p-button
+              type="button"
+              icon="pi pi-plus"
+              styleClass="p-button-text"
+              (click)="showRegisterRequestDialog()"
+            ></p-button>
+          </ng-template>
         </p-table>
       </mat-tab>
       <mat-tab>
@@ -94,5 +99,9 @@
         <!-- Content 2 -->
       </mat-tab>
     </mat-tab-group>
+    <div *ngIf="isRegisterRequestDialogVisible" class="dialog-popup-background"></div>
+    <p-dialog header="New Register Request" [(visible)]="isRegisterRequestDialogVisible" [style]="{width: '50vw'}">
+  
+  </p-dialog>
   </div>
 </div>

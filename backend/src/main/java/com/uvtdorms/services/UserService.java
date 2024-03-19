@@ -47,4 +47,9 @@ public class UserService implements IUserService {
 
         return modelMapper.map(user, UserDetailsDto.class);
     }
+
+    public User findUserByEmail(final String email) {
+        return userRepository.getByEmail(email)
+                .orElseThrow(() -> new AppException("User not found!", HttpStatus.NOT_FOUND));
+    }
 }

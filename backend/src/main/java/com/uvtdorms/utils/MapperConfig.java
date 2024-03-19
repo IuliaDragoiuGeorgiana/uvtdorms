@@ -2,6 +2,7 @@ package com.uvtdorms.utils;
 
 import com.uvtdorms.repository.dto.response.DryerDto;
 import com.uvtdorms.repository.dto.response.EmailDto;
+import com.uvtdorms.repository.dto.response.ListedRegisterRequestDto;
 import com.uvtdorms.repository.dto.response.RegisterRequestDto;
 import com.uvtdorms.repository.dto.response.StudentDetailsDto;
 import com.uvtdorms.repository.dto.response.WashingMachineDto;
@@ -64,7 +65,7 @@ public class MapperConfig {
             }
         });
 
-        modelMapper.addMappings(new PropertyMap<RegisterRequest,RegisterRequestDto>() {
+        modelMapper.addMappings(new PropertyMap<RegisterRequest, RegisterRequestDto>() {
             @Override
             protected void configure() {
                 map(source.getStudent().getUser().getFirstName(), destination.getFirstName());
@@ -78,8 +79,8 @@ public class MapperConfig {
                 map(source.getCreatedOn(), destination.getCreatedOn());
             }
         });
-        
-        modelMapper.addMappings(new PropertyMap<StudentDetails,StudentDetailsDto>() {
+
+        modelMapper.addMappings(new PropertyMap<StudentDetails, StudentDetailsDto>() {
             @Override
             protected void configure() {
                 map(source.getUser().getFirstName(), destination.getFirstName());
@@ -89,6 +90,18 @@ public class MapperConfig {
                 map(source.getRoom().getDorm().getDormName(), destination.getDormName());
                 map(source.getRoom().getRoomNumber(), destination.getRoomNumber());
                 map(source.getMatriculationNumber(), destination.getMatriculationNumber());
+            }
+        });
+
+        modelMapper.addMappings(new PropertyMap<RegisterRequest, ListedRegisterRequestDto>() {
+            @Override
+            protected void configure() {
+                map(source.getCreatedOn(), destination.getCreatedOn());
+                map(source.getRoom().getDorm().getDormName(), destination.getDormitoryName());
+                map(source.getRoom().getRoomNumber(), destination.getRoomNumber());
+                map(source.getRoom().getDorm().getDormAdministratorDetails().getAdministrator().getEmail(),
+                        destination.getAdministratorContact());
+                map(source.getStatus(), destination.getStatus());
             }
         });
 

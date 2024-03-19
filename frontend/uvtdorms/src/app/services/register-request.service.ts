@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
 import { RegisterRequestDto } from '../interfaces/register-request-dto';
 import { Observable } from 'rxjs';
+import { ListedRegisterRequestDto } from '../interfaces/listed-register-request-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +15,8 @@ export class RegisterRequestService {
     '/get-register-requests-from-dorm';
   private acceptRegisterRequestUrl: string = '/accept-register-request';
   private declineRegisterRequestUrl: string = '/decline-register-request';
+  private registerRequestsForStudentUrl: string =
+    '/register-requests-for-student';
 
   constructor(private http: HttpClient, private auth: AuthService) {}
 
@@ -40,6 +43,13 @@ export class RegisterRequestService {
     return this.http.post<void>(
       this.registerRequestServiceUrl + this.declineRegisterRequestUrl,
       registerRequestDto,
+      { headers: this.auth.getHeader() }
+    );
+  }
+
+  getRegisterRequestsForStudent(): Observable<ListedRegisterRequestDto[]> {
+    return this.http.get<ListedRegisterRequestDto[]>(
+      this.registerRequestServiceUrl + this.registerRequestsForStudentUrl,
       { headers: this.auth.getHeader() }
     );
   }

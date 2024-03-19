@@ -23,33 +23,28 @@
   padding: 2vh 0;
 }
 
-.profile-page-general-details-item
-{
+.profile-page-general-details-item {
   width: 80%;
 }
 
-.profile-page-profile-picture-container
-{
+.profile-page-profile-picture-container {
   height: 35%;
-  background:rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.2);
 }
 
-.profile-page-name-container
-{
+.profile-page-name-container {
   height: 5%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.profile-page-name-container p
-{
+.profile-page-name-container p {
   margin: 0;
   font-size: 1.7rem;
 }
 
-.profile-page-other-details-container
-{
+.profile-page-other-details-container {
   height: 35%;
   border-bottom: 1px solid rgba(128, 128, 128, 0.1);
   border-top: 1px solid rgba(128, 128, 128, 0.1);
@@ -60,20 +55,74 @@
   justify-content: center;
 }
 
-.profile-page-settings-button-container
-{
+.profile-page-settings-button-container {
   height: 5%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.profile-page-settings-button-container button
-{
+.profile-page-settings-button-container button {
   background-color: var(--uvt-blue);
   color: white;
 }
 
 .profile-page-tabs-conatiner {
   width: 65%;
+}
+
+.profile-page-tab {
+  width: 100%;
+  height: 100%;
+}
+
+.mat-mdc-tab-body-wrapper,
+.mat-mdc-tab-group,
+.mat-mdc-tab-body-wrapper {
+  width: 100%;
+  height: 100% !important;
+}
+
+.p-element {
+  height: 100%;
+}
+
+.p-datatable {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.p-datatable tbody {
+  flex: 1;
+}
+
+@layer primeng {
+  .p-datatable tfoot {
+    margin-top: auto;
+    color: red !important;
+  }
+
+  .p-datatable-footer {
+    color: red !important;
+  }
+
+  .p-paginator
+  {
+    color: red !important;
+    background-color: red !important;
+  }
+}
+
+.userRegisterRequestsCell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.userRegisterRequestsSummary {
+  position: absolute !important;
+  top: 90% !important;
+  background-color: red !important;
+  color: red !important;
 }

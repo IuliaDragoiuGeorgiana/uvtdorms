@@ -23,13 +23,10 @@ import java.util.Optional;
 public class InitialDataLoader implements CommandLineRunner {
     private final ILaundryAppointmentRepository laundryAppointmentRepository;
     private final IDormRepository dormRepository;
-    // private final IAnnouncementRepository announcementRepository;
     private final IDryerRepository dryerRepository;
-    // private final IRepairTicketRepository repairTicketRepository;
     private final IRoomRepository roomRepository;
     private final IStudentDetailsRepository studentDetailsRepository;
     private final IUserRepository userRepository;
-    // private final IUserRolesRepository userRolesRepository;
     private final IWashingMachineRepository washingMachineRepository;
     private final IDormAdministratorDetailsRepository dormAdministratorDetailsRepository;
     private final PasswordEncoder passwordEncoder;

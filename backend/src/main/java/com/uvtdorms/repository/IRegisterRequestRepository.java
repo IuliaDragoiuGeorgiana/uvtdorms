@@ -15,4 +15,6 @@ public interface IRegisterRequestRepository extends JpaRepository<RegisterReques
     List<RegisterRequest> findByRoomDorm(Dorm dorm);
 
     Optional<RegisterRequest> findByStudentAndRoom(StudentDetails studentDetails, Room room);
+
+    List<RegisterRequest> findByStudent(StudentDetails studentDetails);
 }

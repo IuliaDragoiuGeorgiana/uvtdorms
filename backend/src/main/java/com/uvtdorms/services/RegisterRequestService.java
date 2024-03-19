@@ -11,11 +11,13 @@ import com.uvtdorms.exception.AppException;
 import com.uvtdorms.repository.IRegisterRequestRepository;
 import com.uvtdorms.repository.IRoomRepository;
 import com.uvtdorms.repository.IStudentDetailsRepository;
+import com.uvtdorms.repository.dto.response.ListedRegisterRequestDto;
 import com.uvtdorms.repository.dto.response.RegisterRequestDto;
 import com.uvtdorms.repository.entity.Dorm;
 import com.uvtdorms.repository.entity.RegisterRequest;
 import com.uvtdorms.repository.entity.Room;
 import com.uvtdorms.repository.entity.StudentDetails;
+import com.uvtdorms.repository.entity.User;
 import com.uvtdorms.repository.entity.enums.RegisterRequestStatus;
 
 import lombok.RequiredArgsConstructor;
@@ -38,12 +40,10 @@ public class RegisterRequestService {
                 .collect(Collectors.toList());
     }
 
-    public void acceptRegisterRequest(final RegisterRequestDto registerRequestDto) throws AppException
-    {
+    public void acceptRegisterRequest(final RegisterRequestDto registerRequestDto) throws AppException {
         RegisterRequest registerRequest = getRegisterRequestByRegisterRequestDto(registerRequestDto);
 
-        if (registerRequest.getStatus() != RegisterRequestStatus.RECEIVED)
-        {
+        if (registerRequest.getStatus() != RegisterRequestStatus.RECEIVED) {
             throw new AppException("Invalid registration request!", HttpStatus.BAD_REQUEST);
         }
 
@@ -51,15 +51,15 @@ public class RegisterRequestService {
 
         registerRequestRepository.save(registerRequest);
 
-        emailService.sendRegisterRequestAcceptedEmail(registerRequest.getStudent().getUser().getEmail(), registerRequest.getStudent().getUser().getFirstName() + " " + registerRequest.getStudent().getUser().getLastName());
+        emailService.sendRegisterRequestAcceptedEmail(registerRequest.getStudent().getUser().getEmail(),
+                registerRequest.getStudent().getUser().getFirstName() + " "
+                        + registerRequest.getStudent().getUser().getLastName());
     }
-    
-    public void declineRegisterRequest(final RegisterRequestDto registerRequestDto) throws AppException
-    {
+
+    public void declineRegisterRequest(final RegisterRequestDto registerRequestDto) throws AppException {
         RegisterRequest registerRequest = getRegisterRequestByRegisterRequestDto(registerRequestDto);
 
-        if (registerRequest.getStatus() != RegisterRequestStatus.RECEIVED)
-        {
+        if (registerRequest.getStatus() != RegisterRequestStatus.RECEIVED) {
             throw new AppException("Invalid registration request!", HttpStatus.BAD_REQUEST);
         }
 
@@ -67,11 +67,12 @@ public class RegisterRequestService {
 
         registerRequestRepository.save(registerRequest);
 
-        emailService.sendRegisterRequestDeclinedEmail(registerRequest.getStudent().getUser().getEmail(), registerRequest.getStudent().getUser().getFirstName() + " " + registerRequest.getStudent().getUser().getLastName());
+        emailService.sendRegisterRequestDeclinedEmail(registerRequest.getStudent().getUser().getEmail(),
+                registerRequest.getStudent().getUser().getFirstName() + " "
+                        + registerRequest.getStudent().getUser().getLastName());
     }
-    
-    private RegisterRequest getRegisterRequestByRegisterRequestDto(final RegisterRequestDto registerRequestDto)
-    {
+
+    private RegisterRequest getRegisterRequestByRegisterRequestDto(final RegisterRequestDto registerRequestDto) {
         StudentDetails student = studentDetailsRepository
                 .findByMatriculationNumber(registerRequestDto.getMatriculationNumber())
                 .orElseThrow(() -> new AppException("Student not found!", HttpStatus.NOT_FOUND));
@@ -84,5 +85,11 @@ public class RegisterRequestService {
                 .orElseThrow(() -> new AppException("Register request not found!", HttpStatus.NOT_FOUND));
 
         return registerRequest;
+    }
+
+    public List<ListedRegisterRequestDto> getRegisterRequestsForStudent(final StudentDetails student) {
+        return registerRequestRepository.findByStudent(student).stream()
+                .map((registerRequest) -> modelMapper.map(registerRequest, ListedRegisterRequestDto.class))
+                .collect(Collectors.toList());
     }
 }

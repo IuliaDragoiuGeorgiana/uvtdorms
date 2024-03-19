@@ -44,6 +44,11 @@ import { StudentsAdministationPageComponent } from './pages/students-administati
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { EditRoomNumberDialogComponent } from './elements/dialogs/studentsAdministration/edit-room-number-dialog/edit-room-number-dialog.component';
+
+// PrimeNG
+import { TableModule } from 'primeng/table';
+import { TagModule } from 'primeng/tag';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -86,6 +91,10 @@ import { EditRoomNumberDialogComponent } from './elements/dialogs/studentsAdmini
     MatDialogClose,
     MatTableModule,
     MatPaginatorModule,
+
+    // PrimeNG
+    TableModule,
+    TagModule,
   ],
   providers: [provideHttpClient(withFetch())],
   bootstrap: [AppComponent],

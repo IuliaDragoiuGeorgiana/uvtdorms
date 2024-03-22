@@ -3,6 +3,17 @@ import { UserService } from '../../services/user.service';
 import { UserDetailsDto } from '../../interfaces/user-details-dto';
 import { ListedRegisterRequestDto } from '../../interfaces/listed-register-request-dto';
 import { RegisterRequestService } from '../../services/register-request.service';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
+import { RoomService } from '../../services/room.service';
+import { DormService } from '../../services/dorm.service';
+import { MatDialog } from '@angular/material/dialog';
+import { NewRegisterRequestDialogComponent } from '../../elements/dialogs/new-register-request-dialog/new-register-request-dialog.component';
 
 @Component({
   selector: 'app-profile-page',
@@ -16,7 +27,10 @@ export class ProfilePageComponent {
 
   constructor(
     private userService: UserService,
-    private registerRequestService: RegisterRequestService
+    private registerRequestService: RegisterRequestService,
+    private roomService: RoomService,
+    private dormService: DormService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -53,6 +67,6 @@ export class ProfilePageComponent {
   }
 
   showRegisterRequestDialog() {
-    this.isRegisterRequestDialogVisible = true;
+    this.dialog.open(NewRegisterRequestDialogComponent);
   }
 }

@@ -4,6 +4,7 @@ import { AuthService } from './auth.service';
 import { RegisterRequestDto } from '../interfaces/register-request-dto';
 import { Observable } from 'rxjs';
 import { ListedRegisterRequestDto } from '../interfaces/listed-register-request-dto';
+import { NewRegisterRequestDto } from '../interfaces/new-register-request-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +18,7 @@ export class RegisterRequestService {
   private declineRegisterRequestUrl: string = '/decline-register-request';
   private registerRequestsForStudentUrl: string =
     '/register-requests-for-student';
+  private createNewRegisterRequestUrl: string = '/new-register-request';
 
   constructor(private http: HttpClient, private auth: AuthService) {}
 
@@ -50,6 +52,16 @@ export class RegisterRequestService {
   getRegisterRequestsForStudent(): Observable<ListedRegisterRequestDto[]> {
     return this.http.get<ListedRegisterRequestDto[]>(
       this.registerRequestServiceUrl + this.registerRequestsForStudentUrl,
+      { headers: this.auth.getHeader() }
+    );
+  }
+
+  createNewRegisterRequest(
+    newRegisterRequestDto: NewRegisterRequestDto
+  ): Observable<void> {
+    return this.http.post<void>(
+      this.registerRequestServiceUrl + this.createNewRegisterRequestUrl,
+      newRegisterRequestDto,
       { headers: this.auth.getHeader() }
     );
   }

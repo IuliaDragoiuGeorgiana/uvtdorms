@@ -36,6 +36,7 @@ import {
   MatDialogContent,
   MatDialogActions,
   MatDialogClose,
+  MatDialogModule,
 } from '@angular/material/dialog';
 import { RegisterErrorDialogComponent } from './elements/dialogs/register/register-error-dialog/register-error-dialog.component';
 import { RegisterConfirmDialogComponent } from './elements/dialogs/register/register-confirm-dialog/register-confirm-dialog.component';
@@ -50,6 +51,7 @@ import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
+import { NewRegisterRequestDialogComponent } from './elements/dialogs/new-register-request-dialog/new-register-request-dialog.component';
 
 @NgModule({
   declarations: [
@@ -64,6 +66,7 @@ import { DialogModule } from 'primeng/dialog';
     StudentsAdministationPageComponent,
     RegisterRequestDetailsPopupComponent,
     EditRoomNumberDialogComponent,
+    NewRegisterRequestDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -91,6 +94,7 @@ import { DialogModule } from 'primeng/dialog';
     MatDialogContent,
     MatDialogActions,
     MatDialogClose,
+    MatDialogModule,
     MatTableModule,
     MatPaginatorModule,
 

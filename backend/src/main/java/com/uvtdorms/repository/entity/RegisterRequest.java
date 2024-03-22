@@ -40,3 +40,4 @@ public class RegisterRequest {
     private LocalDate createdOn;
     private RegisterRequestStatus status;
 }
+

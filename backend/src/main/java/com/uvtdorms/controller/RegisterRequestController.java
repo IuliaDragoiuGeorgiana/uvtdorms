@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.security.core.Authentication;
 
 import com.uvtdorms.repository.dto.TokenDto;
+import com.uvtdorms.repository.dto.request.NewRegisterRequestDto;
 import com.uvtdorms.repository.dto.response.ListedRegisterRequestDto;
 import com.uvtdorms.repository.dto.response.RegisterRequestDto;
 import com.uvtdorms.repository.entity.Dorm;
@@ -58,5 +59,15 @@ public class RegisterRequestController {
         StudentDetails student = userService.findUserByEmail(token.getEmail()).getStudentDetails();
 
         return ResponseEntity.ok(registerRequestService.getRegisterRequestsForStudent(student));
+    }
+
+    @PostMapping("/new-register-request")
+    public ResponseEntity<Void> createNewRegisterRequest(Authentication authentication,
+            @RequestBody NewRegisterRequestDto newRegisterRequest) {
+        TokenDto token = (TokenDto) authentication.getPrincipal();
+
+        registerRequestService.createNewRegisterRequestForExistingStudent(newRegisterRequest, token.getEmail());
+
+        return ResponseEntity.ok().build();
     }
 }

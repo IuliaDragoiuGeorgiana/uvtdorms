@@ -57,8 +57,17 @@ public class EmailService {
         sendMail(to, subject, htmlContent);
     }
 
-    public void sendRegisterRequestAcceptedEmail(final String to, final String name)
-    {
+    public void sendNewRegisterRequestConfirm(final String to, final String name) {
+        String subject = "Confirm new registration request";
+        Context context = new Context();
+        context.setVariable("subject", subject);
+        context.setVariable("name", name);
+        String htmlContent = templateEngine.process("confirm-new-register-request.html", context);
+
+        sendMail(to, subject, htmlContent);
+    }
+
+    public void sendRegisterRequestAcceptedEmail(final String to, final String name) {
         String subject = "Registration request accepted";
         Context context = new Context();
         context.setVariable("subject", subject);
@@ -69,13 +78,12 @@ public class EmailService {
         sendMail(to, subject, htmlContent);
     }
 
-    public void sendRegisterRequestDeclinedEmail(final String to, final String name)
-    {
+    public void sendRegisterRequestDeclinedEmail(final String to, final String name) {
         String subject = "Registration request declined";
         Context context = new Context();
         context.setVariable("subject", subject);
         context.setVariable("name", name);
-    
+
         String htmlContent = templateEngine.process("register-request-declined.html", context);
 
         sendMail(to, subject, htmlContent);

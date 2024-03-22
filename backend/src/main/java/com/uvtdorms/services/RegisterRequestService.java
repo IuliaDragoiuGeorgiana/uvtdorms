@@ -1,5 +1,6 @@
 package com.uvtdorms.services;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -8,16 +9,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.uvtdorms.exception.AppException;
+import com.uvtdorms.repository.IDormRepository;
 import com.uvtdorms.repository.IRegisterRequestRepository;
 import com.uvtdorms.repository.IRoomRepository;
 import com.uvtdorms.repository.IStudentDetailsRepository;
+import com.uvtdorms.repository.IUserRepository;
+import com.uvtdorms.repository.dto.request.NewRegisterRequestDto;
 import com.uvtdorms.repository.dto.response.ListedRegisterRequestDto;
 import com.uvtdorms.repository.dto.response.RegisterRequestDto;
 import com.uvtdorms.repository.entity.Dorm;
 import com.uvtdorms.repository.entity.RegisterRequest;
 import com.uvtdorms.repository.entity.Room;
 import com.uvtdorms.repository.entity.StudentDetails;
-import com.uvtdorms.repository.entity.User;
 import com.uvtdorms.repository.entity.enums.RegisterRequestStatus;
 
 import lombok.RequiredArgsConstructor;
@@ -30,6 +33,8 @@ public class RegisterRequestService {
     private final IRoomRepository roomRepository;
     private final EmailService emailService;
     private final ModelMapper modelMapper;
+    private final IDormRepository dormRepository;
+    private final IUserRepository userRepository;
 
     public List<RegisterRequestDto> getRegisterRequestsFromDorm(final Dorm dorm) {
         List<RegisterRequest> registerRequests = registerRequestRepository.findByRoomDorm(dorm);
@@ -91,5 +96,24 @@ public class RegisterRequestService {
         return registerRequestRepository.findByStudent(student).stream()
                 .map((registerRequest) -> modelMapper.map(registerRequest, ListedRegisterRequestDto.class))
                 .collect(Collectors.toList());
+    }
+
+    @SuppressWarnings("null")
+    public void createNewRegisterRequestForExistingStudent(final NewRegisterRequestDto newRegisterRequestDto,
+            final String studentEmail) {
+        
+        StudentDetails student = userRepository.getByEmail(studentEmail)
+                .orElseThrow(() -> new AppException("User not found.", HttpStatus.NOT_FOUND)).getStudentDetails();
+            
+        Dorm dorm = dormRepository.getByDormName(newRegisterRequestDto.dormName());
+        Room room = roomRepository.findByDormAndRoomNumber(dorm, newRegisterRequestDto.roomNumber())
+                .orElseThrow(() -> new AppException("Room not found.", HttpStatus.NOT_FOUND));
+        RegisterRequest newRegisterRequest = RegisterRequest.builder().room(room).student(student)
+                .status(RegisterRequestStatus.RECEIVED).createdOn(LocalDate.now()).build();
+
+        registerRequestRepository.save(newRegisterRequest);
+
+        emailService.sendNewRegisterRequestConfirm(student.getUser().getEmail(),
+                student.getUser().getFirstName() + " " + student.getUser().getLastName());
     }
 }

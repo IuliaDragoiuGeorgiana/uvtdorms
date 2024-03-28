@@ -37,6 +37,7 @@ export class ProfilePageComponent {
     this.userService.getUserDetails().subscribe({
       next: (userDetails) => {
         this.user = userDetails;
+        console.log(userDetails);
       },
       error(err) {
         console.error(err);

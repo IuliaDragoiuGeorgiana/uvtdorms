@@ -4,4 +4,5 @@ export interface UserDetailsDto
     lastName: string;
     email: string;
     phoneNumber: string;
+    profilePicture: string;
 }

@@ -46,4 +46,8 @@ public class User {
     private DormAdministratorDetails dormAdministratorDetails;
 
     private Boolean isActive;
+
+    @Lob
+    private byte[] profilePicture;
+    
 }

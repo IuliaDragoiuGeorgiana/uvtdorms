@@ -7,10 +7,17 @@ import com.uvtdorms.repository.entity.enums.Role;
 import com.uvtdorms.repository.entity.enums.StatusMachine;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import org.apache.commons.io.IOUtils;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -31,6 +38,7 @@ public class InitialDataLoader implements CommandLineRunner {
     private final IDormAdministratorDetailsRepository dormAdministratorDetailsRepository;
     private final PasswordEncoder passwordEncoder;
     private final IRegisterRequestRepository registerRequestRepository;
+    private final ResourceLoader resourceLoader;
 
     private List<String> dormsNamesList = Arrays.asList("C13", "C12");
     private List<String> roomsNamesList = Arrays.asList("127", "128");
@@ -161,7 +169,16 @@ public class InitialDataLoader implements CommandLineRunner {
 
     @SuppressWarnings("null")
     private User createDormAdministrator(String firstName, String lastName, String email, String phoneNumber,
-            String password, Dorm dorm) {
+            String password, Dorm dorm, String profilePictureFileName) {
+        byte[] profilePicture = new byte[0];
+        try {
+            profilePicture = loadImage(profilePictureFileName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Byte array\n" + profilePicture.toString());
+
         User admin = User.builder()
                 .firstName(firstName)
                 .lastName(lastName)
@@ -170,6 +187,7 @@ public class InitialDataLoader implements CommandLineRunner {
                 .password(passwordEncoder.encode(password))
                 .role(Role.ADMINISTRATOR)
                 .isActive(true)
+                .profilePicture(profilePicture)
                 .build();
 
         userRepository.save(admin);
@@ -246,7 +264,7 @@ public class InitialDataLoader implements CommandLineRunner {
     @Transactional
     public void run(String... args) throws Exception {
         Dorm dorm1 = createDorm("D13", "Street1");
-        createDormAdministrator("Tom", "Hanks", "tom.hanks@e-uvt.ro", "0712345678", "hello", dorm1);
+        createDormAdministrator("Tom", "Hanks", "tom.hanks@e-uvt.ro", "0712345678", "hello", dorm1, "user-profile.jpg");
         Room room1 = createRoom("1", dorm1);
         // Room room2 = createRoom("2", dorm1);
         createStudent("Taylor", "Swift", "taylor.swift@e-uvt.ro", "0765891234", "hello", room1, "I2345");
@@ -257,5 +275,12 @@ public class InitialDataLoader implements CommandLineRunner {
         initializeDormsAdministrators();
         initializeMachinesAndDryers();
         initializeAppointments();
+    }
+
+    private byte[] loadImage(String resourceName) throws IOException {
+        Resource resource = resourceLoader.getResource("classpath:images/" + resourceName);
+        try (InputStream inputStream = resource.getInputStream()) {
+            return IOUtils.toByteArray(inputStream);
+        }
     }
 }

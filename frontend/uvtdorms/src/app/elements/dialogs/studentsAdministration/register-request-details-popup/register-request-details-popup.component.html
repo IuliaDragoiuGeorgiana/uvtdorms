@@ -1,0 +1,92 @@
+<h2 mat-dialog-title class="register-request-details-popup-title">Register request details</h2>
+<mat-dialog-content class="mat-typography">
+  <div class="register-request-details-popup-main-container">
+    <div class="register-request-details-names">
+      <div class="register-request-details-names-container">
+        <p class="register-request-details-names-container-content">
+          First name:
+        </p>
+      </div>
+      <div class="register-request-details-names-container">
+        <p class="register-request-details-names-container-content">
+          Last name:
+        </p>
+      </div>
+      <div class="register-request-details-names-container">
+        <p class="register-request-details-names-container-content">Email:</p>
+      </div>
+      <div class="register-request-details-names-container">
+        <p class="register-request-details-names-container-content">
+          Dorm name:
+        </p>
+      </div>
+      <div class="register-request-details-names-container">
+        <p class="register-request-details-names-container-content">
+          Room number:
+        </p>
+      </div>
+      <div class="register-request-details-names-container">
+        <p class="register-request-details-names-container-content">
+          Matriculation number:
+        </p>
+      </div>
+      <div class="register-request-details-names-container">
+        <p class="register-request-details-names-container-content">
+          Phone number:
+        </p>
+      </div>
+      <div class="register-request-details-names-container">
+        <p class="register-request-details-names-container-content">Date:</p>
+      </div>
+    </div>
+    <div class="register-request-details-values">
+      <div class="register-request-details-values-container">
+        <p class="register-request-details-values-container-content">
+          {{ data.firstName }}
+        </p>
+      </div>
+
+      <div class="register-request-details-values-container">
+        <p class="register-request-details-values-container-content">
+          {{ data.lastName }}
+        </p>
+      </div>
+      <div class="register-request-details-values-container">
+        <p class="register-request-details-values-container-content">
+          {{ data.email }}
+        </p>
+      </div>
+      <div class="register-request-details-values-container">
+        <p class="register-request-details-values-container-content">
+          {{ data.dormName }}
+        </p>
+      </div>
+      <div class="register-request-details-values-container">
+        <p class="register-request-details-values-container-content">
+          {{ data.roomNumber }}
+        </p>
+      </div>
+      <div class="register-request-details-values-container">
+        <p class="register-request-details-values-container-content">
+          {{ data.matriculationNumber }}
+        </p>
+      </div>
+      <div class="register-request-details-values-container">
+        <p class="register-request-details-values-container-content">
+          {{ data.phoneNumber }}
+        </p>
+      </div>
+      <div class="register-request-details-values-container">
+        <p class="register-request-details-values-container-content">
+          {{ data.createdOn }}
+        </p>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <div class="register-request-popup-actions">
+    <button class="register-request-popup-actions-decline" mat-button (click)="decline()">Decline</button>
+    <button class="register-request-popup-actions-accept" mat-button (click)="accept()">Accept</button>
+  </div>
+</mat-dialog-actions>

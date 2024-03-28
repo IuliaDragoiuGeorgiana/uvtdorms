@@ -1,0 +1,9 @@
+.dialog-new-request-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.button-submit-new-request {
+  background-color: var(--uvt-blue);
+  color: white !important;
+}

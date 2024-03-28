@@ -1,7 +1,15 @@
-/* You can add global styles to this file, and also import other style files */
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+@import "primeicons/primeicons.css";
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;  
+}  
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 /* .mdc-evolution-chip-set__chips
 {
@@ -9,14 +17,13 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     grid-template-columns: repeat(2, 1fr);
 } */
 
-*
-{
-    box-sizing: border-box;
-    margin: 0;
+* {
+  box-sizing: border-box;
+  /* margin: 0; */
 }
 
 :root {
-    --uvt-blue: rgb(46, 113, 184);
-    --uvt-yellow: rgb(228, 172, 34);
-    --uvt-gray:  rgb(240, 240, 240);
-  }
+  --uvt-blue: rgb(46, 113, 184);
+  --uvt-yellow: rgb(228, 172, 34);
+  --uvt-gray: rgb(240, 240, 240);
+}

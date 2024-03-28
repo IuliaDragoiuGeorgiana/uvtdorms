@@ -1,0 +1,34 @@
+<h2 class="edit-room-number-dialog-title">Edit room</h2>
+<mat-dialog-content class="mat-typography">
+  <div class="edit-room-number-dialog-main-container">
+    <form [formGroup]="editRoomNumberForm"
+    (ngSubmit)="onEditRoomNumber()">
+      <mat-form-field appearance="fill">
+        <mat-label>Room number</mat-label>
+        <input
+          matInput
+          type="number"
+          formControlName="roomNumber"
+          placeholder="Enter room number"
+        />
+        <mat-error
+          *ngIf="
+            roomNumber?.invalid && (roomNumber?.dirty || roomNumber?.touched)
+          "
+        >
+          <span *ngIf="roomNumber?.errors?.['required']"
+            >Room number is required</span
+          >
+          <span *ngIf="roomNumber?.errors?.['invalidRoomNumber']"
+            >Invalid room number</span 
+          >
+        </mat-error>
+      </mat-form-field>
+    </form>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onEditRoomNumber()" class="edit-room-submit-button">
+    Save
+  </button>
+</mat-dialog-actions>

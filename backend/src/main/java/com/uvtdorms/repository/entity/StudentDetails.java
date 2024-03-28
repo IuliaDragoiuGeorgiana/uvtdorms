@@ -2,6 +2,7 @@ package com.uvtdorms.repository.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,9 +15,9 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Builder
 @Table(name = "students_details")
 public class StudentDetails {
-    private String cnp;
     private String matriculationNumber;
 
     @Id
@@ -35,8 +36,10 @@ public class StudentDetails {
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     private List<LaundryAppointment> laundryAppointments;
 
-    public StudentDetails(String cnp, String matriculationNumber, User user, Room room) {
-        this.cnp = cnp;
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    private List<RegisterRequest> studentRegisterRequests;
+
+    public StudentDetails(String matriculationNumber, User user, Room room) {
         this.matriculationNumber = matriculationNumber;
         this.user = user;
         this.room = room;

@@ -1,0 +1,294 @@
+<div class="login-page-main-container">
+  <div class="login-page-login-container">
+    <div class="left-container">
+      <div class="left-container-header">
+        <h1 class="left-container-header-content">Login</h1>
+      </div>
+
+      <div class="left-container-content">
+        <form
+          [formGroup]="loginForm"
+          (ngSubmit)="onLogin()"
+          class="form-container"
+        >
+          <div class="form-inputs">
+            <mat-form-field class="form-container-input" appearance="fill">
+              <mat-label>Email</mat-label>
+              <input
+                matInput
+                formControlName="email"
+                placeholder="Enter your email"
+              />
+              <mat-error
+                *ngIf="
+                  loginEmail?.invalid &&
+                  (loginEmail?.dirty || loginEmail?.touched)
+                "
+              >
+                <span *ngIf="loginEmail?.errors?.['required']"
+                  >Email is required</span
+                >
+                <span *ngIf="loginEmail?.errors?.['email']"
+                  >Please enter a valid email address</span
+                >
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="form-container-input" appearance="fill">
+              <mat-label>Password</mat-label>
+              <input
+                matInput
+                formControlName="password"
+                [type]="hide ? 'password' : 'text'"
+                placeholder="Enter your password"
+              />
+              <mat-error
+                *ngIf="
+                  password?.invalid && (password?.dirty || password?.touched)
+                "
+              >
+                Password is required
+              </mat-error>
+              <button
+                type="button"
+                mat-icon-button
+                matSuffix
+                (click)="hide = !hide"
+              >
+                <mat-icon>{{
+                  hide ? "visibility_off" : "visibility"
+                }}</mat-icon>
+              </button>
+            </mat-form-field>
+          </div>
+          <div class="form-actions">
+            <button
+              class="button-login"
+              mat-raised-button
+              color="primary"
+              type="submit"
+            >
+              Login
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="right-container">
+      <div class="right-container-header">
+        <h1 class="right-container-header-content">Sign up</h1>
+      </div>
+      <div class="right-container-content">
+        <form
+          [formGroup]="registerForm"
+          (ngSubmit)="onRegister()"
+          class="register-form-container"
+        >
+          <div class="form-inputs register-form-inputs">
+            <mat-form-field
+              class="form-container-input register-form-container-input"
+              appearance="fill"
+            >
+              <mat-label>Email</mat-label>
+              <input
+                matInput
+                formControlName="email"
+                placeholder="Enter your email"
+              />
+              <mat-error
+                *ngIf="
+                  registerEmail?.invalid &&
+                  (registerEmail?.dirty || registerEmail?.touched)
+                "
+              >
+                <span *ngIf="registerEmail?.errors?.['required']"
+                  >Email is required</span
+                >
+                <span *ngIf="registerEmail?.errors?.['email']"
+                  >Please enter a valid email address</span
+                >
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field
+              class="form-container-input register-form-container-input"
+              appearance="fill"
+            >
+              <mat-label>First name</mat-label>
+              <input
+                matInput
+                formControlName="firstName"
+                placeholder="Enter your first name"
+              />
+              <mat-error
+                *ngIf="
+                  firstName?.invalid && (firstName?.dirty || firstName?.touched)
+                "
+              >
+                <span *ngIf="firstName?.errors?.['required']"
+                  >First name is required</span
+                >
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field
+              class="form-container-input register-form-container-input"
+              appearance="fill"
+            >
+              <mat-label>Last name</mat-label>
+              <input
+                matInput
+                formControlName="lastName"
+                placeholder="Enter your last name"
+              />
+              <mat-error
+                *ngIf="
+                  lastName?.invalid && (lastName?.dirty || lastName?.touched)
+                "
+              >
+                <span *ngIf="lastName?.errors?.['required']"
+                  >Last name is required</span
+                >
+              </mat-error>
+            </mat-form-field>
+
+            <div class="register-form-combined-inputs">
+              <mat-form-field
+                class="form-container-input form-container-combined-input register-form-container-input"
+                appearance="fill"
+              >
+                <mat-label>Dorm name</mat-label>
+                <mat-select
+                  (selectionChange)="onDormSelected()"
+                  formControlName="dormName"
+                >
+                  <mat-option
+                    *ngFor="let dormName of dormsNames"
+                    [value]="dormName"
+                    >{{ dormName }}</mat-option
+                  >
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field
+                class="form-container-input form-container-combined-input register-form-container-input"
+                appearance="fill"
+              >
+                <mat-label>Room number</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  formControlName="roomNumber"
+                  placeholder="Enter room number"
+                />
+                <mat-error
+                  *ngIf="
+                    roomNumber?.invalid &&
+                    (roomNumber?.dirty || roomNumber?.touched)
+                  "
+                >
+                  <span *ngIf="roomNumber?.errors?.['required']"
+                    >Room number is required</span
+                  >
+                  <span *ngIf="roomNumber?.errors?.['invalidRoomNumber']"
+                    >Invalid room number</span
+                  >
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <mat-form-field
+              class="form-container-input register-form-container-input"
+              appearance="fill"
+            >
+              <mat-label>Matriculation number</mat-label>
+              <input
+                matInput
+                formControlName="matriculationNumber"
+                placeholder="Enter your matriculation number"
+              />
+              <mat-error
+                *ngIf="
+                  matriculationNumber?.invalid &&
+                  (matriculationNumber?.dirty || matriculationNumber?.touched)
+                "
+              >
+                <span *ngIf="matriculationNumber?.errors?.['required']"
+                  >Matriculation number is required</span
+                >
+                <span *ngIf="matriculationNumber?.errors?.['pattern']"
+                  >Matriculation number is invalid</span
+                >
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field
+              class="form-container-input register-form-container-input"
+              appearance="fill"
+            >
+              <mat-label>Phone number</mat-label>
+              <input
+                matInput
+                formControlName="phoneNumber"
+                placeholder="Enter your phone number"
+              />
+              <mat-error
+                *ngIf="
+                  phoneNumber?.invalid &&
+                  (phoneNumber?.dirty || phoneNumber?.touched)
+                "
+              >
+                <span *ngIf="phoneNumber?.errors?.['required']"
+                  >Phone number is required</span
+                >
+                <span *ngIf="phoneNumber?.errors?.['pattern']"
+                  >Phone number is invalid</span
+                >
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="register-form-actions">
+            <button
+              class="button-login"
+              mat-raised-button
+              color="primary"
+              type="submit"
+            >
+              Sign up
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div
+      class="login-panel-slider"
+      [ngClass]="{ showLogin: showLogin, showRegister: !showLogin }"
+    >
+      <div class="login-panel-slider-header"></div>
+      <div class="login-panel-slider-content">
+        <div class="login-panel-slider-content-text">
+          <h1 class="login-panel-slider-text1">
+            {{ showLogin ? "Welcome to Login!" : "Welcome to UVTDorms" }}
+          </h1>
+          <h1 class="login-panel-slider-text2">
+            {{
+              showLogin ? "Don 't have an account?" : "Already have an account?"
+            }}
+          </h1>
+        </div>
+        <div class="login-panel-slider-content-actions">
+          <button
+            class="button-sign-up"
+            (click)="showLogin = !showLogin"
+            mat-raised-button
+            color="primary"
+            type="submit"
+          >
+            {{ showLogin ? "Sign up" : "Login" }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

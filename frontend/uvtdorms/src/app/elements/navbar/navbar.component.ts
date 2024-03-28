@@ -1,18 +1,37 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { UserService } from '../../services/user.service';
+import { Role } from '../../enums/role';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.css'
+  styleUrl: './navbar.component.css',
 })
 export class NavbarComponent {
-  homePath: string = '/home';
+  loginPagePath: string = '/login';
   laundryAppointmentsPath = '/laundry-appointments';
 
-  constructor(private router: Router){}
+  constructor(private router: Router, private userSevice: UserService) {}
 
   navigateTo(route: string): void {
     this.router.navigate([route]);
+  }
+
+  role(): Role | null {
+    return this.userSevice.getRole();
+  }
+
+  isStudent(): boolean {
+    return this.role() === Role.STUDENT;
+  }
+  isDormAdmistrator(): boolean{
+    return this.role() === Role.ADMINISTRATOR;
+
+  }
+
+  logout() {
+    this.userSevice.logout();
+    this.router.navigate([this.loginPagePath]);
   }
 }

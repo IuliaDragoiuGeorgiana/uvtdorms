@@ -17,6 +17,8 @@ import com.uvtdorms.repository.IUserRepository;
 import com.uvtdorms.repository.entity.User;
 import com.uvtdorms.services.interfaces.IUserService;
 
+import jakarta.transaction.Transactional;
+
 @Service
 @RequiredArgsConstructor
 public class UserService implements IUserService {
@@ -41,6 +43,7 @@ public class UserService implements IUserService {
         return token;
     }
 
+    
     public UserDetailsDto getUserDetails(final String email) {
         User user = userRepository.getByEmail(email)
                 .orElseThrow(() -> new AppException("User not found!", HttpStatus.NOT_FOUND));

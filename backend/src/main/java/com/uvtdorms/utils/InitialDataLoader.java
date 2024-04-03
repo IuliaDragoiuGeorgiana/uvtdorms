@@ -176,9 +176,6 @@ public class InitialDataLoader implements CommandLineRunner {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        System.out.println("Byte array\n" + profilePicture.toString());
-
         User admin = User.builder()
                 .firstName(firstName)
                 .lastName(lastName)
@@ -204,7 +201,14 @@ public class InitialDataLoader implements CommandLineRunner {
 
     @SuppressWarnings("null")
     private void createRegisterRequest(String firstName, String lastName, String email, String phoneNumber,
-            String password, Room room, String matriculationNumber) {
+            String password, Room room, String matriculationNumber,String profilePictureFileName) {
+                byte[] profilePicture = new byte[0];
+        try {
+            profilePicture = loadImage(profilePictureFileName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         User user = User.builder()
                 .firstName(firstName)
                 .lastName(lastName)
@@ -213,6 +217,7 @@ public class InitialDataLoader implements CommandLineRunner {
                 .password(passwordEncoder.encode(password))
                 .isActive(false)
                 .role(Role.STUDENT)
+                .profilePicture(profilePicture)
                 .build();
 
         userRepository.save(user);
@@ -236,7 +241,14 @@ public class InitialDataLoader implements CommandLineRunner {
 
     @SuppressWarnings("null")
     private StudentDetails createStudent(String firstName, String lastName, String email, String phoneNumber,
-            String password, Room room, String matriculationNumber) {
+            String password, Room room, String matriculationNumber, String profilePictureFileName) {
+                byte[] profilePicture = new byte[0];
+        try {
+            profilePicture = loadImage(profilePictureFileName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         User user = User.builder()
                 .firstName(firstName)
                 .lastName(lastName)
@@ -245,6 +257,7 @@ public class InitialDataLoader implements CommandLineRunner {
                 .password(passwordEncoder.encode(password))
                 .isActive(true)
                 .role(Role.STUDENT)
+                .profilePicture(profilePicture)
                 .build();
 
         userRepository.save(user);
@@ -267,8 +280,8 @@ public class InitialDataLoader implements CommandLineRunner {
         createDormAdministrator("Tom", "Hanks", "tom.hanks@e-uvt.ro", "0712345678", "hello", dorm1, "user-profile.jpg");
         Room room1 = createRoom("1", dorm1);
         // Room room2 = createRoom("2", dorm1);
-        createStudent("Taylor", "Swift", "taylor.swift@e-uvt.ro", "0765891234", "hello", room1, "I2345");
-        createRegisterRequest("Vin", "Diesel", "vin.diesel@e-uvt.ro", "0789123456", "hello", room1, "I1234");
+        createStudent("Taylor", "Swift", "taylor.swift@e-uvt.ro", "0765891234", "hello", room1, "I2345","user-profile.jpg");
+        createRegisterRequest("Vin", "Diesel", "vin.diesel@e-uvt.ro", "0789123456", "hello", room1, "I1234","user-profile.jpg");
         initializeDorms();
         initializeRooms();
         initializeStudents();

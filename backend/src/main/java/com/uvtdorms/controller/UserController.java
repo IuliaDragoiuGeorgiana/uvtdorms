@@ -20,12 +20,8 @@ public class UserController {
 
     @GetMapping("/get-user-details")
     public ResponseEntity<UserDetailsDto> getUserDetails(Authentication authentication) {
-        System.out.println("\n\nIn controller\n\n");
         TokenDto userToken = (TokenDto) authentication.getPrincipal();
         UserDetailsDto userDetailsDto = userService.getUserDetails(userToken.getEmail());
-
-        System.out.println(userDetailsDto.toString());
-
         return ResponseEntity.ok(userDetailsDto);
     }
 }

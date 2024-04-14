@@ -52,6 +52,7 @@ import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { NewRegisterRequestDialogComponent } from './elements/dialogs/new-register-request-dialog/new-register-request-dialog.component';
+import { RemoveStudentFromDormDialogComponent } from './elements/dialogs/remove-student-from-dorm-dialog/remove-student-from-dorm-dialog.component';
 
 @NgModule({
   declarations: [
@@ -67,6 +68,7 @@ import { NewRegisterRequestDialogComponent } from './elements/dialogs/new-regist
     RegisterRequestDetailsPopupComponent,
     EditRoomNumberDialogComponent,
     NewRegisterRequestDialogComponent,
+    RemoveStudentFromDormDialogComponent,
   ],
   imports: [
     BrowserModule,

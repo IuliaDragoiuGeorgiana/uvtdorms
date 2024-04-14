@@ -14,6 +14,7 @@ import { RoomService } from '../../services/room.service';
 import { DormService } from '../../services/dorm.service';
 import { MatDialog } from '@angular/material/dialog';
 import { NewRegisterRequestDialogComponent } from '../../elements/dialogs/new-register-request-dialog/new-register-request-dialog.component';
+import { Role } from '../../enums/role';
 
 @Component({
   selector: 'app-profile-page',
@@ -69,5 +70,18 @@ export class ProfilePageComponent {
 
   showRegisterRequestDialog() {
     this.dialog.open(NewRegisterRequestDialogComponent);
+  }
+
+  role(): Role | null {
+    return this.userService.getRole();
+  }
+
+  isStudent(): boolean {
+    console.log(this.role());
+    return this.role() === Role.STUDENT;
+  }
+
+  isInactivStudent(): boolean {
+    return this.role() === Role.INACTIV_STUDENT;
   }
 }

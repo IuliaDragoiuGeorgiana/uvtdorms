@@ -22,6 +22,7 @@ import com.uvtdorms.repository.entity.RegisterRequest;
 import com.uvtdorms.repository.entity.Room;
 import com.uvtdorms.repository.entity.StudentDetails;
 import com.uvtdorms.repository.entity.enums.RegisterRequestStatus;
+import com.uvtdorms.repository.entity.enums.Role;
 
 import lombok.RequiredArgsConstructor;
 
@@ -47,11 +48,14 @@ public class RegisterRequestService {
 
     public void acceptRegisterRequest(final RegisterRequestDto registerRequestDto) throws AppException {
         RegisterRequest registerRequest = getRegisterRequestByRegisterRequestDto(registerRequestDto);
+        
 
         if (registerRequest.getStatus() != RegisterRequestStatus.RECEIVED) {
             throw new AppException("Invalid registration request!", HttpStatus.BAD_REQUEST);
         }
-
+        
+        registerRequest.getStudent().setRoom(registerRequest.getRoom());
+        registerRequest.getStudent().getUser().setRole(Role.STUDENT);
         registerRequest.setStatus(RegisterRequestStatus.ACCEPTED);
 
         registerRequestRepository.save(registerRequest);

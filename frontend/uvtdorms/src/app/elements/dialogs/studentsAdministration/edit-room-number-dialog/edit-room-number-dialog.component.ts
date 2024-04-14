@@ -60,6 +60,7 @@ export class EditRoomNumberDialogComponent {
     this.studentDetailsService.updateRoomNumber(editRoomDto).subscribe({
       next: () => {
         console.log('room number updated');
+        window.location.reload();
       },
       error: (error) => {
         console.log(error);

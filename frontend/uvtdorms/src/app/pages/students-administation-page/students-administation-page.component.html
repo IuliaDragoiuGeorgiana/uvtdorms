@@ -53,46 +53,46 @@
           class="right-container-content-table"
         >
           <ng-container matColumnDef="First name">
-            <th mat-header-cell *matHeaderCellDef>First name</th>
-            <td mat-cell *matCellDef="let element">{{ element.firstName }}</td>
+            <th mat-header-cell class="students-table-header" *matHeaderCellDef>First name</th>
+            <td mat-cell class="student-table-cell-content"  *matCellDef="let element">{{ element.firstName }}</td>
           </ng-container>
 
           <ng-container matColumnDef="Last name">
-            <th mat-header-cell *matHeaderCellDef>Last name</th>
-            <td mat-cell *matCellDef="let element">{{ element.lastName }}</td>
+            <th mat-header-cell class="students-table-header"*matHeaderCellDef>Last name</th>
+            <td mat-cell class="student-table-cell-content" *matCellDef="let element">{{ element.lastName }}</td>
           </ng-container>
 
           <ng-container matColumnDef="Email">
-            <th mat-header-cell *matHeaderCellDef>Email</th>
-            <td mat-cell *matCellDef="let element">{{ element.email }}</td>
+            <th mat-header-cell class="students-table-header" *matHeaderCellDef>Email</th>
+            <td mat-cell  class="student-table-cell-content" *matCellDef="let element">{{ element.email }}</td>
           </ng-container>
 
           <ng-container matColumnDef="Dorm name">
-            <th mat-header-cell *matHeaderCellDef>Dorm name</th>
-            <td mat-cell *matCellDef="let element">{{ element.dormName }}</td>
+            <th mat-header-cell class="students-table-header" *matHeaderCellDef>Dorm name</th>
+            <td mat-cell class="student-table-cell-content"  *matCellDef="let element">{{ element.dormName }}</td>
           </ng-container>
 
           <ng-container matColumnDef="Room number">
-            <th mat-header-cell *matHeaderCellDef>Room number</th>
-            <td mat-cell *matCellDef="let element">{{ element.roomNumber }}</td>
+            <th mat-header-cell class="students-table-header" *matHeaderCellDef>Room number</th>
+            <td mat-cell class="student-table-cell-content" *matCellDef="let element">{{ element.roomNumber }}</td>
           </ng-container>
           <ng-container matColumnDef="Matriculation number">
-            <th mat-header-cell *matHeaderCellDef>Matriculation number</th>
-            <td mat-cell *matCellDef="let element">
+            <th mat-header-cell class="students-table-header" *matHeaderCellDef>Matriculation number</th>
+            <td mat-cell class="student-table-cell-content" *matCellDef="let element">
               {{ element.matriculationNumber }}
             </td>
           </ng-container>
 
           <ng-container matColumnDef="Phone number">
-            <th mat-header-cell *matHeaderCellDef>Phone number</th>
-            <td mat-cell *matCellDef="let element">
+            <th mat-header-cell class="students-table-header" *matHeaderCellDef>Phone number</th>
+            <td mat-cell class="student-table-cell-content" *matCellDef="let element">
               {{ element.phoneNumber }}
             </td>
           </ng-container>
 
           <ng-container matColumnDef="Edit">
-            <th mat-header-cell *matHeaderCellDef>Edit</th>
-            <td mat-cell *matCellDef="let element">
+            <th class="students-table-header" mat-header-cell *matHeaderCellDef>Edit</th>
+            <td mat-cell class="student-table-cell-content" *matCellDef="let element">
               <button  (click)="openEditRoomNumberDialog(element)" mat-button class="student-table-edit-button">
                 <mat-icon class="student-table-edit-button-icon">edit</mat-icon>
               </button>
@@ -100,9 +100,9 @@
           </ng-container>
 
           <ng-container matColumnDef="Remove">
-            <th mat-header-cell *matHeaderCellDef>Remove</th>
-            <td mat-cell *matCellDef="let element">
-              <button mat-button class="student-table-remove-button">
+            <th mat-header-cell class="students-table-header" *matHeaderCellDef>Remove from dorm</th>
+            <td mat-cell class="student-table-cell-content" *matCellDef="let element">
+              <button (click)="openRemoveStudentFromDormDialog(element)" mat-button class="student-table-remove-button">
                 <mat-icon class="student-table-remove-button-icon">delete_outline</mat-icon>
               </button>
             </td>

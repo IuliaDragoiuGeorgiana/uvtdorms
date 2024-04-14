@@ -5,6 +5,8 @@ import { DormId } from '../interfaces/dorm-id';
 import { AuthService } from './auth.service';
 import { StudentDetailsDto } from '../interfaces/student-details-dto';
 import { EditRoomDto } from '../interfaces/edit-room-dto';
+import { RemoveStudentDialogData } from '../interfaces/remove-student-dialog-data';
+import { User } from '../interfaces/user';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +17,7 @@ export class StudentDetailsService {
   private getStudentDormIdUrl = '/get-student-dorm-id';
   private getAllStudentsFromDormUrl = '/get-all-students-from-dorm';
   private updateRoomNumberUrl = '/update-room-number';
+  private removeStudentFromDormUrl = '/delete-student-from-dorm';
 
   constructor(private http: HttpClient, private auth: AuthService) {}
 
@@ -35,6 +38,14 @@ export class StudentDetailsService {
     return this.http.post<void>(
       this.studentsDetailsServiceUrl + this.updateRoomNumberUrl,
       editRoomDto,
+      { headers: this.auth.getHeader() }
+    );
+  }
+
+  deleteStudentFromDorm(user:User): Observable<void> {
+    return this.http.post<void>(
+      this.studentsDetailsServiceUrl + this.removeStudentFromDormUrl,
+      user,
       { headers: this.auth.getHeader() }
     );
   }

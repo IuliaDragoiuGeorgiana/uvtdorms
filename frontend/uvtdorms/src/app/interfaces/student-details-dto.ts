@@ -1,6 +1,6 @@
-import { UserDetailsDto } from "./user-details-dto";
+import { UserDetailsWithoutPictureDto } from "./user-details-without-picture-dto";
 
-export interface StudentDetailsDto extends UserDetailsDto
+export interface StudentDetailsDto extends UserDetailsWithoutPictureDto
 {
     dormName: string;
     roomNumber: string;

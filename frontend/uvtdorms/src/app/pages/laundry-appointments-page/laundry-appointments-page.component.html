@@ -7,12 +7,11 @@
         </div>
         <form
             [formGroup]="laundryAppointmentForm"
-            (submit)="makeAppointment()"
             class="laundry-appointments-form-content">
             <div class="laundry-appointments-form-content-left">
                 <div class="laundry-appointments-form-content-left-days">
                     <mat-tab-group [selectedIndex]="currentDay"
-                                (selectedIndexChange)="selectedDay.setValue($event)">
+                                (selectedIndexChange)="selectedDay.setValue($event); updateIntervals();">
                         @for (tab of tabs; track tab; let index = $index) {
                             <mat-tab [label]="tab" [disabled]="index < currentDay">
                             </mat-tab>
@@ -51,7 +50,8 @@
                     <div class="laundry-appointments-form-content-intervals-container-content">
                         <div
                             *ngFor="let interval of intervals"
-                            [ngClass]="{'available-interval': isIntervalAvailable(interval), 'unavailable-interval': !isIntervalAvailable(interval)}"
+                            [ngClass]="{'available-interval': isIntervalAvailable(interval), 'unavailable-interval': !isIntervalAvailable(interval), 'selected-interval': isIntervalSelected(interval)}"
+                            (click)="selectInterval(interval)"
                             class="laundry-appointments-form-content-interval">
                             <h2 class="laundry-appointments-form-content-interval-text">
                                 {{ interval }}:00
@@ -64,6 +64,7 @@
         <div class="laundry-appointments-form-footer">
             <button
                 mat-raised-button
+                (click)="makeAppointment()"
                 class="laundry-appointments-form-submit-button">
                 Make an appointment
             </button>

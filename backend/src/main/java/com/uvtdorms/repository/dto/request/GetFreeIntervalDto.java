@@ -5,11 +5,13 @@ import java.time.LocalDate;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class FreeIntervalDto {
+@ToString // For testing purposes. Remove this later.
+public class GetFreeIntervalDto {
     String dormId;
     LocalDate date;
     String washingMachineId;

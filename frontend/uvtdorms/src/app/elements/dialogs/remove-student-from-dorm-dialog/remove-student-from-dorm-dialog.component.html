@@ -1,0 +1,9 @@
+<h2 class="remove-student-from-dorm-dialog-title">Confirm</h2>
+<div class="remove-student-from-dorm-dialog-content">
+    <p>Are you sure you want to remove {{data.firstName}} {{data.lastName}} from the {{data.dormName}} dorm?</p>
+</div>
+<mat-dialog-actions align="end">
+    <button mat-button (click)="onRemoveStudentFromRoom()" class="remove-student-from-dorm-dialog-button-submit">
+    Remove
+    </button>
+</mat-dialog-actions>

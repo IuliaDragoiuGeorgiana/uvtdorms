@@ -2,6 +2,7 @@ export enum Role {
   STUDENT,
   ADMINISTRATOR,
   ADMINISTRATOR_A,
+  INACTIV_STUDENT,
 }
 
 export function convertStringRoleToEnum(value: string): Role | undefined {

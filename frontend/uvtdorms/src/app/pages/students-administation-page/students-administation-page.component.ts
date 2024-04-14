@@ -8,6 +8,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { RegisterRequestService } from '../../services/register-request.service';
 import { StudentDetailsService } from '../../services/student-details.service';
 import { EditRoomNumberDialogComponent } from '../../elements/dialogs/studentsAdministration/edit-room-number-dialog/edit-room-number-dialog.component';
+import { RemoveStudentFromDormDialogComponent } from '../../elements/dialogs/remove-student-from-dorm-dialog/remove-student-from-dorm-dialog.component';
 
 @Component({
   selector: 'app-students-administation-page',
@@ -84,6 +85,16 @@ export class StudentsAdministationPageComponent implements AfterViewInit {
         dormName: student.dormName,
       },
     });
+  }
+  openRemoveStudentFromDormDialog(student: StudentDetailsDto): void {
+    this.dialog.open(RemoveStudentFromDormDialogComponent, {
+      data: {
+        studentEmail: student.email,
+        firstName: student.firstName,
+        lastName: student.lastName,
+        dormName: student.dormName,
+      },
+    })
   }
 
   applyFilter(event: Event): void {

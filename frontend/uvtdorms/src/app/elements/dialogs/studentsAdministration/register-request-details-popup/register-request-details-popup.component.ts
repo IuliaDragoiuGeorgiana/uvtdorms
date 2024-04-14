@@ -25,7 +25,7 @@ export class RegisterRequestDetailsPopupComponent {
         console.error(error);
       },
       next: () => {
-        console.info('Register request declined!');
+        window.location.reload();
       },
     });
   }
@@ -36,7 +36,7 @@ export class RegisterRequestDetailsPopupComponent {
         console.error(error);
       },
       next: () => {
-        console.info('Register request accepted!');
+        window.location.reload();
       },
     });
   }

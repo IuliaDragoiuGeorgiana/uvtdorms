@@ -204,3 +204,13 @@
   padding: 0;
   color: white;
 }
+
+.students-table-header
+{
+  text-align: center;
+}
+
+.student-table-cell-content
+{
+  text-align: center;
+}

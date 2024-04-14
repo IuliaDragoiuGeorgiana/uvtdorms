@@ -9,6 +9,7 @@ import com.uvtdorms.repository.IUserRepository;
 import com.uvtdorms.repository.dto.request.EditRoomDto;
 import com.uvtdorms.repository.dto.request.RegisterStudentDto;
 import com.uvtdorms.repository.dto.response.DormIdDto;
+import com.uvtdorms.repository.dto.response.EmailDto;
 import com.uvtdorms.repository.dto.response.StudentDetailsDto;
 import com.uvtdorms.repository.entity.Dorm;
 import com.uvtdorms.repository.entity.RegisterRequest;
@@ -149,4 +150,13 @@ public class StudentDetailsService implements IStudentDetailsService {
                 studentDetailsRepository.save(student);
 
         }
+
+        public void deleteFromDorm(EmailDto emailDto) {
+                StudentDetails student = studentDetailsRepository.findByUserEmail(emailDto.getEmail())
+                                .orElseThrow(() -> new AppException("Student not found", HttpStatus.NOT_FOUND));
+                student.getUser().setRole(Role.INACTIV_STUDENT);
+                student.setRoom(null);
+                studentDetailsRepository.save(student);
+        }
+
 }

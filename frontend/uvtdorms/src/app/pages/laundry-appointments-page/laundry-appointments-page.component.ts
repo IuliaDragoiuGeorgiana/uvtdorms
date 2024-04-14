@@ -1,7 +1,5 @@
-import { Component, ViewChild } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { Component } from '@angular/core';
 import { WashingMachine } from '../../interfaces/washing-machine';
-import { timeInterval } from '../../interfaces/time-interval';
 import { Dryer } from '../../interfaces/dryer';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { AppointmentService } from '../../services/appointment.service';
@@ -9,11 +7,9 @@ import { WashingMachineService } from '../../services/washing-machine.service';
 import { DryerService } from '../../services/dryer.service';
 import { StudentDetailsService } from '../../services/student-details.service';
 import { format } from 'date-fns';
-import { start } from 'repl';
-import { machine } from 'os';
-import { MatInput } from '@angular/material/input';
-import { UserService } from '../../services/user.service';
-import { combineLatest } from 'rxjs';
+import { GetFreeIntervalsDto } from '../../interfaces/get-free-intervals-dto';
+import { FreeIntervalsDto } from '../../interfaces/free-intervals-dto';
+import { CreateLaundryAppointmentDto } from '../../interfaces/create-laundry-appointment-dto';
 
 interface MachinePair {
   washingMachine: WashingMachine;
@@ -26,14 +22,14 @@ interface MachinePair {
   styleUrl: './laundry-appointments-page.component.css',
 })
 export class LaundryAppointmentsPageComponent {
-  washingMachines: WashingMachine[] = [];
-  dryers: Dryer[] = [];
-  machines: MachinePair[] = [];
-  timeIntervals: timeInterval[] = [];
-  selectedMachines: MachinePair | null = null;
-  @ViewChild('dryer') dryer!: MatInput;
+  private washingMachines: WashingMachine[] = [];
+  private dryers: Dryer[] = [];
+  public machines: MachinePair[] = [];
+  private availableIntervals: number[] = [];
+  public selectedMachines: MachinePair | null = null;
+  private selectedInterval: number = 0;
 
-  tabs = [
+  public tabs = [
     'Sunday',
     'Monday',
     'Tuesday',
@@ -42,35 +38,27 @@ export class LaundryAppointmentsPageComponent {
     'Friday',
     'Saturday',
   ];
-  currentDay = new Date().getDay();
-  selectedDay = new FormControl(this.currentDay);
-  intervals = [8, 10, 12, 14, 16, 18, 20];
+  public currentDay = new Date().getDay();
+  public selectedDay = new FormControl(this.currentDay);
+  public intervals = [8, 10, 12, 14, 16, 18, 20];
 
-  dormId: string = '';
+  private dormId: string = '';
   laundryAppointmentForm = this.formBuilder.group({
     selectedMachineId: ['', Validators.required],
     selectedDryerId: ['', Validators.required],
-    selectedDate: [this.getTomorrowDate() || '', Validators.required],
+    selectedDate: [Date.now() || '', Validators.required],
     selectedIntervalStartHour: [0, Validators.required],
   });
 
   constructor(
-    private snackBar: MatSnackBar,
     private formBuilder: FormBuilder,
     private appointmentService: AppointmentService,
     private washingMachineService: WashingMachineService,
     private dryerService: DryerService,
-    private studentService: StudentDetailsService,
-    private userService: UserService
+    private studentService: StudentDetailsService
   ) {}
 
   ngOnInit() {
-    if (this.timeIntervals && this.timeIntervals.length > 0) {
-      this.laundryAppointmentForm
-        .get('selectedIntervalStartHour')
-        ?.setValue(this.timeIntervals[0].startHour);
-    }
-
     this.studentService.getStudentDormId().subscribe({
       next: (dormId) => {
         this.dormId = dormId.id;
@@ -83,7 +71,7 @@ export class LaundryAppointmentsPageComponent {
     });
   }
 
-  getWashingMachines(): void {
+  private getWashingMachines(): void {
     this.washingMachineService
       .getWashingMachinesFromDorm(this.dormId)
       .subscribe({
@@ -97,7 +85,7 @@ export class LaundryAppointmentsPageComponent {
       });
   }
 
-  getDryers(): void {
+  private getDryers(): void {
     this.dryerService.getDryerFromDorm(this.dormId).subscribe({
       next: (dryers) => {
         this.dryers = dryers;
@@ -109,7 +97,7 @@ export class LaundryAppointmentsPageComponent {
     });
   }
 
-  joinMachines(): void {
+  private joinMachines(): void {
     for (
       let i = 0;
       i < this.washingMachines.length && i < this.dryers.length;
@@ -122,114 +110,82 @@ export class LaundryAppointmentsPageComponent {
     }
   }
 
-  getTomorrowDate(): Date {
-    const date = new Date();
-    date.setDate(date.getDate() + 1);
+  public makeAppointment(): void {
+    this.selectedMachines = this.getSelectedMachines();
+    this.laundryAppointmentForm.value.selectedDryerId =
+      this.selectedMachines?.dryer.id;
 
-    return date;
-  }
-
-  datePickerFilter = (d: Date | null): boolean => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    const startOfWeek = new Date(today);
-    startOfWeek.setDate(
-      today.getDate() - today.getDay() + (today.getDay() === 0 ? -6 : 1)
-    );
-
-    const endOfWeek = new Date(startOfWeek);
-    endOfWeek.setDate(startOfWeek.getDate() + 6);
-
-    const date = d || new Date();
-    return (
-      date >= startOfWeek &&
-      date <= endOfWeek &&
-      date.getDay() !== 0 &&
-      date >= today
-    );
-  };
-
-  onDateChange(newDate: Date | null) {
-    this.laundryAppointmentForm.get('selectedDate')?.setValue(newDate);
-  }
-
-  makeAppointment(): void {
+    console.log(this.laundryAppointmentForm.value);
     if (!this.laundryAppointmentForm.valid) return;
-    if (
-      this.laundryAppointmentForm.get('selectedIntervalStartHour')?.value === 0
-    ) {
-      this.openSnackBar(
-        'Something went wrong. Please try again later.',
-        'Got it!'
-      );
-      return;
-    }
 
-    let formDataCopy = { ...this.laundryAppointmentForm.getRawValue() };
-
-    const selectedDate = new Date(formDataCopy.selectedDate!);
-    const formattedDate = format(selectedDate, 'yyyy-MM-dd');
-
-    let x = {
-      userEmail: 'iulia.dragoiu02@e-uvt.ro',
-      selectedMachineId: formDataCopy.selectedMachineId,
-      selectedDryerId: formDataCopy.selectedDryerId,
-      selectedDate: formattedDate,
-      selectedInterval: formDataCopy.selectedIntervalStartHour,
+    let createAppointmentDto: CreateLaundryAppointmentDto = {
+      selectedMachineId: this.selectedMachines?.washingMachine.id!,
+      selectedDryerId: this.selectedMachines?.dryer.id!,
+      selectedDate: this.getSelectedDateString(),
+      selectedInterval:
+        this.laundryAppointmentForm.value.selectedIntervalStartHour!,
     };
 
-    this.appointmentService.createAppointment(x).subscribe({
+    this.appointmentService.createAppointment(createAppointmentDto).subscribe({
       next: () => {
-        this.updateIntervals();
+        console.log('Appointment created');
+        // ADD popup message
       },
       error: (error) => {
         console.log(error);
+        // ADD popup message
       },
     });
   }
 
-  updateIntervals(): void {
-    //TODO: create custom dto
+  private getSelectedMachines(): MachinePair | null {
     for (let machine of this.machines) {
       if (
         machine.washingMachine.id ===
         this.laundryAppointmentForm.get('selectedMachineId')?.value
       ) {
-        this.selectedMachines = machine;
-        break;
+        return machine;
       }
     }
+    return null;
+  }
 
-    let tempDto = {
+  private getSelectedDate(): Date {
+    const date = new Date();
+    const resultDate = new Date(date.getTime());
+    resultDate.setDate(
+      date.getDate() + ((this.selectedDay.value! - date.getDay()) % 7)
+    );
+
+    return resultDate;
+  }
+
+  private getSelectedDateString(): string {
+    return format(this.getSelectedDate(), 'yyyy-MM-dd');
+  }
+
+  public updateIntervals(): void {
+    this.selectedInterval = 0;
+    this.selectedMachines = this.getSelectedMachines();
+
+    let getFreeIntervalsDto: GetFreeIntervalsDto = {
       dormId: this.dormId,
-      date: format(
-        this.laundryAppointmentForm.get('selectedDate')?.value!,
-        'yyyy-MM-dd'
-      ),
-      washingMachineId: this.selectedMachines?.washingMachine.id,
-      dryerId: this.selectedMachines?.dryer.id,
+      date: this.getSelectedDateString(),
+      washingMachineId: this.selectedMachines?.washingMachine.id!,
+      dryerId: this.selectedMachines?.dryer.id!,
     };
 
-    const intervalsDay = this.laundryAppointmentForm
-      .get('selectedDate')
-      ?.value?.getDate();
-    const today = new Date().getDate();
-
     this.appointmentService
-      .getFreeIntervalsForCreatingAppointment(tempDto)
+      .getFreeIntervalsForCreatingAppointment(getFreeIntervalsDto)
       .subscribe({
-        next: (intervals) => {
-          if (Array.isArray(intervals)) {
-            this.timeIntervals = [];
-            intervals.forEach((startHour) => {
-              let currentHour = new Date().getHours();
-              if (startHour > currentHour || intervalsDay != today)
-                this.timeIntervals.push({
-                  startHour: startHour,
-                  printableValue: `${startHour}:00`,
-                });
-            });
+        next: (intervals: FreeIntervalsDto) => {
+          this.availableIntervals = [];
+          let currentHour = new Date().getHours();
+          let today = new Date().getDate();
+          let selectedDate = this.getSelectedDate().getDate();
+          for (let interval of intervals.freeIntervals) {
+            if (interval > currentHour || today != selectedDate)
+              this.availableIntervals.push(interval);
           }
         },
         error: (error) => {
@@ -238,18 +194,23 @@ export class LaundryAppointmentsPageComponent {
       });
   }
 
-  openSnackBar(message: string, action: string) {
-    this.snackBar.open(message, action);
-  }
-
-  getSelectedDayName() {
+  public getSelectedDayName() {
     return this.tabs[this.selectedDay.value!];
   }
 
-  isIntervalAvailable(interval: number) {
-    for (let i of this.timeIntervals) {
-      if (i.startHour === interval) return true;
+  public isIntervalAvailable(interval: number) {
+    for (let availableInterval of this.availableIntervals) {
+      if (availableInterval === interval) return true;
     }
     return false;
+  }
+
+  public isIntervalSelected(interval: number) {
+    return this.selectedInterval === interval;
+  }
+
+  public selectInterval(interval: number) {
+    this.selectedInterval = interval;
+    this.laundryAppointmentForm.value.selectedIntervalStartHour = interval;
   }
 }

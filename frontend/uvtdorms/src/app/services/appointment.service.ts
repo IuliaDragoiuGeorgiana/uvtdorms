@@ -1,22 +1,37 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
+import { GetFreeIntervalsDto } from '../interfaces/get-free-intervals-dto';
+import { Observable } from 'rxjs';
+import { FreeIntervalsDto } from '../interfaces/free-intervals-dto';
+import { CreateLaundryAppointmentDto } from '../interfaces/create-laundry-appointment-dto';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AppointmentService {
-  private appointmentServiceUrl = 'http://localhost:8080/api/laundryappointments';
+  private appointmentServiceUrl =
+    'http://localhost:8080/api/laundryappointments';
   private createAppointmentUrl = '/create';
   private getFreeIntervalsUrl = '/get-free-intervals';
 
-  constructor(private http: HttpClient, private authService: AuthService) { }
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
-  createAppointment(data: {}) {
-    return this.http.post(this.appointmentServiceUrl + this.createAppointmentUrl, data, { headers: this.authService.getHeader() });
+  createAppointment(data: CreateLaundryAppointmentDto): Observable<void> {
+    return this.http.post<void>(
+      this.appointmentServiceUrl + this.createAppointmentUrl,
+      data,
+      { headers: this.authService.getHeader() }
+    );
   }
 
-  getFreeIntervalsForCreatingAppointment(data: {}) {
-    return this.http.post(this.appointmentServiceUrl + this.getFreeIntervalsUrl, data, { headers: this.authService.getHeader() });
+  getFreeIntervalsForCreatingAppointment(
+    getFreeIntervalsDto: GetFreeIntervalsDto
+  ): Observable<FreeIntervalsDto> {
+    return this.http.post<FreeIntervalsDto>(
+      this.appointmentServiceUrl + this.getFreeIntervalsUrl,
+      getFreeIntervalsDto,
+      { headers: this.authService.getHeader() }
+    );
   }
 }

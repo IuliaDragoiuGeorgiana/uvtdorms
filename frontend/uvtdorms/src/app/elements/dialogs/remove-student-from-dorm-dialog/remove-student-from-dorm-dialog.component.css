@@ -1,0 +1,21 @@
+.remove-student-from-dorm-dialog-title {
+  text-align: center;
+  font-size: 1.6rem;
+  padding: 1vh 1vw;
+  font-weight: 400;
+  margin-top: 2vh;
+}
+.remove-student-from-dorm-dialog-content {
+  text-align: center;
+  padding: 1vh 1vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 15vw;
+}
+
+.remove-student-from-dorm-dialog-button-submit
+{
+    background-color: rgb(204, 62, 62);
+    color: white !important;
+}

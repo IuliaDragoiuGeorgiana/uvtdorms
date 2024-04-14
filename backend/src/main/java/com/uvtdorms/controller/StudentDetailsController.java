@@ -3,6 +3,7 @@ package com.uvtdorms.controller;
 import com.uvtdorms.repository.dto.TokenDto;
 import com.uvtdorms.repository.dto.request.EditRoomDto;
 import com.uvtdorms.repository.dto.response.DormIdDto;
+import com.uvtdorms.repository.dto.response.EmailDto;
 import com.uvtdorms.repository.dto.response.StudentDetailsDto;
 import com.uvtdorms.repository.entity.Dorm;
 import com.uvtdorms.services.DormAdministratorService;
@@ -47,6 +48,12 @@ public class StudentDetailsController {
     public ResponseEntity<Void> updateRoomNumber(@RequestBody EditRoomDto editRoomDto) {
         studentDetailsService.updateRoomNumber(editRoomDto);
 
+        return ResponseEntity.noContent().build();
+    }
+    
+    @PostMapping("/delete-student-from-dorm")
+    public ResponseEntity<Void> deleteStudentFromDorm(@RequestBody EmailDto emailDto) {
+        studentDetailsService.deleteFromDorm(emailDto);
         return ResponseEntity.noContent().build();
     }
 }

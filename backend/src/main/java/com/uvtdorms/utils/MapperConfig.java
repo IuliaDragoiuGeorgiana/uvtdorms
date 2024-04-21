@@ -1,5 +1,6 @@
 package com.uvtdorms.utils;
 
+import com.uvtdorms.repository.dto.response.DisplayStudentDetailsDto;
 import com.uvtdorms.repository.dto.response.DryerDto;
 import com.uvtdorms.repository.dto.response.EmailDto;
 import com.uvtdorms.repository.dto.response.ListedRegisterRequestDto;
@@ -16,6 +17,7 @@ import org.modelmapper.PropertyMap;
 import org.modelmapper.spi.MappingContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
+import org.hibernate.mapping.Property;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 
@@ -85,6 +87,17 @@ public class MapperConfig {
             protected void configure() {
                 map(source.getUser().getFirstName(), destination.getFirstName());
                 map(source.getUser().getLastName(), destination.getLastName());
+                map(source.getUser().getEmail(), destination.getEmail());
+                map(source.getUser().getPhoneNumber(), destination.getPhoneNumber());
+                map(source.getRoom().getDorm().getDormName(), destination.getDormName());
+                map(source.getRoom().getRoomNumber(), destination.getRoomNumber());
+                map(source.getMatriculationNumber(), destination.getMatriculationNumber());
+            }
+        });
+
+        modelMapper.addMappings(new PropertyMap<StudentDetails,DisplayStudentDetailsDto>(){
+            @Override
+            protected void configure(){
                 map(source.getUser().getEmail(), destination.getEmail());
                 map(source.getUser().getPhoneNumber(), destination.getPhoneNumber());
                 map(source.getRoom().getDorm().getDormName(), destination.getDormName());

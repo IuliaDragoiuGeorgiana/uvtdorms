@@ -2,6 +2,7 @@ package com.uvtdorms.controller;
 
 import com.uvtdorms.repository.dto.TokenDto;
 import com.uvtdorms.repository.dto.request.EditRoomDto;
+import com.uvtdorms.repository.dto.response.DisplayStudentDetailsDto;
 import com.uvtdorms.repository.dto.response.DormIdDto;
 import com.uvtdorms.repository.dto.response.EmailDto;
 import com.uvtdorms.repository.dto.response.StudentDetailsDto;
@@ -55,5 +56,13 @@ public class StudentDetailsController {
     public ResponseEntity<Void> deleteStudentFromDorm(@RequestBody EmailDto emailDto) {
         studentDetailsService.deleteFromDorm(emailDto);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/get-student-details")
+    public ResponseEntity<DisplayStudentDetailsDto> getStudentDetails(Authentication authentication) {
+        TokenDto token = (TokenDto) authentication.getPrincipal();
+        DisplayStudentDetailsDto studentDetails = studentDetailsService.getStudentDetails(token.getEmail());
+
+        return ResponseEntity.ok(studentDetails);
     }
 }

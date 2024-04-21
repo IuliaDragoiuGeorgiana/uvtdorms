@@ -17,7 +17,6 @@ import com.uvtdorms.repository.IUserRepository;
 import com.uvtdorms.repository.entity.User;
 import com.uvtdorms.services.interfaces.IUserService;
 
-import jakarta.transaction.Transactional;
 
 @Service
 @RequiredArgsConstructor

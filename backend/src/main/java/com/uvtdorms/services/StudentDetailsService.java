@@ -8,6 +8,7 @@ import com.uvtdorms.repository.IStudentDetailsRepository;
 import com.uvtdorms.repository.IUserRepository;
 import com.uvtdorms.repository.dto.request.EditRoomDto;
 import com.uvtdorms.repository.dto.request.RegisterStudentDto;
+import com.uvtdorms.repository.dto.response.DisplayStudentDetailsDto;
 import com.uvtdorms.repository.dto.response.DormIdDto;
 import com.uvtdorms.repository.dto.response.EmailDto;
 import com.uvtdorms.repository.dto.response.StudentDetailsDto;
@@ -157,6 +158,12 @@ public class StudentDetailsService implements IStudentDetailsService {
                 student.getUser().setRole(Role.INACTIV_STUDENT);
                 student.setRoom(null);
                 studentDetailsRepository.save(student);
+        }
+
+        public DisplayStudentDetailsDto getStudentDetails(String email) {
+                StudentDetails student = studentDetailsRepository.findByUserEmail(email)
+                                .orElseThrow(() -> new AppException("Student not found", HttpStatus.NOT_FOUND));
+                return modelMapper.map(student, DisplayStudentDetailsDto.class);
         }
 
 }

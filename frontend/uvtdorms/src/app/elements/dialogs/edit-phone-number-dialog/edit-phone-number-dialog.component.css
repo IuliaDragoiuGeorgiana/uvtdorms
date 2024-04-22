@@ -1,0 +1,15 @@
+.edit-phone-number-dialog-title {
+    text-align: center;
+    font-size: 1.6rem;
+    padding: 1vh 0;
+    font-weight: 400;
+    margin-top: 2vh;
+  }
+  
+  .edit-phone-number-dialog-main-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      padding: 0 1vw;
+  }
+  

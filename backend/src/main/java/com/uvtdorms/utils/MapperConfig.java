@@ -1,5 +1,6 @@
 package com.uvtdorms.utils;
 
+import com.uvtdorms.repository.dto.response.DisplayDormAdministratorDetailsDto;
 import com.uvtdorms.repository.dto.response.DisplayStudentDetailsDto;
 import com.uvtdorms.repository.dto.response.DryerDto;
 import com.uvtdorms.repository.dto.response.EmailDto;
@@ -7,6 +8,7 @@ import com.uvtdorms.repository.dto.response.ListedRegisterRequestDto;
 import com.uvtdorms.repository.dto.response.RegisterRequestDto;
 import com.uvtdorms.repository.dto.response.StudentDetailsDto;
 import com.uvtdorms.repository.dto.response.WashingMachineDto;
+import com.uvtdorms.repository.entity.DormAdministratorDetails;
 import com.uvtdorms.repository.entity.Dryer;
 import com.uvtdorms.repository.entity.RegisterRequest;
 import com.uvtdorms.repository.entity.StudentDetails;
@@ -115,6 +117,16 @@ public class MapperConfig {
                 map(source.getRoom().getDorm().getDormAdministratorDetails().getAdministrator().getEmail(),
                         destination.getAdministratorContact());
                 map(source.getStatus(), destination.getStatus());
+            }
+        });
+
+        modelMapper.addMappings(new PropertyMap<DormAdministratorDetails, DisplayDormAdministratorDetailsDto>(){
+            @Override
+            protected void configure(){
+                map(source.getAdministrator().getEmail(), destination.getEmail());
+                map(source.getAdministrator().getPhoneNumber(), destination.getPhoneNumber());
+                map(source.getDorm().getDormName(),destination.getDormName());
+
             }
         });
 

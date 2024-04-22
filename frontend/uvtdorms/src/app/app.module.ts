@@ -54,7 +54,8 @@ import { DialogModule } from 'primeng/dialog';
 import { NewRegisterRequestDialogComponent } from './elements/dialogs/new-register-request-dialog/new-register-request-dialog.component';
 import { RemoveStudentFromDormDialogComponent } from './elements/dialogs/remove-student-from-dorm-dialog/remove-student-from-dorm-dialog.component';
 import { ProfilePageDisplayStudentDetailsComponent } from './pages/profile-page/profile-page-display-student-details/profile-page-display-student-details.component';
-import { ProfilePageDisplayDormAdministratorComponent } from './profile-page-display-dorm-administrator/profile-page-display-dorm-administrator.component';
+import { ProfilePageDisplayDormAdministratorComponent } from './pages/profile-page/profile-page-display-dorm-administrator/profile-page-display-dorm-administrator.component';
+import { EditPhoneNumberDialogComponent } from './elements/dialogs/edit-phone-number-dialog/edit-phone-number-dialog.component';
 
 @NgModule({
   declarations: [
@@ -73,6 +74,7 @@ import { ProfilePageDisplayDormAdministratorComponent } from './profile-page-dis
     RemoveStudentFromDormDialogComponent,
     ProfilePageDisplayStudentDetailsComponent,
     ProfilePageDisplayDormAdministratorComponent,
+    EditPhoneNumberDialogComponent,
   ],
   imports: [
     BrowserModule,

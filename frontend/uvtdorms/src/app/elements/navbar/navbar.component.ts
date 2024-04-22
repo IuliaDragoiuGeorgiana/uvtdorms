@@ -23,7 +23,6 @@ export class NavbarComponent {
   }
 
   isStudent(): boolean {
-    console.log(this.role());
     return this.role() === Role.STUDENT;
   }
   isDormAdmistrator(): boolean{

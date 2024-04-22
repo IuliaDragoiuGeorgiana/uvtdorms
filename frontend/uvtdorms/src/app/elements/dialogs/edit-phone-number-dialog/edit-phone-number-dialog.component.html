@@ -1,0 +1,41 @@
+<h2 class="edit-phone-number-dialog-title">Edit phone number</h2>
+<mat-dialog-content class="mat-typography">
+  <div class="edit-phone-number-dialog-main-container">
+    <form [formGroup]="editPhoneNumberForm" (ngSubmit)="onEditPhoneNumber()">
+      <mat-form-field appearance="fill">
+        <mat-label>Phone number</mat-label>
+        <input
+          matInput
+          type="tel"
+          formControlName="phoneNumber"
+          placeholder="Enter phone number"
+          pattern="[0-9]*"
+        />
+        <mat-error
+          *ngIf="
+            phoneNumber?.invalid && (phoneNumber?.dirty || phoneNumber?.touched)
+          "
+        >
+          <span *ngIf="phoneNumber?.errors?.['required']">
+            Phone number is required
+          </span>
+          <span *ngIf="phoneNumber?.errors?.['pattern']">
+            Invalid phone number
+          </span>
+          <span *ngIf="phoneNumber?.errors?.['phoneNumberExists']">
+            Phone number already exists
+          </span>
+        </mat-error>
+      </mat-form-field>
+    </form>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button
+    mat-button
+    (click)="onEditPhoneNumber()"
+    class="edit-phone-submit-button"
+  >
+    Save
+  </button>
+</mat-dialog-actions>

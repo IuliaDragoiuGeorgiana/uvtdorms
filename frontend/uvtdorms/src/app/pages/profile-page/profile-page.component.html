@@ -14,11 +14,17 @@
     >
         <app-profile-page-display-student-details class="profile-page-other-details-item" *ngIf="isStudent()">
         </app-profile-page-display-student-details>
+
+        <app-profile-page-display-dorm-administrator class ="profile-page-other-details-item" *ngIf="isDormAdmin()">
+
+        </app-profile-page-display-dorm-administrator>
     </div>
     <div
       class="profile-page-general-details-item profile-page-settings-button-container"
     >
-      <button mat-button>Settings</button>
+      <button mat-button (click)="openEditPhoneNumberDialog()">Change phone number</button>
+      <button mat-button>Change password</button>
+
     </div>
   </div>
   <div class="profile-page-tabs-conatiner profile-page-inside-containers">

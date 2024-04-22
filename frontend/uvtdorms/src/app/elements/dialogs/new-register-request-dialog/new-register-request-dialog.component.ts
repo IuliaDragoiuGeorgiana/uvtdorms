@@ -65,7 +65,6 @@ export class NewRegisterRequestDialogComponent {
     if (!this.newRequestForm.valid) {
       return;
     }
-    console.log(this.newRequestForm.value);
 
     let newRegisterRequestDto: NewRegisterRequestDto = {
       dormName: this.newRequestForm.value.dormName!,

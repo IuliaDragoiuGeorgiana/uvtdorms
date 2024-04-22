@@ -5,9 +5,12 @@ import java.nio.CharBuffer;
 import com.uvtdorms.exception.AppException;
 import com.uvtdorms.repository.dto.TokenDto;
 import com.uvtdorms.repository.dto.request.CredentialsDto;
+import com.uvtdorms.repository.dto.request.UpdatePhoneNumberDto;
 import com.uvtdorms.repository.dto.response.UserDetailsDto;
 
 import lombok.RequiredArgsConstructor;
+
+import org.hibernate.sql.Update;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -53,5 +56,17 @@ public class UserService implements IUserService {
     public User findUserByEmail(final String email) {
         return userRepository.getByEmail(email)
                 .orElseThrow(() -> new AppException("User not found!", HttpStatus.NOT_FOUND));
+    }
+
+    public void updatePhoneNumber(UpdatePhoneNumberDto updatePhoneNumberDto, String email) {
+        User user = userRepository.getByEmail(email)
+                .orElseThrow(() -> new AppException("User not found!", HttpStatus.NOT_FOUND));
+
+        userRepository.findByPhoneNumber(updatePhoneNumberDto.phoneNumber())
+                .ifPresent(u -> {
+                    throw new AppException("Phone number already in use!", HttpStatus.BAD_REQUEST);
+                });
+        user.setPhoneNumber(updatePhoneNumberDto.phoneNumber());
+        userRepository.save(user);
     }
 }

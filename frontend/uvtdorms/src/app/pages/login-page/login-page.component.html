@@ -245,6 +245,9 @@
                 <span *ngIf="phoneNumber?.errors?.['pattern']"
                   >Phone number is invalid</span
                 >
+                <span *ngIg="isPhoneNumberTaken"
+                  >Phone number is already taken</span
+                >
               </mat-error>
             </mat-form-field>
           </div>

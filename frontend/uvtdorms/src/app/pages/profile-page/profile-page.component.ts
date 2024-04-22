@@ -15,6 +15,7 @@ import { DormService } from '../../services/dorm.service';
 import { MatDialog } from '@angular/material/dialog';
 import { NewRegisterRequestDialogComponent } from '../../elements/dialogs/new-register-request-dialog/new-register-request-dialog.component';
 import { Role } from '../../enums/role';
+import { EditPhoneNumberDialogComponent } from '../../elements/dialogs/edit-phone-number-dialog/edit-phone-number-dialog.component';
 
 @Component({
   selector: 'app-profile-page',
@@ -38,7 +39,6 @@ export class ProfilePageComponent {
     this.userService.getUserDetails().subscribe({
       next: (userDetails) => {
         this.user = userDetails;
-        console.log(userDetails);
       },
       error(err) {
         console.error(err);
@@ -77,11 +77,18 @@ export class ProfilePageComponent {
   }
 
   isStudent(): boolean {
-    console.log(this.role());
     return this.role() === Role.STUDENT;
+  }
+
+  isDormAdmin(): boolean {
+    return this.role() === Role.ADMINISTRATOR;
   }
 
   isInactivStudent(): boolean {
     return this.role() === Role.INACTIV_STUDENT;
+  }
+
+  openEditPhoneNumberDialog() {
+    this.dialog.open(EditPhoneNumberDialogComponent);
   }
 }

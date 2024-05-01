@@ -5,15 +5,18 @@ import { Role } from '../enums/role';
 import { Observable } from 'rxjs';
 import { UserDetailsDto } from '../interfaces/user-details-dto';
 import { EditPhoneNumberDto } from '../interfaces/edit-phone-number-dto';
+import { ChangePasswordDto } from '../interfaces/change-password-dto';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
+ 
   private userServiceUrl = 'http://localhost:8080/api/users';
   private getUserDetailsUrl = '/get-user-details';
   private userRole: Role | null = null;
   private updatePhoneNumberUrl = '/update-phone-number';
+  private updatePasswordUrl = '/update-password';
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
@@ -41,6 +44,14 @@ export class UserService {
     return this.http.post<void>(
       this.userServiceUrl + this.updatePhoneNumberUrl,
       editPhoneNumberDto,
+      { headers: this.authService.getHeader() }
+    );
+  }
+
+  updatePasswoed(changePasswordDto:ChangePasswordDto): Observable<void> {
+    return this.http.post<void>(
+      this.userServiceUrl + this.updatePasswordUrl,
+      changePasswordDto,
       { headers: this.authService.getHeader() }
     );
   }

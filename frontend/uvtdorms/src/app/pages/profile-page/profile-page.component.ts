@@ -16,6 +16,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { NewRegisterRequestDialogComponent } from '../../elements/dialogs/new-register-request-dialog/new-register-request-dialog.component';
 import { Role } from '../../enums/role';
 import { EditPhoneNumberDialogComponent } from '../../elements/dialogs/edit-phone-number-dialog/edit-phone-number-dialog.component';
+import { ChangePasswordDialogComponent } from '../../elements/dialogs/change-password-dialog/change-password-dialog.component';
 
 @Component({
   selector: 'app-profile-page',
@@ -90,5 +91,10 @@ export class ProfilePageComponent {
 
   openEditPhoneNumberDialog() {
     this.dialog.open(EditPhoneNumberDialogComponent);
+  }
+
+  openChangePasswordDialog()
+  {
+    this.dialog.open(ChangePasswordDialogComponent)
   }
 }

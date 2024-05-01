@@ -5,31 +5,46 @@
     <div
       class="profile-page-general-details-item profile-page-profile-picture-container"
     >
-  <img src="data:image/png;base64, {{user?.profilePicture}}" class="profile-page-picture">
+      <div class="profil-page-picture-container-hover-effect">
+        <mat-icon class="profil-page-picture-container-hover-effect-icon">image</mat-icon>
+      </div>
+      <img
+        src="data:image/png;base64, {{ user?.profilePicture }}"
+        class="profile-page-picture"
+      />
     </div>
     <div class="profile-page-general-details-item profile-page-name-container">
       <p>{{ user?.firstName }} {{ user?.lastName }}</p>
     </div>
-    <div class="profile-page-other-details-container"
-    >
-        <app-profile-page-display-student-details class="profile-page-other-details-item" *ngIf="isStudent()">
-        </app-profile-page-display-student-details>
+    <div class="profile-page-other-details-container">
+      <app-profile-page-display-student-details
+        class="profile-page-other-details-item"
+        *ngIf="isStudent()"
+      >
+      </app-profile-page-display-student-details>
 
-        <app-profile-page-display-dorm-administrator class ="profile-page-other-details-item" *ngIf="isDormAdmin()">
-
-        </app-profile-page-display-dorm-administrator>
+      <app-profile-page-display-dorm-administrator
+        class="profile-page-other-details-item"
+        *ngIf="isDormAdmin()"
+      >
+      </app-profile-page-display-dorm-administrator>
     </div>
     <div
       class="profile-page-general-details-item profile-page-settings-button-container"
     >
-      <button mat-button (click)="openEditPhoneNumberDialog()">Change phone number</button>
-      <button mat-button (click)="openChangePasswordDialog()">Change password</button>
-
+      <button mat-button (click)="openEditPhoneNumberDialog()">
+        Change phone number
+      </button>
+      <button mat-button (click)="openChangePasswordDialog()">
+        Change password
+      </button>
     </div>
   </div>
   <div class="profile-page-tabs-conatiner profile-page-inside-containers">
-    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center" >
-      <mat-tab class="profile-page-tab" *ngIf="isStudent() || isInactivStudent()" 
+    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center">
+      <mat-tab
+        class="profile-page-tab"
+        *ngIf="isStudent() || isInactivStudent()"
         ><ng-template mat-tab-label>
           <mat-icon class="example-tab-icon">hourglass_empty</mat-icon>
           Register requests
@@ -97,9 +112,9 @@
           </ng-template>
         </p-table>
       </mat-tab>
-      <mat-tab  *ngIf="isStudent()">
+      <mat-tab *ngIf="isStudent()">
         <ng-template mat-tab-label>
-          <mat-icon  class="example-tab-icon">calendar_today</mat-icon>
+          <mat-icon class="example-tab-icon">calendar_today</mat-icon>
           My laundry appointments
         </ng-template>
         <!-- Content 2 -->

@@ -5,6 +5,22 @@
                 Laundry Appointment
             </h1>
         </div>
+        <p-toast position="top-center"></p-toast>
+        <p-confirmDialog #cd>
+            <ng-template pTemplate="headless" let-message>
+                <div class="confirmation-popup-body p-5 surface-overlay">
+                    <div class="confirmation-popup-body-header -mt-8">
+                        <i class="pi pi-question text-5xl"></i>
+                    </div>
+                    <span class="confirmation-popup-body-message-header">{{ message.header }}</span>
+                    <p class="confirmation-popup-body-message">{{ message.message }}</p>
+                    <div class="confirmation-popup-body-buttons flex align-items-center gap-2 mt-4">
+                        <button pButton label="Save" (click)="cd.accept()" class="w-8rem"></button>
+                        <button pButton label="Cancel" (click)="cd.reject()" class="p-button-outlined w-8rem "></button>
+                    </div>
+                </div>
+            </ng-template>
+        </p-confirmDialog>
         <form
             [formGroup]="laundryAppointmentForm"
             class="laundry-appointments-form-content">
@@ -37,7 +53,7 @@
 
                 <mat-form-field class="laundry-appointments-select-dryer">
                     <mat-label>Associated dryer</mat-label>
-                    <input [readonly]="true"  matInput [value]="selectedMachines?.dryer?.name">
+                    <input [readonly]="true"  matInput [value]="getSelectedMachines()?.dryer?.name">
                 </mat-form-field>
             </div>
             <div class="laundry-appointments-form-content-right">

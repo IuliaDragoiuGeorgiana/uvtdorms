@@ -11,6 +11,8 @@ import { GetFreeIntervalsDto } from '../../interfaces/get-free-intervals-dto';
 import { FreeIntervalsDto } from '../../interfaces/free-intervals-dto';
 import { CreateLaundryAppointmentDto } from '../../interfaces/create-laundry-appointment-dto';
 
+import { ConfirmationService, MessageService } from 'primeng/api';
+
 interface MachinePair {
   washingMachine: WashingMachine;
   dryer: Dryer;
@@ -26,7 +28,6 @@ export class LaundryAppointmentsPageComponent {
   private dryers: Dryer[] = [];
   public machines: MachinePair[] = [];
   private availableIntervals: number[] = [];
-  public selectedMachines: MachinePair | null = null;
   private selectedInterval: number = 0;
 
   public tabs = [
@@ -46,7 +47,7 @@ export class LaundryAppointmentsPageComponent {
   laundryAppointmentForm = this.formBuilder.group({
     selectedMachineId: ['', Validators.required],
     selectedDryerId: ['', Validators.required],
-    selectedDate: [Date.now() || '', Validators.required],
+    selectedDate: ['', Validators.required],
     selectedIntervalStartHour: [0, Validators.required],
   });
 
@@ -55,7 +56,9 @@ export class LaundryAppointmentsPageComponent {
     private appointmentService: AppointmentService,
     private washingMachineService: WashingMachineService,
     private dryerService: DryerService,
-    private studentService: StudentDetailsService
+    private studentService: StudentDetailsService,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService
   ) {}
 
   ngOnInit() {
@@ -111,34 +114,86 @@ export class LaundryAppointmentsPageComponent {
   }
 
   public makeAppointment(): void {
-    this.selectedMachines = this.getSelectedMachines();
-    this.laundryAppointmentForm.value.selectedDryerId =
-      this.selectedMachines?.dryer.id;
+    this.updateLaundryAppointmentForm();
 
-    console.log(this.laundryAppointmentForm.value);
-    if (!this.laundryAppointmentForm.valid) return;
+    if (this.laundryAppointmentForm.invalid) {
+      return;
+    }
 
-    let createAppointmentDto: CreateLaundryAppointmentDto = {
-      selectedMachineId: this.selectedMachines?.washingMachine.id!,
-      selectedDryerId: this.selectedMachines?.dryer.id!,
-      selectedDate: this.getSelectedDateString(),
-      selectedInterval:
-        this.laundryAppointmentForm.value.selectedIntervalStartHour!,
-    };
-
-    this.appointmentService.createAppointment(createAppointmentDto).subscribe({
-      next: () => {
-        console.log('Appointment created');
-        // ADD popup message
-      },
-      error: (error) => {
-        console.log(error);
-        // ADD popup message
+    this.confirmationService.confirm({
+      header: 'Are you sure?',
+      message:
+        'Do you want to create an appointment for ' +
+        this.getSelectedMachines()?.washingMachine.name +
+        ' at ' +
+        this.laundryAppointmentForm.value.selectedIntervalStartHour?.toString() +
+        ':00 ?',
+      accept: () => {
+        this.sendCreateAppointmentRequest();
       },
     });
   }
 
-  private getSelectedMachines(): MachinePair | null {
+  private updateLaundryAppointmentForm(): void {
+    let selectedMachines = this.getSelectedMachines();
+    this.laundryAppointmentForm.setValue({
+      selectedMachineId: selectedMachines?.washingMachine.id!,
+      selectedDryerId: selectedMachines?.dryer.id!,
+      selectedDate: this.getSelectedDateString(),
+      selectedIntervalStartHour: this.selectedInterval,
+    });
+  }
+
+  private convertLaundryAppointmentFormToCreateAppointmentDto(): CreateLaundryAppointmentDto {
+    let createAppointmentDto: CreateLaundryAppointmentDto = {
+      selectedMachineId: this.laundryAppointmentForm.value.selectedMachineId!,
+      selectedDryerId: this.laundryAppointmentForm.value.selectedDryerId!,
+      selectedDate: this.laundryAppointmentForm.value.selectedDate!,
+      selectedInterval:
+        this.laundryAppointmentForm.value.selectedIntervalStartHour!,
+    };
+
+    return createAppointmentDto;
+  }
+
+  private sendCreateAppointmentRequest(): void {
+    let createAppointmentDto: CreateLaundryAppointmentDto =
+      this.convertLaundryAppointmentFormToCreateAppointmentDto();
+
+    this.appointmentService.createAppointment(createAppointmentDto).subscribe({
+      next: () => {
+        this.displayConfirmMessage();
+        this.updateIntervals();
+      },
+      error: (error) => {
+        this.displayErrorMessage(error);
+      },
+    });
+  }
+
+  private displayErrorMessage(error: any): void {
+    let errorMsg: string = error.error.message;
+    if (errorMsg === 'The student already has an appointment for this week') {
+      errorMsg = 'You already have an appointment for this week.';
+    }
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Something went wrong',
+      detail: errorMsg,
+      sticky: true,
+    });
+  }
+
+  private displayConfirmMessage(): void {
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Confirmed',
+      detail: 'Appointment successfuly created!',
+      life: 3000,
+    });
+  }
+
+  public getSelectedMachines(): MachinePair | null {
     for (let machine of this.machines) {
       if (
         machine.washingMachine.id ===
@@ -166,13 +221,13 @@ export class LaundryAppointmentsPageComponent {
 
   public updateIntervals(): void {
     this.selectedInterval = 0;
-    this.selectedMachines = this.getSelectedMachines();
+    let selectedMachines = this.getSelectedMachines();
 
     let getFreeIntervalsDto: GetFreeIntervalsDto = {
       dormId: this.dormId,
       date: this.getSelectedDateString(),
-      washingMachineId: this.selectedMachines?.washingMachine.id!,
-      dryerId: this.selectedMachines?.dryer.id!,
+      washingMachineId: selectedMachines?.washingMachine.id!,
+      dryerId: selectedMachines?.dryer.id!,
     };
 
     this.appointmentService
@@ -210,6 +265,7 @@ export class LaundryAppointmentsPageComponent {
   }
 
   public selectInterval(interval: number) {
+    if (!this.isIntervalAvailable(interval)) return;
     this.selectedInterval = interval;
     this.laundryAppointmentForm.value.selectedIntervalStartHour = interval;
   }

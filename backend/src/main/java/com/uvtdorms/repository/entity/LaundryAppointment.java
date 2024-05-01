@@ -51,12 +51,4 @@ public class LaundryAppointment {
         this.intervalEndDate= intervalBeginDate.plusHours(2);
         this.creationDate=LocalDateTime.now();
     }
-
-    @Override
-    public String toString() {
-        return "LaundryAppointment [appointmentId=" + appointmentId + ", creationDate=" + creationDate
-                + ", intervalBeginDate=" + intervalBeginDate + ", intervalEndDate=" + intervalEndDate + ", student="
-                + student + ", washMachine=" + washMachine + ", dryer=" + dryer + ", statusLaundry=" + statusLaundry
-                + "]";
-    }
 }

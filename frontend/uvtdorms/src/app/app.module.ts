@@ -57,6 +57,9 @@ import { ProfilePageDisplayStudentDetailsComponent } from './pages/profile-page/
 import { ProfilePageDisplayDormAdministratorComponent } from './pages/profile-page/profile-page-display-dorm-administrator/profile-page-display-dorm-administrator.component';
 import { EditPhoneNumberDialogComponent } from './elements/dialogs/edit-phone-number-dialog/edit-phone-number-dialog.component';
 import { ChangePasswordDialogComponent } from './elements/dialogs/change-password-dialog/change-password-dialog.component';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
   declarations: [
@@ -113,8 +116,14 @@ import { ChangePasswordDialogComponent } from './elements/dialogs/change-passwor
     TagModule,
     ButtonModule,
     DialogModule,
+    ConfirmDialogModule,
+    ToastModule,
   ],
-  providers: [provideHttpClient(withFetch())],
+  providers: [
+    provideHttpClient(withFetch()),
+    ConfirmationService,
+    MessageService,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

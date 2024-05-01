@@ -20,11 +20,13 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +42,26 @@ public class LaundryAppointmentService {
         private final IStudentDetailsRepository studentDetailsRepository;
         private final EntityManager entityManager;
 
+        private boolean studentAlreadyHasAppointmentForThisWeek(StudentDetails student,
+                        LocalDateTime intervalBeginDate) {
+                LocalDateTime startOfWeek = intervalBeginDate.with(DayOfWeek.MONDAY);
+                LocalDateTime endOfWeek = startOfWeek.plusDays(7);
+
+                CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+                CriteriaQuery<LaundryAppointment> cq = cb.createQuery(LaundryAppointment.class);
+                Root<LaundryAppointment> appointment = cq.from(LaundryAppointment.class);
+
+                Predicate studentPredicate = cb.equal(appointment.get("student"), student);
+                Predicate datePredicate = cb.greaterThanOrEqualTo(appointment.get("intervalBeginDate"), startOfWeek);
+                Predicate endDatePredicate = cb.lessThanOrEqualTo(appointment.get("intervalBeginDate"), endOfWeek);
+
+                cq.where(studentPredicate, datePredicate, endDatePredicate);
+
+                List<LaundryAppointment> appointments = entityManager.createQuery(cq).getResultList();
+
+                return !appointments.isEmpty();
+        }
+
         public void createLaundryAppointment(CreateLaundryAppointmentDto createLaundryAppointmentDto,
                         String studentEmail)
                         throws AppException {
@@ -50,20 +72,28 @@ public class LaundryAppointmentService {
                                 .orElseThrow(() -> new AppException("The user is not a student",
                                                 HttpStatus.BAD_REQUEST));
 
-                UUID machineUuid = createLaundryAppointmentDto.selectedMachineId();
-                if (machineUuid == null) {
-                        throw new AppException("Wrong UUID", HttpStatus.BAD_REQUEST);
+                if (studentAlreadyHasAppointmentForThisWeek(student,
+                                createLaundryAppointmentDto.selectedDate()
+                                                .atTime(createLaundryAppointmentDto.selectedInterval(), 0))) {
+                        throw new AppException("The student already has an appointment for this week",
+                                        HttpStatus.BAD_REQUEST);
                 }
 
-                WashingMachine washingMachine = washingMachineRepository.findById(machineUuid)
+                // UUID machineUuid = createLaundryAppointmentDto.selectedMachineId();
+                // if (machineUuid == null) {
+                // throw new AppException("Wrong UUID", HttpStatus.BAD_REQUEST);
+                // }
+
+                WashingMachine washingMachine = washingMachineRepository
+                                .findById(createLaundryAppointmentDto.selectedMachineId())
                                 .orElseThrow(() -> new AppException("Washing machine not found", HttpStatus.NOT_FOUND));
 
-                UUID dryerUuid = createLaundryAppointmentDto.selectedDryerId();
-                if (dryerUuid == null) {
-                        throw new AppException("Wrong UUID", HttpStatus.BAD_REQUEST);
-                }
+                // UUID dryerUuid = createLaundryAppointmentDto.selectedDryerId();
+                // if (dryerUuid == null) {
+                // throw new AppException("Wrong UUID", HttpStatus.BAD_REQUEST);
+                // }
 
-                Dryer dryer = dryerRepository.findById(dryerUuid)
+                Dryer dryer = dryerRepository.findById(createLaundryAppointmentDto.selectedDryerId())
                                 .orElseThrow(() -> new AppException("Dryer not found", HttpStatus.NOT_FOUND));
 
                 LocalDateTime intervalBeginDate = createLaundryAppointmentDto.selectedDate()
@@ -73,19 +103,14 @@ public class LaundryAppointmentService {
                 laundryAppointmentRepository.save(laundryAppointment);
         }
 
+        @Transactional
         public FreeIntervalsDto getFreeIntervalsForCreatingAppointment(GetFreeIntervalDto freeIntervalDto) {
-
-                System.out.println(freeIntervalDto.toString());
-
                 CriteriaBuilder cb = entityManager.getCriteriaBuilder();
                 CriteriaQuery<LaundryAppointment> cq = cb.createQuery(LaundryAppointment.class);
                 Root<LaundryAppointment> appointment = cq.from(LaundryAppointment.class);
 
                 LocalDateTime startOfDay = freeIntervalDto.getDate().atStartOfDay();
                 LocalDateTime endOfDay = freeIntervalDto.getDate().atTime(23, 59, 59);
-
-                System.out.println("Start of day: " + startOfDay);
-                System.out.println("End of day: " + endOfDay);
 
                 Predicate dormPredicate = cb.equal(appointment.get("student").get("room").get("dorm").get("dormId"),
                                 UUID.fromString(freeIntervalDto.getDormId()));
@@ -107,7 +132,6 @@ public class LaundryAppointmentService {
 
         private List<Integer> calculateFreeIntervals(List<LaundryAppointment> appointments,
                         GetFreeIntervalDto freeIntervalDto) {
-                System.out.println(appointments.size());
                 List<Integer> freeHours = new ArrayList<>();
                 List<Integer> occupiedHours = new ArrayList<>();
 
@@ -115,15 +139,11 @@ public class LaundryAppointmentService {
                         occupiedHours.add(appointment.getIntervalBeginDate().getHour());
                 }
 
-                System.out.println(occupiedHours.size());
-
                 for (int i = 8; i <= 20; i += 2) {
                         if (!occupiedHours.contains(i)) {
                                 freeHours.add(i);
                         }
                 }
-
-                System.out.println(freeHours.size());
 
                 return freeHours;
         }

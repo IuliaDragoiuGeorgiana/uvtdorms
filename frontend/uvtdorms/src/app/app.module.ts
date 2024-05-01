@@ -56,6 +56,7 @@ import { RemoveStudentFromDormDialogComponent } from './elements/dialogs/remove-
 import { ProfilePageDisplayStudentDetailsComponent } from './pages/profile-page/profile-page-display-student-details/profile-page-display-student-details.component';
 import { ProfilePageDisplayDormAdministratorComponent } from './pages/profile-page/profile-page-display-dorm-administrator/profile-page-display-dorm-administrator.component';
 import { EditPhoneNumberDialogComponent } from './elements/dialogs/edit-phone-number-dialog/edit-phone-number-dialog.component';
+import { ChangePasswordDialogComponent } from './elements/dialogs/change-password-dialog/change-password-dialog.component';
 
 @NgModule({
   declarations: [
@@ -75,6 +76,7 @@ import { EditPhoneNumberDialogComponent } from './elements/dialogs/edit-phone-nu
     ProfilePageDisplayStudentDetailsComponent,
     ProfilePageDisplayDormAdministratorComponent,
     EditPhoneNumberDialogComponent,
+    ChangePasswordDialogComponent,
   ],
   imports: [
     BrowserModule,

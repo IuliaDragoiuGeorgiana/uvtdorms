@@ -1,7 +1,6 @@
 package com.uvtdorms.controller;
 
 import com.uvtdorms.repository.dto.request.ChangePasswordDto;
-import org.hibernate.sql.Update;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,11 +30,13 @@ public class UserController {
     }
 
     @PostMapping("/update-phone-number")
-    public ResponseEntity<Void> updatePhoneNumber(Authentication authentication, @RequestBody UpdatePhoneNumberDto phoneNumber) {
+    public ResponseEntity<Void> updatePhoneNumber(Authentication authentication,
+            @RequestBody UpdatePhoneNumberDto phoneNumber) {
         TokenDto userToken = (TokenDto) authentication.getPrincipal();
-        userService.updatePhoneNumber( phoneNumber, userToken.getEmail());
+        userService.updatePhoneNumber(phoneNumber, userToken.getEmail());
         return ResponseEntity.ok().build();
     }
+
     @PostMapping("/update-password")
     public ResponseEntity<Void> updatePassword(Authentication authentication, @RequestBody ChangePasswordDto password) {
         TokenDto userToken = (TokenDto) authentication.getPrincipal();

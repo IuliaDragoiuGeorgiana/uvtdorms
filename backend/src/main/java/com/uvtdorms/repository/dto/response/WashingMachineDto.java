@@ -11,4 +11,5 @@ public class WashingMachineDto {
     private String id;
     private String name;
     private Boolean isAvailable;
+    private String associatedDryerId;
 }

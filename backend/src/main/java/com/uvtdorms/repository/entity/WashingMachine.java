@@ -3,6 +3,7 @@ package com.uvtdorms.repository.entity;
 import com.uvtdorms.repository.entity.enums.StatusMachine;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,9 +13,10 @@ import java.util.UUID;
 
 @Getter
 @Setter
+@Entity
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 @Table(name = "wash_machines")
 public class WashingMachine {
     @Id
@@ -32,10 +34,12 @@ public class WashingMachine {
     @Enumerated(EnumType.STRING)
     private StatusMachine status;
 
-    public WashingMachine(String machineNumber, Dorm dorm, StatusMachine status) {
-        this.machineNumber = machineNumber;
-        this.dorm = dorm;
-        this.status=status;
-    }
+    @OneToOne
+    @JoinColumn(name = "associated_dryer_id")
+    private Dryer associatedDryer;
 
+    public void setDryer(Dryer dryer) {
+        this.associatedDryer = dryer;
+        dryer.setAssociatedWashingMachine(this);
+    }
 }

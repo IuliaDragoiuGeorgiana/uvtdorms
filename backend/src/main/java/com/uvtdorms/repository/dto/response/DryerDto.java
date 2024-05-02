@@ -7,8 +7,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
- public  class DryerDto {
+public class DryerDto {
     private String id;
     private String name;
     private Boolean isAvailable;
+    private String associatedWashingMachineId;
 }

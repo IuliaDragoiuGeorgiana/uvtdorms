@@ -105,25 +105,6 @@ public class InitialDataLoader implements CommandLineRunner {
 
     }
 
-    private void initializeMachinesAndDryers() {
-        List<String> washingMachinesNames = Arrays.asList("Machine1", "Machine2");
-        List<String> dryersNames = Arrays.asList("Dryer1", "Dryer2");
-        for (String dormsName : dormsNamesList) {
-            Dorm dorm = dormRepository.getByDormName(dormsName);
-            for (String washingMachineName : washingMachinesNames) {
-                WashingMachine washingMachine = new WashingMachine(washingMachineName, dorm, StatusMachine.FUNCTIONAL);
-                washingMachineRepository.save(washingMachine);
-            }
-            for (String dryerName : dryersNames) {
-                Dryer dryer = new Dryer(dryerName, dorm, StatusMachine.FUNCTIONAL);
-                dryerRepository.save(dryer);
-            }
-        }
-        Dorm dorm = dormRepository.getByDormName("C12");
-        WashingMachine washingMachine = new WashingMachine("Machine3", dorm, StatusMachine.FUNCTIONAL);
-        washingMachineRepository.save(washingMachine);
-    }
-
     private void initializeAppointments() {
         Optional<User> user = userRepository.getByEmail("iulia.dragoiu02@e-uvt.ro");
         if (user.isEmpty())
@@ -158,20 +139,23 @@ public class InitialDataLoader implements CommandLineRunner {
         return dorm;
     }
 
-    private WashingMachine createWashingMachine(String washingMachineName, Dorm dorm, StatusMachine statusMachine) {
-        WashingMachine washingMachine = new WashingMachine(washingMachineName, dorm, statusMachine);
+    private WashingMachine createWashingMachine(String washingMachineName, Dorm dorm, StatusMachine statusMachine,
+            Dryer associatedDryer) {
+        WashingMachine washingMachine = WashingMachine.builder().machineNumber(washingMachineName).dorm(dorm)
+                .status(statusMachine).associatedDryer(associatedDryer).build();
         washingMachineRepository.save(washingMachine);
-        
+
         return washingMachine;
     }
-    
-    private Dryer createDryer(String dryerName, Dorm dorm, StatusMachine statusMachine) {
-        Dryer dryer = new Dryer(dryerName, dorm, statusMachine);
+
+    private Dryer createDryer(String dryerName, Dorm dorm, StatusMachine statusMachine, WashingMachine associatedWashingMachine) {
+        Dryer dryer = Dryer.builder().dryerNumber(dryerName).dorm(dorm).status(statusMachine)
+                .associatedWashingMachine(associatedWashingMachine).build();
         dryerRepository.save(dryer);
 
         return dryer;
     }
-    
+
     @SuppressWarnings("null")
     private Room createRoom(String roomNumber, Dorm dorm) {
         Room room = Room.builder().dorm(dorm).roomNumber(roomNumber).build();
@@ -290,25 +274,27 @@ public class InitialDataLoader implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String... args) throws Exception {
-        Dorm dorm1 = createDorm("D13", "Street1");
-        createWashingMachine("Machine1", dorm1, StatusMachine.FUNCTIONAL);
-        createWashingMachine("Machine2", dorm1, StatusMachine.FUNCTIONAL);
-        createDryer("Dryer1", dorm1, StatusMachine.FUNCTIONAL);
-        createDryer("Dryer2", dorm1, StatusMachine.FUNCTIONAL);
-        createDormAdministrator("Tom", "Hanks", "tom.hanks@e-uvt.ro", "0712345678", "hello", dorm1, "user-profile.jpg");
-        Room room1 = createRoom("1", dorm1);
-        Room room2 = createRoom("2", dorm1);
+        Dorm dorm13 = createDorm("D13", "Street1");
+        WashingMachine dorm13Machine1 = createWashingMachine("Machine1", dorm13, StatusMachine.FUNCTIONAL, null);
+        WashingMachine dorm13Machine2 = createWashingMachine("Machine2", dorm13, StatusMachine.FUNCTIONAL, null);
+        Dryer dorm13Dryer1 = createDryer("Dryer1", dorm13, StatusMachine.FUNCTIONAL, dorm13Machine1);
+        Dryer dorm13Dryer2 = createDryer("Dryer2", dorm13, StatusMachine.FUNCTIONAL, dorm13Machine2);
+        dorm13Machine1.setDryer(dorm13Dryer1);
+        dorm13Machine2.setDryer(dorm13Dryer2);
+        createDormAdministrator("Tom", "Hanks", "tom.hanks@e-uvt.ro", "0712345678", "hello", dorm13, "user-profile.jpg");
+        Room room1 = createRoom("1", dorm13);
+        Room room2 = createRoom("2", dorm13);
         createStudent("Taylor", "Swift", "taylor.swift@e-uvt.ro", "0765891234", "hello", room1, "I2345",
                 "user-profile.jpg");
         createRegisterRequest("Vin", "Diesel", "vin.diesel@e-uvt.ro", "0789123456", "hello", room1, "I1234",
                 "user-profile.jpg");
         createRegisterRequest("IuliBuli", "Geo", "iuliadragoiu2@gmail.com", "0789133456", "hello", room2, "I1834",
                 "user-profile.jpg");
+
         initializeDorms();
         initializeRooms();
         initializeStudents();
         initializeDormsAdministrators();
-        initializeMachinesAndDryers();
         initializeAppointments();
     }
 

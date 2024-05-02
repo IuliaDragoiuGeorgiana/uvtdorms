@@ -9,6 +9,9 @@ import com.uvtdorms.repository.IWashingMachineRepository;
 import com.uvtdorms.repository.dto.request.CreateLaundryAppointmentDto;
 import com.uvtdorms.repository.dto.request.GetFreeIntervalDto;
 import com.uvtdorms.repository.dto.response.FreeIntervalsDto;
+import com.uvtdorms.repository.dto.response.LaundryAppointmentsDto;
+import com.uvtdorms.repository.entity.Dorm;
+import com.uvtdorms.repository.entity.DormAdministratorDetails;
 import com.uvtdorms.repository.entity.Dryer;
 import com.uvtdorms.repository.entity.LaundryAppointment;
 import com.uvtdorms.repository.entity.StudentDetails;
@@ -23,6 +26,7 @@ import jakarta.persistence.criteria.Root;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +45,7 @@ public class LaundryAppointmentService {
         private final ILaundryAppointmentRepository laundryAppointmentRepository;
         private final IStudentDetailsRepository studentDetailsRepository;
         private final EntityManager entityManager;
+        private final ModelMapper modelMapper;
 
         private boolean studentAlreadyHasAppointmentForThisWeek(StudentDetails student,
                         LocalDateTime intervalBeginDate) {
@@ -79,19 +84,9 @@ public class LaundryAppointmentService {
                                         HttpStatus.BAD_REQUEST);
                 }
 
-                // UUID machineUuid = createLaundryAppointmentDto.selectedMachineId();
-                // if (machineUuid == null) {
-                // throw new AppException("Wrong UUID", HttpStatus.BAD_REQUEST);
-                // }
-
                 WashingMachine washingMachine = washingMachineRepository
                                 .findById(createLaundryAppointmentDto.selectedMachineId())
                                 .orElseThrow(() -> new AppException("Washing machine not found", HttpStatus.NOT_FOUND));
-
-                // UUID dryerUuid = createLaundryAppointmentDto.selectedDryerId();
-                // if (dryerUuid == null) {
-                // throw new AppException("Wrong UUID", HttpStatus.BAD_REQUEST);
-                // }
 
                 Dryer dryer = dryerRepository.findById(createLaundryAppointmentDto.selectedDryerId())
                                 .orElseThrow(() -> new AppException("Dryer not found", HttpStatus.NOT_FOUND));
@@ -146,5 +141,44 @@ public class LaundryAppointmentService {
                 }
 
                 return freeHours;
+        }
+
+        @Transactional
+        public List<LaundryAppointmentsDto> getWeeklyAppointmentsForDormForWashingMachine(String washingMachineId,
+                        String dormAdministratorEmail) {
+
+                User user = userRepository.getByEmail(dormAdministratorEmail)
+                                .orElseThrow(() -> new AppException("User not found", HttpStatus.NOT_FOUND));
+
+                DormAdministratorDetails dormAdministratorDetails = user.getDormAdministratorDetails();
+
+                if (dormAdministratorDetails == null) {
+                        throw new AppException("The user is not a dorm administrator", HttpStatus.BAD_REQUEST);
+                }
+
+                Dorm dorm = dormAdministratorDetails.getDorm();
+
+                CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+                CriteriaQuery<LaundryAppointment> cq = cb.createQuery(LaundryAppointment.class);
+                Root<LaundryAppointment> appointment = cq.from(LaundryAppointment.class);
+
+                LocalDateTime startOfWeek = LocalDateTime.now().with(DayOfWeek.MONDAY).withHour(0).withMinute(0)
+                                .withSecond(0);
+                LocalDateTime endOfWeek = startOfWeek.plusDays(7);
+
+                Predicate washingMachinePredicate = cb.equal(appointment.get("washMachine").get("id"),
+                                UUID.fromString(washingMachineId));
+                Predicate dormPredicate = cb.equal(appointment.get("student").get("room").get("dorm"),
+                                dorm);
+                Predicate datePredicate = cb.greaterThanOrEqualTo(appointment.get("intervalBeginDate"), startOfWeek);
+                Predicate endDatePredicate = cb.lessThanOrEqualTo(appointment.get("intervalBeginDate"), endOfWeek);
+
+                cq.where(washingMachinePredicate, dormPredicate, datePredicate, endDatePredicate);
+
+                List<LaundryAppointment> appointments = entityManager.createQuery(cq).getResultList();
+
+                return appointments.stream().map(
+                                appointmentEntity -> modelMapper.map(appointmentEntity, LaundryAppointmentsDto.class))
+                                .toList();
         }
 }

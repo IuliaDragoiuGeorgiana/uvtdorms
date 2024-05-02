@@ -5,19 +5,27 @@ import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
 import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
 import { StudentsAdministationPageComponent } from './pages/students-administation-page/students-administation-page.component';
+import { DormMachinesPageComponent } from './pages/dorm-machines-page/dorm-machines-page.component';
 
 const routes: Routes = [
-  {path: 'laundry-appointments', component: LaundryAppointmentsPageComponent},
-  {path: 'login', component: LoginPageComponent},
-  {path: 'profile', component: ProfilePageComponent},
-  {path: 'not-found', component: NotFoundPageComponent},
-  {path: 'students-administration', component: StudentsAdministationPageComponent},
+  { path: 'laundry-appointments', component: LaundryAppointmentsPageComponent },
+  { path: 'login', component: LoginPageComponent },
+  { path: 'profile', component: ProfilePageComponent },
+  { path: 'not-found', component: NotFoundPageComponent },
+  {
+    path: 'students-administration',
+    component: StudentsAdministationPageComponent,
+  },
+  {
+    path: 'dorm-machines-administration',
+    component: DormMachinesPageComponent,
+  },
 
-  {path: '', redirectTo: '/login', pathMatch: 'full'}
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

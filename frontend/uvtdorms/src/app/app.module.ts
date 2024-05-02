@@ -60,6 +60,9 @@ import { ChangePasswordDialogComponent } from './elements/dialogs/change-passwor
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { DormMachinesPageComponent } from './pages/dorm-machines-page/dorm-machines-page.component';
+import { ToolbarModule } from 'primeng/toolbar';
+import { StepperModule } from 'primeng/stepper';
 
 @NgModule({
   declarations: [
@@ -80,6 +83,7 @@ import { ToastModule } from 'primeng/toast';
     ProfilePageDisplayDormAdministratorComponent,
     EditPhoneNumberDialogComponent,
     ChangePasswordDialogComponent,
+    DormMachinesPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -118,6 +122,8 @@ import { ToastModule } from 'primeng/toast';
     DialogModule,
     ConfirmDialogModule,
     ToastModule,
+    ToolbarModule,
+    StepperModule,
   ],
   providers: [
     provideHttpClient(withFetch()),

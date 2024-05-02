@@ -2,6 +2,7 @@ package com.uvtdorms.controller;
 
 import com.uvtdorms.repository.dto.TokenDto;
 import com.uvtdorms.repository.dto.response.DisplayDormAdministratorDetailsDto;
+import com.uvtdorms.repository.dto.response.DormIdDto;
 import com.uvtdorms.services.DormAdministratorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +18,19 @@ public class DormAdministratorController {
     private final DormAdministratorService dormAdministratorService;
 
     @GetMapping("/get-administrator-details")
-    public ResponseEntity<DisplayDormAdministratorDetailsDto> getDormAdministratorDetails(Authentication authentication) {
+    public ResponseEntity<DisplayDormAdministratorDetailsDto> getDormAdministratorDetails(
+            Authentication authentication) {
         TokenDto token = (TokenDto) authentication.getPrincipal();
-        DisplayDormAdministratorDetailsDto displayDormAdministratorDetailsDto = dormAdministratorService.getDormAdministratorDetails(token.getEmail());
+        DisplayDormAdministratorDetailsDto displayDormAdministratorDetailsDto = dormAdministratorService
+                .getDormAdministratorDetails(token.getEmail());
 
         return ResponseEntity.ok(displayDormAdministratorDetailsDto);
+    }
+
+    @GetMapping("/get-administrated-dorm-id")
+    public ResponseEntity<DormIdDto> getAdministratedDormId(Authentication authentication) {
+        TokenDto token = (TokenDto) authentication.getPrincipal();
+
+        return ResponseEntity.ok(dormAdministratorService.getAdministratedDormId(token.getEmail()));
     }
 }

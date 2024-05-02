@@ -11,7 +11,6 @@ import com.uvtdorms.repository.dto.response.UserDetailsDto;
 
 import lombok.RequiredArgsConstructor;
 
-import org.hibernate.sql.Update;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,7 +19,6 @@ import org.springframework.stereotype.Service;
 import com.uvtdorms.repository.IUserRepository;
 import com.uvtdorms.repository.entity.User;
 import com.uvtdorms.services.interfaces.IUserService;
-
 
 @Service
 @RequiredArgsConstructor
@@ -46,7 +44,6 @@ public class UserService implements IUserService {
         return token;
     }
 
-    
     public UserDetailsDto getUserDetails(final String email) {
         User user = userRepository.getByEmail(email)
                 .orElseThrow(() -> new AppException("User not found!", HttpStatus.NOT_FOUND));
@@ -70,12 +67,12 @@ public class UserService implements IUserService {
         user.setPhoneNumber(updatePhoneNumberDto.phoneNumber());
         userRepository.save(user);
     }
+
     public void updatePassword(ChangePasswordDto changePasswordDto, String email) {
         User user = userRepository.getByEmail(email)
                 .orElseThrow(() -> new AppException("User not found!", HttpStatus.NOT_FOUND));
         user.setPassword(passwordEncoder.encode(CharBuffer.wrap(changePasswordDto.newPassword())));
         userRepository.save(user);
     }
-
 
 }

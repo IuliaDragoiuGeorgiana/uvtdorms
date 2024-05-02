@@ -1,0 +1,167 @@
+<div class="dorm-machines-page-body">
+  <div class="card">
+    <p-table
+      [value]="washingMachines"
+      dataKey="name"
+      [tableStyle]="{ 'min-width': '60rem' }"
+    >
+      <ng-template pTemplate="caption">
+        <div
+          class="washing-machines-table-caption flex align-items-center justify-content-between"
+        >
+          Washing machines
+          <p-button icon="pi pi-plus" (click)="openNew()"></p-button>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 5rem"></th>
+          <th pSortableColumn="name">
+            Name <p-sortIcon field="name"></p-sortIcon>
+          </th>
+          <th>Associated dryer</th>
+          <th>Status</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-product let-expanded="expanded">
+        <tr>
+          <td>
+            <button
+              type="button"
+              pButton
+              pRipple
+              [pRowToggler]="product"
+              class="p-button-text p-button-rounded p-button-plain"
+              [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+            ></button>
+          </td>
+          <td>{{ product.name }}</td>
+          <td>{{ getAssociatedDryerName(product) }}</td>
+          <td>
+            <p-tag
+              [value]="getStatus(product)"
+              [severity]="getStatusSeverity(product)"
+            ></p-tag>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="rowexpansion" let-product>
+        <tr>
+          <td colspan="7">
+            <div class="p-3">
+              <p-table
+                [value]="getWeeklyAppointments(product)"
+                dataKey="intervalBeginDate"
+              >
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th pSortableColumn="intervalBeginDate">
+                      Hour <p-sortIcon field="intervalBeginDate"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="studentEmail">
+                      Student <p-sortIcon field="studentEmail"></p-sortIcon>
+                    </th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-order>
+                  <tr>
+                    <td>{{ formatDate(order.intervalBeginDate) }}</td>
+                    <td>{{ order.studentEmail }}</td>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                  <tr>
+                    <td colspan="6">
+                      There are no appointments for this machine yet.
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  <p-dialog
+    [(visible)]="addSomething"
+    [style]="{ width: '60vw' }"
+    header="Product Details"
+    [modal]="true"
+    styleClass="p-fluid"
+  >
+    <p-stepper [linear]="true">
+      <p-stepperPanel header="Select machine type">
+        <ng-template
+          pTemplate="content"
+          let-nextCallback="nextCallback"
+          let-index="index"
+        >
+          <div class="flex flex-column h-12rem">
+            <div
+              class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium"
+            >
+              Select machine type
+            </div>
+          </div>
+          <div class="flex pt-4 justify-content-end">
+            <p-button
+              label="Next"
+              icon="pi pi-arrow-right"
+              iconPos="right"
+              (onClick)="nextCallback.emit()"
+            /></div
+        ></ng-template>
+      </p-stepperPanel>
+      <p-stepperPanel header="Set machine details">
+        <ng-template
+          pTemplate="content"
+          let-prevCallback="prevCallback"
+          let-nextCallback="nextCallback"
+          let-index="index"
+        >
+          <div class="flex flex-column h-12rem">
+            <div
+              class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium"
+            >
+              Set machine details
+            </div>
+          </div>
+          <div class="flex pt-4 justify-content-between">
+            <p-button
+              label="Back"
+              icon="pi pi-arrow-left"
+              (onClick)="prevCallback.emit()"
+            />
+            <p-button
+              label="Next"
+              icon="pi pi-arrow-right"
+              iconPos="right"
+              (onClick)="nextCallback.emit()"
+            /></div
+        ></ng-template>
+      </p-stepperPanel>
+      <p-stepperPanel header="Confirm">
+        <ng-template
+          pTemplate="content"
+          let-prevCallback="prevCallback"
+          let-index="index"
+        >
+          <div class="flex flex-column h-12rem">
+            <div
+              class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium"
+            >
+              Confirm
+            </div>
+          </div>
+          <div class="flex pt-4 justify-content-start">
+            <p-button
+              label="Back"
+              icon="pi pi-arrow-left"
+              (onClick)="prevCallback.emit()"
+            /></div
+        ></ng-template>
+      </p-stepperPanel>
+    </p-stepper>
+  </p-dialog>
+</div>

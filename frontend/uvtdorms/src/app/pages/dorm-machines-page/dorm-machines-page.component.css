@@ -1,0 +1,14 @@
+.dorm-machines-page-body
+{
+    position: absolute;
+    top: 6vh;
+    width: 100%;
+    height: 94vh;
+}
+
+.washing-machines-table-caption
+{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}

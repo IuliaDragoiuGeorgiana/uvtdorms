@@ -4,12 +4,14 @@ import com.uvtdorms.repository.dto.response.DisplayDormAdministratorDetailsDto;
 import com.uvtdorms.repository.dto.response.DisplayStudentDetailsDto;
 import com.uvtdorms.repository.dto.response.DryerDto;
 import com.uvtdorms.repository.dto.response.EmailDto;
+import com.uvtdorms.repository.dto.response.LaundryAppointmentsDto;
 import com.uvtdorms.repository.dto.response.ListedRegisterRequestDto;
 import com.uvtdorms.repository.dto.response.RegisterRequestDto;
 import com.uvtdorms.repository.dto.response.StudentDetailsDto;
 import com.uvtdorms.repository.dto.response.WashingMachineDto;
 import com.uvtdorms.repository.entity.DormAdministratorDetails;
 import com.uvtdorms.repository.entity.Dryer;
+import com.uvtdorms.repository.entity.LaundryAppointment;
 import com.uvtdorms.repository.entity.RegisterRequest;
 import com.uvtdorms.repository.entity.StudentDetails;
 import com.uvtdorms.repository.entity.User;
@@ -19,7 +21,6 @@ import org.modelmapper.PropertyMap;
 import org.modelmapper.spi.MappingContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
-import org.hibernate.mapping.Property;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 
@@ -37,6 +38,7 @@ public class MapperConfig {
             protected void configure() {
                 using(ctx -> ((UUID) ctx.getSource()).toString()).map(source.getMachineId(), destination.getId());
                 map(source.getMachineNumber(), destination.getName());
+                map(source.getAssociatedDryer().getDryerId(), destination.getAssociatedDryerId());
 
                 Converter<StatusMachine, Boolean> statusConverter = new Converter<StatusMachine, Boolean>() {
                     public Boolean convert(MappingContext<StatusMachine, Boolean> context) {
@@ -52,6 +54,7 @@ public class MapperConfig {
             protected void configure() {
                 using(ctx -> ((UUID) ctx.getSource()).toString()).map(source.getDryerId(), destination.getId());
                 map(source.getDryerNumber(), destination.getName());
+                map(source.getAssociatedWashingMachine().getMachineId(), destination.getAssociatedWashingMachineId());
 
                 Converter<StatusMachine, Boolean> statusConverter = new Converter<StatusMachine, Boolean>() {
                     public Boolean convert(MappingContext<StatusMachine, Boolean> context) {
@@ -97,9 +100,9 @@ public class MapperConfig {
             }
         });
 
-        modelMapper.addMappings(new PropertyMap<StudentDetails,DisplayStudentDetailsDto>(){
+        modelMapper.addMappings(new PropertyMap<StudentDetails, DisplayStudentDetailsDto>() {
             @Override
-            protected void configure(){
+            protected void configure() {
                 map(source.getUser().getEmail(), destination.getEmail());
                 map(source.getUser().getPhoneNumber(), destination.getPhoneNumber());
                 map(source.getRoom().getDorm().getDormName(), destination.getDormName());
@@ -120,13 +123,23 @@ public class MapperConfig {
             }
         });
 
-        modelMapper.addMappings(new PropertyMap<DormAdministratorDetails, DisplayDormAdministratorDetailsDto>(){
+        modelMapper.addMappings(new PropertyMap<DormAdministratorDetails, DisplayDormAdministratorDetailsDto>() {
             @Override
-            protected void configure(){
+            protected void configure() {
                 map(source.getAdministrator().getEmail(), destination.getEmail());
                 map(source.getAdministrator().getPhoneNumber(), destination.getPhoneNumber());
-                map(source.getDorm().getDormName(),destination.getDormName());
+                map(source.getDorm().getDormName(), destination.getDormName());
 
+            }
+        });
+
+        modelMapper.addMappings(new PropertyMap<LaundryAppointment, LaundryAppointmentsDto>() {
+            @Override
+            protected void configure() {
+                map(source.getStudent().getUser().getEmail(), destination.getStudentEmail());
+                map(source.getWashMachine().getMachineId(), destination.getWashingMachineId());
+                map(source.getDryer().getDryerId(), destination.getDryerId());
+                map(source.getIntervalBeginDate(), destination.getIntervalBeginDate());
             }
         });
 

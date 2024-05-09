@@ -1,5 +1,7 @@
 package com.uvtdorms.utils;
 
+import com.uvtdorms.repository.dto.response.AvailableDryerDto;
+import com.uvtdorms.repository.dto.response.AvailableWashingMachineDto;
 import com.uvtdorms.repository.dto.response.DisplayDormAdministratorDetailsDto;
 import com.uvtdorms.repository.dto.response.DisplayStudentDetailsDto;
 import com.uvtdorms.repository.dto.response.DryerDto;
@@ -46,6 +48,22 @@ public class MapperConfig {
                     }
                 };
                 using(statusConverter).map(source.getStatus(), destination.getIsAvailable());
+            }
+        });
+
+        modelMapper.addMappings(new PropertyMap<WashingMachine, AvailableWashingMachineDto>() {
+            @Override
+            protected void configure() {
+                using(ctx -> ((UUID) ctx.getSource()).toString()).map(source.getMachineId(), destination.getId());
+                map(source.getMachineNumber(), destination.getName());
+            }
+        });
+
+        modelMapper.addMappings(new PropertyMap<Dryer, AvailableDryerDto>() {
+            @Override
+            protected void configure() {
+                using(ctx -> ((UUID) ctx.getSource()).toString()).map(source.getDryerId(), destination.getId());
+                map(source.getDryerNumber(), destination.getName());
             }
         });
 

@@ -12,3 +12,9 @@
     align-items: center;
     justify-content: space-between;
 }
+.select-machine-type-button
+{
+    display: flex;
+    align-items: column;
+    justify-content: space-between;
+}

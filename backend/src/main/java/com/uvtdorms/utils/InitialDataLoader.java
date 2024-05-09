@@ -277,8 +277,12 @@ public class InitialDataLoader implements CommandLineRunner {
         Dorm dorm13 = createDorm("D13", "Street1");
         WashingMachine dorm13Machine1 = createWashingMachine("Machine1", dorm13, StatusMachine.FUNCTIONAL, null);
         WashingMachine dorm13Machine2 = createWashingMachine("Machine2", dorm13, StatusMachine.FUNCTIONAL, null);
+        WashingMachine dorm13Machine3 = createWashingMachine("Machine3", dorm13, StatusMachine.FUNCTIONAL, null);
+
         Dryer dorm13Dryer1 = createDryer("Dryer1", dorm13, StatusMachine.FUNCTIONAL, dorm13Machine1);
         Dryer dorm13Dryer2 = createDryer("Dryer2", dorm13, StatusMachine.FUNCTIONAL, dorm13Machine2);
+        Dryer dorm13Dryer3 = createDryer("Dryer3", dorm13, StatusMachine.FUNCTIONAL, null);
+
         dorm13Machine1.setDryer(dorm13Dryer1);
         dorm13Machine2.setDryer(dorm13Dryer2);
         createDormAdministrator("Tom", "Hanks", "tom.hanks@e-uvt.ro", "0712345678", "hello", dorm13, "user-profile.jpg");

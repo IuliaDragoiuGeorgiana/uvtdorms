@@ -86,7 +86,7 @@
   <p-dialog
     [(visible)]="addSomething"
     [style]="{ width: '60vw' }"
-    header="Product Details"
+    header="Machine Details"
     [modal]="true"
     styleClass="p-fluid"
   >
@@ -104,13 +104,19 @@
               Select machine type
             </div>
           </div>
-          <div class="flex pt-4 justify-content-end">
+          <div class="select-machine-type-button">
             <p-button
-              label="Next"
-              icon="pi pi-arrow-right"
-              iconPos="right"
-              (onClick)="nextCallback.emit()"
-            /></div
+              label="Washing machine"
+              [text]="true"
+              [raised]="true"
+              (onClick)="nextCallback.emit(); selectMachine(machineType.WASHING_MACHINE);"
+            ></p-button>
+            <p-button
+              label="Dryer"
+              [text]="true"
+              [raised]="true"
+              (onClick)="nextCallback.emit(); selectMachine(machineType.DRYER); "
+            ></p-button></div
         ></ng-template>
       </p-stepperPanel>
       <p-stepperPanel header="Set machine details">
@@ -121,13 +127,17 @@
           let-index="index"
         >
           <div class="flex flex-column h-12rem">
+            <input type="text" pInputText />
+
+    
+         
             <div
               class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium"
             >
               Set machine details
             </div>
           </div>
-          <div class="flex pt-4 justify-content-between">
+          <div class="set-machine-details-buttons-form">
             <p-button
               label="Back"
               icon="pi pi-arrow-left"

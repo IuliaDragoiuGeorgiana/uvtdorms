@@ -7,7 +7,7 @@ import { DryerService } from '../../services/dryer.service';
 import { Dryer } from '../../interfaces/dryer';
 import { AppointmentService } from '../../services/appointment.service';
 import { LaundryAppointmentDto } from '../../interfaces/laundry-appointment-dto';
-import { formatDate } from '@angular/common';
+import { MachineType } from '../../enums/machine-type';
 
 @Component({
   selector: 'app-dorm-machines-page',
@@ -15,6 +15,9 @@ import { formatDate } from '@angular/common';
   styleUrl: './dorm-machines-page.component.css',
 })
 export class DormMachinesPageComponent {
+  selectMachine(arg0: any) {
+    throw new Error('Method not implemented.');
+  }
   private dormId!: string;
   public washingMachines!: WashingMachine[];
   public dryers!: Dryer[];
@@ -27,6 +30,8 @@ export class DormMachinesPageComponent {
     associatedDryerId: '',
     weeklyAppointments: null,
   };
+
+  public machineType = MachineType;
 
   constructor(
     private dormAdministratorDetailsService: DormAdministratorDetailsService,
@@ -79,6 +84,19 @@ export class DormMachinesPageComponent {
       },
     });
   }
+
+  private getAvailableWashingMachine(): void {
+    this.washingMachineService.getAvailableWashingMachine().subscribe({
+      next: (washingMachines) => {
+        console.log(washingMachines);
+      },
+      error(err) {
+        console.error(err);
+      },
+    });
+
+  }
+
 
   public isWashingMachineAvailable(washingMachine: WashingMachine): boolean {
     return washingMachine.isAvailable;
@@ -183,4 +201,6 @@ export class DormMachinesPageComponent {
     this.addSomething = false;
     console.log(this.washingMachine);
   }
+
+
 }

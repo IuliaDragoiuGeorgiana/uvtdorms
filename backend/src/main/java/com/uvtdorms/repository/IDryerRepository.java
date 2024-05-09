@@ -11,4 +11,6 @@ import java.util.UUID;
 @Repository
 public interface IDryerRepository extends JpaRepository<Dryer, UUID> {
     List<Dryer> findByDorm(Dorm dorm);
+
+    List<Dryer> findByDormAndAssociatedWashingMachineIsNull(Dorm dorm);
 }

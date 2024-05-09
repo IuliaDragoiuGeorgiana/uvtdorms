@@ -1,9 +1,12 @@
 package com.uvtdorms.controller;
 
+import com.uvtdorms.repository.dto.TokenDto;
+import com.uvtdorms.repository.dto.response.AvailableWashingMachineDto;
 import com.uvtdorms.repository.dto.response.WashingMachineDto;
 import com.uvtdorms.services.WashingMachineService;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +27,13 @@ public class WashingMachineController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+
+    }
+
+    @GetMapping("/get-available-washing-machines")
+    public ResponseEntity<List<AvailableWashingMachineDto>> getAvailableWashingMachineFromDorm(Authentication authentication){        
+        TokenDto token = (TokenDto) authentication.getPrincipal();
+        return ResponseEntity.ok(washingMachineService.getAvailableWashingMachinesFromDorm(token.getEmail()));
 
     }
 }

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { WashingMachine } from '../interfaces/washing-machine';
 import { AuthService } from './auth.service';
 import { AvailableWashingMachineDto } from '../interfaces/available-washing-machine-dto';
+import { NewMachineDto } from '../interfaces/new-machine-dto';
 
 
 @Injectable({
@@ -14,6 +15,7 @@ export class WashingMachineService {
   private washingMachineServiceUrl = "http://localhost:8080/api/washingmachines";
   private getWashingMachinesFromDormUrl = "/get-washing-machines-from-dorm";
   private getAvailableWashingMachineUrl = "/get-available-washing-machines";
+  private createWashingMachineUrl = "/create-washing-machine";
 
   constructor(private http: HttpClient, private auth: AuthService) { }
 
@@ -23,5 +25,11 @@ export class WashingMachineService {
   getAvailableWashingMachine(): Observable<AvailableWashingMachineDto[]> {
     return this.http.get<AvailableWashingMachineDto[]>(this.washingMachineServiceUrl + this.getAvailableWashingMachineUrl, { headers: this.auth.getHeader() });
   }
+
+  createWashingMachine(washingMachine: NewMachineDto) {
+    return this.http.post(this.washingMachineServiceUrl + this.createWashingMachineUrl, washingMachine, { headers: this.auth.getHeader() });
+  }
+
+
 
 }

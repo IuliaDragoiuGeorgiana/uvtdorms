@@ -64,6 +64,9 @@ import { DormMachinesPageComponent } from './pages/dorm-machines-page/dorm-machi
 import { ToolbarModule } from 'primeng/toolbar';
 import { StepperModule } from 'primeng/stepper';
 import { CascadeSelectModule } from 'primeng/cascadeselect';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputTextModule } from 'primeng/inputtext';
+import { FloatLabelModule } from 'primeng/floatlabel';
 
 @NgModule({
   declarations: [
@@ -126,6 +129,9 @@ import { CascadeSelectModule } from 'primeng/cascadeselect';
     ToolbarModule,
     StepperModule,
     CascadeSelectModule,
+    DropdownModule,
+    InputTextModule,
+    FloatLabelModule,
   ],
   providers: [
     provideHttpClient(withFetch()),

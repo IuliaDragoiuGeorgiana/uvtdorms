@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { Dryer } from '../interfaces/dryer';
 import { AuthService } from './auth.service';
 import { AvailableDryerDto } from '../interfaces/available-dryer-dto';
+import { NewMachineDto } from '../interfaces/new-machine-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export class DryerService {
   private dryerServiceUrl = "http://localhost:8080/api/dryers";
   private getDryerFromDormUrl = "/get-dryer-from-dorm";
   private getAvailableDryerUrl = "/get-available-dryers";
+  private createDryerUrl = "/create-dryer";
 
   constructor(private http: HttpClient, private auth: AuthService) { }
 
@@ -22,5 +24,9 @@ export class DryerService {
 
   getAvailableDryer(): Observable<AvailableDryerDto[]> {
     return this.http.get<AvailableDryerDto[]>(this.dryerServiceUrl + this.getAvailableDryerUrl, { headers: this.auth.getHeader() });
+  }
+
+  createDryer(dryer: NewMachineDto) {
+    return this.http.post(this.dryerServiceUrl + this.createDryerUrl, dryer, { headers: this.auth.getHeader() });
   }
 }

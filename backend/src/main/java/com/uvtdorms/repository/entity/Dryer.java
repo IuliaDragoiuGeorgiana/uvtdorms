@@ -37,4 +37,10 @@ public class Dryer {
     @OneToOne
     @JoinColumn(name = "associated_washing_machine_id")
     private WashingMachine associatedWashingMachine;
+
+    public void setWashingMachine (WashingMachine washingMachine) {
+        this.associatedWashingMachine = washingMachine;
+        washingMachine.setAssociatedDryer(this);
+    }
 }
+

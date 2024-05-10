@@ -45,7 +45,99 @@
     width: 70%;
 }
 
-.test1 *
+.set-machine-details-body
 {
-    z-index: 999999;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.set-machine-details-body-form
+{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0 5%;
+    margin-top: 5vh;
+}
+
+.set-machine-details-body-form-item
+{
+    width: 50%;
+    margin-bottom: 5vh;
+}
+
+.set-machine-details-buttons-form,
+.set-machine-confirm-buttons
+{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.set-machine-details-buttons-form-left,
+.set-machine-details-buttons-form-right,
+.set-machine-confirm-buttons-left,
+.set-machine-confirm-buttons-right
+{
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.set-machine-details-buttons-form-button,
+.set-machine-confirm-buttons-button
+{
+    width: 50%;
+}
+
+.set-machine-confirm-body-header
+{
+    margin-top: 3vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.set-machine-confirm-body
+{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin: 4vh 0;
+}
+
+.set-machine-confirm-body-left,
+.set-machine-confirm-body-right
+{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 1%;
+}
+
+.set-machine-confirm-body-left
+{
+    align-items: flex-end;
+}
+
+.set-machine-confirm-body-left p
+{
+    font-weight: bold;
+}
+
+.set-machine-confirm-body-right
+{
+    align-items: flex-start;
 }

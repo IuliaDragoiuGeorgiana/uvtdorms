@@ -3,10 +3,13 @@ package com.uvtdorms.services;
 import com.uvtdorms.exception.AppException;
 import com.uvtdorms.repository.IDormRepository;
 import com.uvtdorms.repository.IDryerRepository;
+import com.uvtdorms.repository.IUserRepository;
 import com.uvtdorms.repository.dto.response.AvailableDryerDto;
 import com.uvtdorms.repository.dto.response.DryerDto;
 import com.uvtdorms.repository.entity.Dorm;
+import com.uvtdorms.repository.entity.DormAdministratorDetails;
 import com.uvtdorms.repository.entity.Dryer;
+import com.uvtdorms.repository.entity.User;
 import com.uvtdorms.services.interfaces.IDryerService;
 
 import lombok.RequiredArgsConstructor;
@@ -25,6 +28,7 @@ public class DryerService implements IDryerService {
 
     private final IDormRepository dormRepository;
     private final IDryerRepository dryerRepository;
+    private final IUserRepository userRepository;
     private final ModelMapper modelMapper;
 
     @Override
@@ -45,16 +49,16 @@ public class DryerService implements IDryerService {
                 .collect(Collectors.toList());
     }
 
-    public List<AvailableDryerDto> getAvailableDryerFromDorm(String dormId) throws AppException {
-        UUID dormUuid = UUID.fromString(dormId);
+    public List<AvailableDryerDto> getAvailableDryerFromDorm(String administratorEmail) throws AppException {
+        User user = userRepository.getByEmail(administratorEmail)
+                .orElseThrow(() -> new AppException("User not found", HttpStatus.NOT_FOUND));
 
-        if (dormUuid == null) {
-            throw new AppException("Invalid UUID", HttpStatus.BAD_REQUEST);
+        DormAdministratorDetails dormAdministratorDetails = user.getDormAdministratorDetails();
+        if (dormAdministratorDetails == null) {
+            throw new AppException("User is not a dorm administrator", HttpStatus.BAD_REQUEST);
         }
 
-        Dorm dorm = dormRepository.findById(dormUuid)
-                .orElseThrow(() -> new AppException("Dorm not found", HttpStatus.NOT_FOUND));
-
+        Dorm dorm = dormAdministratorDetails.getDorm();
         List<Dryer> dryers = dryerRepository.findByDormAndAssociatedWashingMachineIsNull(dorm);
 
         return dryers.stream()

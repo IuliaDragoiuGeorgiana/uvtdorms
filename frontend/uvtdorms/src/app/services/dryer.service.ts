@@ -12,7 +12,7 @@ export class DryerService {
 
   private dryerServiceUrl = "http://localhost:8080/api/dryers";
   private getDryerFromDormUrl = "/get-dryer-from-dorm";
-  private getAvailableDryerUrl = "/get-available-dryer";
+  private getAvailableDryerUrl = "/get-available-dryers";
 
   constructor(private http: HttpClient, private auth: AuthService) { }
 

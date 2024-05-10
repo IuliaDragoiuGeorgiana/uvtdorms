@@ -63,6 +63,7 @@ import { ToastModule } from 'primeng/toast';
 import { DormMachinesPageComponent } from './pages/dorm-machines-page/dorm-machines-page.component';
 import { ToolbarModule } from 'primeng/toolbar';
 import { StepperModule } from 'primeng/stepper';
+import { CascadeSelectModule } from 'primeng/cascadeselect';
 
 @NgModule({
   declarations: [
@@ -124,6 +125,7 @@ import { StepperModule } from 'primeng/stepper';
     ToastModule,
     ToolbarModule,
     StepperModule,
+    CascadeSelectModule,
   ],
   providers: [
     provideHttpClient(withFetch()),

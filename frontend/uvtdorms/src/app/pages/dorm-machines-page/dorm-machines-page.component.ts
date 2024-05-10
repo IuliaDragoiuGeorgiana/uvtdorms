@@ -8,6 +8,9 @@ import { Dryer } from '../../interfaces/dryer';
 import { AppointmentService } from '../../services/appointment.service';
 import { LaundryAppointmentDto } from '../../interfaces/laundry-appointment-dto';
 import { MachineType } from '../../enums/machine-type';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AvailableDryerDto } from '../../interfaces/available-dryer-dto';
+import { AvailableWashingMachineDto } from '../../interfaces/available-washing-machine-dto';
 
 @Component({
   selector: 'app-dorm-machines-page',
@@ -15,9 +18,6 @@ import { MachineType } from '../../enums/machine-type';
   styleUrl: './dorm-machines-page.component.css',
 })
 export class DormMachinesPageComponent {
-  selectMachine(arg0: any) {
-    throw new Error('Method not implemented.');
-  }
   private dormId!: string;
   public washingMachines!: WashingMachine[];
   public dryers!: Dryer[];
@@ -32,6 +32,14 @@ export class DormMachinesPageComponent {
   };
 
   public machineType = MachineType;
+  public selectedMachineType: MachineType | null = null;
+  private availableWashingMachines: AvailableWashingMachineDto[] = [];
+  private availableDryers: AvailableDryerDto[] = [];
+
+  public newMachineForm = new FormGroup({
+    name: new FormControl('', Validators.required),
+    associatedDryerOrWashingMachineId: new FormControl('', Validators.required),
+  });
 
   constructor(
     private dormAdministratorDetailsService: DormAdministratorDetailsService,
@@ -88,15 +96,25 @@ export class DormMachinesPageComponent {
   private getAvailableWashingMachine(): void {
     this.washingMachineService.getAvailableWashingMachine().subscribe({
       next: (washingMachines) => {
+        this.availableWashingMachines = washingMachines;
         console.log(washingMachines);
       },
       error(err) {
         console.error(err);
       },
     });
-
   }
 
+  private getAvailableDryer(): void {
+    this.dryerService.getAvailableDryer().subscribe({
+      next: (dryers) => {
+        this.availableDryers = dryers;
+      },
+      error(err) {
+        console.error(err);
+      },
+    });
+  }
 
   public isWashingMachineAvailable(washingMachine: WashingMachine): boolean {
     return washingMachine.isAvailable;
@@ -202,5 +220,30 @@ export class DormMachinesPageComponent {
     console.log(this.washingMachine);
   }
 
+  public selectMachine(machineType: MachineType): void {
+    this.selectedMachineType = machineType;
 
+    if (this.isDryerSelected()) {
+      this.getAvailableWashingMachine();
+    } else if (this.isWashingMachineSelected()) {
+      this.getAvailableDryer();
+    }
+  }
+
+  public isDryerSelected(): boolean {
+    return this.machineType.DRYER === this.selectedMachineType;
+  }
+
+  public isWashingMachineSelected(): boolean {
+    return this.machineType.WASHING_MACHINE === this.selectedMachineType;
+  }
+
+  public getAvailableMachines() {
+    if (this.isDryerSelected()) {
+      return this.availableWashingMachines;
+    } else if (this.isWashingMachineSelected()) {
+      return this.availableDryers;
+    }
+    return [];
+  }
 }

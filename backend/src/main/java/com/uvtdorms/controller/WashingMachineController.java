@@ -34,6 +34,5 @@ public class WashingMachineController {
     public ResponseEntity<List<AvailableWashingMachineDto>> getAvailableWashingMachineFromDorm(Authentication authentication){        
         TokenDto token = (TokenDto) authentication.getPrincipal();
         return ResponseEntity.ok(washingMachineService.getAvailableWashingMachinesFromDorm(token.getEmail()));
-
     }
 }

@@ -12,9 +12,40 @@
     align-items: center;
     justify-content: space-between;
 }
-.select-machine-type-button
+
+.select-machine-type-header
+{
+    margin-top: 2vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.select-machine-type-buttons
 {
     display: flex;
-    align-items: column;
-    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5vh;
+}
+
+.select-machine-type-buttons-left,
+.select-machine-type-buttons-right
+{
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.select-machine-type-button
+{
+    width: 70%;
+}
+
+.test1 *
+{
+    z-index: 999999;
 }

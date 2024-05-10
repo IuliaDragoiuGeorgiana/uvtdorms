@@ -74,5 +74,4 @@ public class UserService implements IUserService {
         user.setPassword(passwordEncoder.encode(CharBuffer.wrap(changePasswordDto.newPassword())));
         userRepository.save(user);
     }
-
 }

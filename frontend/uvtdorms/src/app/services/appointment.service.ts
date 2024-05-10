@@ -17,6 +17,8 @@ export class AppointmentService {
   private getFreeIntervalsUrl = '/get-free-intervals';
   private getWeeklyAppointmentsForDormForWashingMachineUrl =
     '/get-weekly-appointments-for-dorm-for-washing-machine';
+  private getWeeklyAppointmentsForDormForDryerUrl =
+    '/get-weekly-appointments-for-dorm-for-dryer';
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
@@ -46,6 +48,17 @@ export class AppointmentService {
       this.appointmentServiceUrl +
         this.getWeeklyAppointmentsForDormForWashingMachineUrl,
       washingMachineIdDto,
+      { headers: this.authService.getHeader() }
+    );
+  }
+
+  getWeeklyAppointmentsForDormForDryer(
+    dryerId: string
+  ): Observable<LaundryAppointmentDto[]> {
+    let dryerIdDto = { id: dryerId };
+    return this.http.post<LaundryAppointmentDto[]>(
+      this.appointmentServiceUrl + this.getWeeklyAppointmentsForDormForDryerUrl,
+      dryerIdDto,
       { headers: this.authService.getHeader() }
     );
   }

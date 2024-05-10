@@ -181,4 +181,43 @@ public class LaundryAppointmentService {
                                 appointmentEntity -> modelMapper.map(appointmentEntity, LaundryAppointmentsDto.class))
                                 .toList();
         }
+
+        @Transactional
+        public List<LaundryAppointmentsDto> getWeeklyAppointmentsForDormForDryer(String dryerId,
+                        String dormAdministratorEmail) {
+
+                User user = userRepository.getByEmail(dormAdministratorEmail)
+                                .orElseThrow(() -> new AppException("User not found", HttpStatus.NOT_FOUND));
+
+                DormAdministratorDetails dormAdministratorDetails = user.getDormAdministratorDetails();
+
+                if (dormAdministratorDetails == null) {
+                        throw new AppException("The user is not a dorm administrator", HttpStatus.BAD_REQUEST);
+                }
+
+                Dorm dorm = dormAdministratorDetails.getDorm();
+
+                CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+                CriteriaQuery<LaundryAppointment> cq = cb.createQuery(LaundryAppointment.class);
+                Root<LaundryAppointment> appointment = cq.from(LaundryAppointment.class);
+
+                LocalDateTime startOfWeek = LocalDateTime.now().with(DayOfWeek.MONDAY).withHour(0).withMinute(0)
+                                .withSecond(0);
+                LocalDateTime endOfWeek = startOfWeek.plusDays(7);
+
+                Predicate dryerPredicate = cb.equal(appointment.get("dryer").get("id"),
+                                UUID.fromString(dryerId));
+                Predicate dormPredicate = cb.equal(appointment.get("student").get("room").get("dorm"),
+                                dorm);
+                Predicate datePredicate = cb.greaterThanOrEqualTo(appointment.get("intervalBeginDate"), startOfWeek);
+                Predicate endDatePredicate = cb.lessThanOrEqualTo(appointment.get("intervalBeginDate"), endOfWeek);
+
+                cq.where(dryerPredicate, dormPredicate, datePredicate, endDatePredicate);
+
+                List<LaundryAppointment> appointments = entityManager.createQuery(cq).getResultList();
+
+                return appointments.stream().map(
+                                appointmentEntity -> modelMapper.map(appointmentEntity, LaundryAppointmentsDto.class))
+                                .toList();
+        }
 }

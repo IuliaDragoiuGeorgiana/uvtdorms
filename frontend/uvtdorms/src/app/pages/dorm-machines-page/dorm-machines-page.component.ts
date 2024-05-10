@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { WashingMachine } from '../../interfaces/washing-machine';
-import { DormService } from '../../services/dorm.service';
 import { WashingMachineService } from '../../services/washing-machine.service';
 import { DormAdministratorDetailsService } from '../../services/dorm-administrator-details.service';
 import { DryerService } from '../../services/dryer.service';
@@ -51,6 +50,12 @@ export class DormMachinesPageComponent {
     name: new FormControl('', Validators.required),
     associatedDryerOrWashingMachineId: new FormControl(''),
   });
+
+  public listedMachinesType: MachineType = MachineType.WASHING_MACHINE;
+  public listableMachineTypes = [
+    { type: MachineType.WASHING_MACHINE, name: 'Washing machines' },
+    { type: MachineType.DRYER, name: 'Dryers' },
+  ];
 
   constructor(
     private dormAdministratorDetailsService: DormAdministratorDetailsService,
@@ -135,7 +140,7 @@ export class DormMachinesPageComponent {
     return dryer.isAvailable;
   }
 
-  public getStatus(washingMachine: WashingMachine): string {
+  private getWashingMachineStatus(washingMachine: WashingMachine): string {
     if (!washingMachine.isAvailable) {
       return 'Not available';
     }
@@ -155,7 +160,38 @@ export class DormMachinesPageComponent {
     return 'Available';
   }
 
-  public getStatusSeverity(washingMachine: WashingMachine): string {
+  private getDryerStatus(dryer: Dryer): string {
+    if (!dryer.isAvailable) {
+      return 'Not available';
+    }
+
+    let associatedWashingMachine = this.washingMachines.find(
+      (washingMachine) => washingMachine.associatedDryerId === dryer.id
+    );
+
+    if (associatedWashingMachine === undefined) {
+      return 'No associated washing machine';
+    }
+
+    if (!associatedWashingMachine?.isAvailable) {
+      return 'Washing machine not available';
+    }
+
+    return 'Available';
+  }
+
+  public getStatus(machine: any): string {
+    if (this.isWashingMachineLabelingSelected()) {
+      return this.getWashingMachineStatus(machine);
+    } else if (this.isDryerLabelingSelected()) {
+      return this.getDryerStatus(machine);
+    }
+    return '';
+  }
+
+  private getWashingMachineStatusSeverity(
+    washingMachine: WashingMachine
+  ): string {
     if (!washingMachine.isAvailable) {
       return 'danger';
     }
@@ -175,6 +211,35 @@ export class DormMachinesPageComponent {
     return 'success';
   }
 
+  private getDryerStatusSeverity(dryer: Dryer): string {
+    if (!dryer.isAvailable) {
+      return 'danger';
+    }
+
+    let associatedWashingMachine = this.washingMachines.find(
+      (washingMachine) => washingMachine.associatedDryerId === dryer.id
+    );
+
+    if (associatedWashingMachine === undefined) {
+      return 'warning';
+    }
+
+    if (!associatedWashingMachine?.isAvailable) {
+      return 'warning';
+    }
+
+    return 'success';
+  }
+
+  public getStatusSeverity(machine: any): string {
+    if (this.isWashingMachineLabelingSelected()) {
+      return this.getWashingMachineStatusSeverity(machine);
+    } else if (this.isDryerLabelingSelected()) {
+      return this.getDryerStatusSeverity(machine);
+    }
+    return '';
+  }
+
   public getAssociatedDryerName(washingMachine: WashingMachine): string {
     let associatedDryer = this.dryers.find(
       (dryer) => dryer.id === washingMachine.associatedDryerId
@@ -182,25 +247,51 @@ export class DormMachinesPageComponent {
     return associatedDryer?.name ?? 'No associated dryer';
   }
 
-  public getWeeklyAppointments(
+  public getAssociatedWashingMachineName(dryer: Dryer): string {
+    let associatedWashingMachine = this.washingMachines.find(
+      (washingMachine) => washingMachine.associatedDryerId === dryer.id
+    );
+    return associatedWashingMachine?.name ?? 'No associated washing machine';
+  }
+
+  private getWeeklyAppointmentsForWashingMachine(
     washingMachine: WashingMachine
-  ): LaundryAppointmentDto[] {
-    if (washingMachine.weeklyAppointments === null) {
-      console.log(washingMachine.id);
-      this.laundryAppointmentService
-        .getWeeklyAppointmentsForDormForWashingMachine(washingMachine.id)
-        .subscribe({
-          next: (appointments) => {
-            console.log(appointments);
-            washingMachine.weeklyAppointments = appointments;
-          },
-          error(err) {
-            console.error(err);
-          },
-        });
+  ): void {
+    if (washingMachine.weeklyAppointments != null) return;
+    this.laundryAppointmentService
+      .getWeeklyAppointmentsForDormForWashingMachine(washingMachine.id)
+      .subscribe({
+        next: (appointments) => {
+          washingMachine.weeklyAppointments = appointments;
+        },
+        error(err) {
+          console.error(err);
+        },
+      });
+  }
+
+  private getWeeklyAppointmentsForDryer(dryer: Dryer): void {
+    if (dryer.weeklyAppointments != null) return;
+    this.laundryAppointmentService
+      .getWeeklyAppointmentsForDormForDryer(dryer.id)
+      .subscribe({
+        next: (appointments) => {
+          dryer.weeklyAppointments = appointments;
+        },
+        error(err) {
+          console.error(err);
+        },
+      });
+  }
+
+  public getWeeklyAppointments(machine: any): LaundryAppointmentDto[] {
+    if (this.isWashingMachineLabelingSelected()) {
+      this.getWeeklyAppointmentsForWashingMachine(machine);
+    } else if (this.isDryerLabelingSelected()) {
+      this.getWeeklyAppointmentsForDryer(machine);
     }
 
-    return washingMachine.weeklyAppointments ?? [];
+    return machine.weeklyAppointments ?? [];
   }
 
   public formatDate(date: string[]): string {
@@ -299,5 +390,13 @@ export class DormMachinesPageComponent {
         },
       });
     }
+  }
+
+  public isWashingMachineLabelingSelected(): boolean {
+    return this.listedMachinesType === MachineType.WASHING_MACHINE;
+  }
+
+  public isDryerLabelingSelected(): boolean {
+    return this.listedMachinesType === MachineType.DRYER;
   }
 }

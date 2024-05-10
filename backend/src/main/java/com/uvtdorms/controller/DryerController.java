@@ -27,7 +27,7 @@ public class DryerController {
         return ResponseEntity.ok(this.dryerService.getDryerFromDorm(dormId));
     }
 
-    @GetMapping("/get-avilable-dryers")
+    @GetMapping("/get-available-dryers")
     public ResponseEntity<List<AvailableDryerDto>> getAvailableDryerFromDorm(Authentication authentication) {
         TokenDto token = (TokenDto) authentication.getPrincipal();
         return ResponseEntity.ok(dryerService.getAvailableDryerFromDorm(token.getEmail()));

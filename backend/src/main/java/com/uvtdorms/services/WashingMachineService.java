@@ -47,7 +47,6 @@ public class WashingMachineService implements IWashingMachineService {
     }
 
     public List<AvailableWashingMachineDto> getAvailableWashingMachinesFromDorm(String administratorEmail) throws AppException {
-       
         User user = userRepository.getByEmail(administratorEmail)
                 .orElseThrow(() -> new AppException("User not found", HttpStatus.NOT_FOUND));
         DormAdministratorDetails dormAdministratorDetails = user.getDormAdministratorDetails();

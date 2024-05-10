@@ -97,28 +97,36 @@
           let-nextCallback="nextCallback"
           let-index="index"
         >
-          <div class="flex flex-column h-12rem">
-            <div
-              class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium"
-            >
-              Select machine type
-            </div>
+          <div class="select-machine-type-header">
+            <h1 class="select-machine-type-header-h">
+              What type of machine do you want to add?
+            </h1>
           </div>
-          <div class="select-machine-type-button">
-            <p-button
-              label="Washing machine"
-              [text]="true"
-              [raised]="true"
-              (onClick)="nextCallback.emit(); selectMachine(machineType.WASHING_MACHINE);"
-            ></p-button>
-            <p-button
-              label="Dryer"
-              [text]="true"
-              [raised]="true"
-              (onClick)="nextCallback.emit(); selectMachine(machineType.DRYER); "
-            ></p-button></div
+          <div class="select-machine-type-buttons">
+            <div class="select-machine-type-buttons-left">
+              <p-button
+              class="select-machine-type-button"
+                label="Washing machine"
+                [raised]="true"
+                (onClick)="
+                  nextCallback.emit();
+                  selectMachine(machineType.WASHING_MACHINE)
+                "
+              ></p-button>
+            </div>
+            <div class="select-machine-type-buttons-right">
+              <p-button
+              class="select-machine-type-button"
+                label="Dryer"
+                [raised]="true"
+                (onClick)="
+                  nextCallback.emit(); selectMachine(machineType.DRYER)
+                "
+              ></p-button>
+            </div></div
         ></ng-template>
       </p-stepperPanel>
+
       <p-stepperPanel header="Set machine details">
         <ng-template
           pTemplate="content"
@@ -126,16 +134,29 @@
           let-nextCallback="nextCallback"
           let-index="index"
         >
-          <div class="flex flex-column h-12rem">
-            <input type="text" pInputText />
+          <div class="set-machine-details-body">
+            <form class="" [formGroup]="newMachineForm">
+              <mat-form-field class="" appearance="outline">
+                <mat-label>{{isDryerSelected() ? 'Dryer name' : ''}}{{isWashingMachineSelected() ? 'Washing Machine name' : ''}}</mat-label>
+                <input type="text" matInput [formControl]="newMachineForm.controls['name']"
+                       placeholder="Ex. machine1">
+                <mat-error *ngIf="newMachineForm.controls['name'].hasError('required')">
+                  Name is required
+                </mat-error>
+              </mat-form-field>
 
-    
-         
-            <div
-              class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium"
-            >
-              Set machine details
-            </div>
+              <!-- <mat-form-field class="test1">
+                <mat-label>Favorite food</mat-label>
+                <mat-select [formControl]="newMachineForm.controls['associatedDryerOrWashingMachineId']">
+                  <mat-option *ngFor="let machine of getAvailableMachines()" [value]="machine.id">{{machine.name}}</mat-option>
+                </mat-select>
+              </mat-form-field> -->
+              <p-cascadeSelect
+                [options]="getAvailableMachines()"
+                optionGroupLabel="name"
+                [optionGroupChildren]="['data']" 
+                ></p-cascadeSelect>
+            </form>            
           </div>
           <div class="set-machine-details-buttons-form">
             <p-button
@@ -151,6 +172,7 @@
             /></div
         ></ng-template>
       </p-stepperPanel>
+
       <p-stepperPanel header="Confirm">
         <ng-template
           pTemplate="content"

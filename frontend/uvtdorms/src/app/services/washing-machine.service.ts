@@ -13,7 +13,7 @@ export class WashingMachineService {
 
   private washingMachineServiceUrl = "http://localhost:8080/api/washingmachines";
   private getWashingMachinesFromDormUrl = "/get-washing-machines-from-dorm";
-  private getAvailableWashingMachineUrl = "/get-available-washing-machine";
+  private getAvailableWashingMachineUrl = "/get-available-washing-machines";
 
   constructor(private http: HttpClient, private auth: AuthService) { }
 

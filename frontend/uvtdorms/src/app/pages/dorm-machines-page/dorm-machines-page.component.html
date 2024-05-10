@@ -1,13 +1,21 @@
 <div class="dorm-machines-page-body">
   <div class="card">
     <p-table
-      [value]="washingMachines"
+      [value]="isWashingMachineLabelingSelected() ? washingMachines : isDryerLabelingSelected() ? dryers : []"
       dataKey="name"
       [tableStyle]="{ 'min-width': '60rem' }">
       <ng-template pTemplate="caption">
         <div
-          class="washing-machines-table-caption flex align-items-center justify-content-between">
-          Washing machines
+          class="washing-machines-table-caption">
+          <div class="listed-machines-type-select-container">
+            <p-dropdown
+              [options]="listableMachineTypes"
+              [(ngModel)]="listedMachinesType"
+              optionLabel="name"
+              optionValue="type"
+            >
+            </p-dropdown>
+          </div>
           <p-button icon="pi pi-plus" (click)="openNew()"></p-button>
         </div>
       </ng-template>
@@ -17,7 +25,10 @@
           <th pSortableColumn="name">
             Name <p-sortIcon field="name"></p-sortIcon>
           </th>
-          <th>Associated dryer</th>
+          <th>
+            {{isDryerLabelingSelected() ? 'Associated Washing Machine' : ''}}
+            {{isWashingMachineLabelingSelected() ? 'Associated Dryer' : ''}}
+          </th>
           <th>Status</th>
         </tr>
       </ng-template>
@@ -33,7 +44,10 @@
               [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
           </td>
           <td>{{ product.name }}</td>
-          <td>{{ getAssociatedDryerName(product) }}</td>
+          <td>
+            {{ isWashingMachineLabelingSelected() ? getAssociatedDryerName(product) : ''}}
+            {{ isDryerLabelingSelected() ? getAssociatedWashingMachineName(product) : ''}}
+          </td>
           <td>
             <p-tag
               [value]="getStatus(product)"

@@ -2,6 +2,7 @@ package com.uvtdorms.controller;
 
 import com.uvtdorms.repository.dto.TokenDto;
 import com.uvtdorms.repository.dto.request.CreateLaundryAppointmentDto;
+import com.uvtdorms.repository.dto.request.DryerIdDto;
 import com.uvtdorms.repository.dto.request.GetFreeIntervalDto;
 import com.uvtdorms.repository.dto.request.WashingMachineIdDto;
 import com.uvtdorms.repository.dto.response.FreeIntervalsDto;
@@ -48,5 +49,15 @@ public class LaundryAppointmentController {
 
         return ResponseEntity.ok(laundryAppointmentService.getWeeklyAppointmentsForDormForWashingMachine(
                 getWeeklyAppointmentsForDormForWashingMachineDto.washingMachineId(), tokenDto.getEmail()));
+    }
+
+    @PostMapping("/get-weekly-appointments-for-dorm-for-dryer")
+    public ResponseEntity<List<LaundryAppointmentsDto>> getWeeklyAppointmentsForDormForDryer(
+            @RequestBody DryerIdDto getWeeklyAppointmentsForDormForDryerDto,
+            Authentication authentication) {
+        TokenDto tokenDto = (TokenDto) authentication.getPrincipal();
+
+        return ResponseEntity.ok(laundryAppointmentService.getWeeklyAppointmentsForDormForDryer(
+                getWeeklyAppointmentsForDormForDryerDto.id(), tokenDto.getEmail()));
     }
 }

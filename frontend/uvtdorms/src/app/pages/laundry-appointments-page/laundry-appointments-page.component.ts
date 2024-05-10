@@ -101,15 +101,15 @@ export class LaundryAppointmentsPageComponent {
   }
 
   private joinMachines(): void {
-    for (
-      let i = 0;
-      i < this.washingMachines.length && i < this.dryers.length;
-      i++
-    ) {
-      this.machines.push({
-        washingMachine: this.washingMachines[i],
-        dryer: this.dryers[i],
-      });
+    for (let wahingMachine of this.washingMachines) {
+      for (let dryer of this.dryers) {
+        if (wahingMachine.associatedDryerId === dryer.id) {
+          this.machines.push({
+            washingMachine: wahingMachine,
+            dryer: dryer,
+          });
+        }
+      }
     }
   }
 

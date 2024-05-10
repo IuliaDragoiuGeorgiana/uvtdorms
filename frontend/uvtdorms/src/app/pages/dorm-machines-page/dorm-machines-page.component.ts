@@ -11,6 +11,7 @@ import { MachineType } from '../../enums/machine-type';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AvailableDryerDto } from '../../interfaces/available-dryer-dto';
 import { AvailableWashingMachineDto } from '../../interfaces/available-washing-machine-dto';
+import { NewMachineDto } from '../../interfaces/new-machine-dto';
 
 @Component({
   selector: 'app-dorm-machines-page',
@@ -33,12 +34,22 @@ export class DormMachinesPageComponent {
 
   public machineType = MachineType;
   public selectedMachineType: MachineType | null = null;
-  private availableWashingMachines: AvailableWashingMachineDto[] = [];
-  private availableDryers: AvailableDryerDto[] = [];
+  private availableWashingMachines: AvailableWashingMachineDto[] = [
+    {
+      id: '',
+      name: 'No associated washing machine',
+    },
+  ];
+  private availableDryers: AvailableDryerDto[] = [
+    {
+      id: '',
+      name: 'No associated dryer',
+    },
+  ];
 
   public newMachineForm = new FormGroup({
     name: new FormControl('', Validators.required),
-    associatedDryerOrWashingMachineId: new FormControl('', Validators.required),
+    associatedDryerOrWashingMachineId: new FormControl(''),
   });
 
   constructor(
@@ -96,7 +107,7 @@ export class DormMachinesPageComponent {
   private getAvailableWashingMachine(): void {
     this.washingMachineService.getAvailableWashingMachine().subscribe({
       next: (washingMachines) => {
-        this.availableWashingMachines = washingMachines;
+        this.availableWashingMachines.push(...washingMachines);
         console.log(washingMachines);
       },
       error(err) {
@@ -108,7 +119,7 @@ export class DormMachinesPageComponent {
   private getAvailableDryer(): void {
     this.dryerService.getAvailableDryer().subscribe({
       next: (dryers) => {
-        this.availableDryers = dryers;
+        this.availableDryers.push(...dryers);
       },
       error(err) {
         console.error(err);
@@ -238,12 +249,55 @@ export class DormMachinesPageComponent {
     return this.machineType.WASHING_MACHINE === this.selectedMachineType;
   }
 
-  public getAvailableMachines() {
+  public getAvailableMachines(): any[] {
     if (this.isDryerSelected()) {
       return this.availableWashingMachines;
     } else if (this.isWashingMachineSelected()) {
       return this.availableDryers;
     }
     return [];
+  }
+
+  public getAssociatedMachineName(): string {
+    for (let machine of this.getAvailableMachines()) {
+      if (
+        machine.id ===
+        this.newMachineForm.value.associatedDryerOrWashingMachineId
+      ) {
+        return machine.name;
+      }
+    }
+
+    return '';
+  }
+
+  public submitNewMachineForm() {
+    if (this.newMachineForm.invalid) return;
+    let newMachineDto: NewMachineDto = {
+      name: this.newMachineForm.value.name!,
+      associatedDryerOrWashingMachineId:
+        this.newMachineForm.value.associatedDryerOrWashingMachineId!,
+    };
+    if (this.isDryerSelected()) {
+      this.dryerService.createDryer(newMachineDto).subscribe({
+        next: () => {
+          console.log('Dryer created');
+          window.location.reload();
+        },
+        error(err) {
+          console.error(err);
+        },
+      });
+    } else if (this.isWashingMachineSelected()) {
+      this.washingMachineService.createWashingMachine(newMachineDto).subscribe({
+        next: () => {
+          console.log('Washing machine created');
+          window.location.reload();
+        },
+        error(err) {
+          console.error(err);
+        },
+      });
+    }
   }
 }

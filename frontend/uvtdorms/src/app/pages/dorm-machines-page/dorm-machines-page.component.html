@@ -3,12 +3,10 @@
     <p-table
       [value]="washingMachines"
       dataKey="name"
-      [tableStyle]="{ 'min-width': '60rem' }"
-    >
+      [tableStyle]="{ 'min-width': '60rem' }">
       <ng-template pTemplate="caption">
         <div
-          class="washing-machines-table-caption flex align-items-center justify-content-between"
-        >
+          class="washing-machines-table-caption flex align-items-center justify-content-between">
           Washing machines
           <p-button icon="pi pi-plus" (click)="openNew()"></p-button>
         </div>
@@ -32,16 +30,14 @@
               pRipple
               [pRowToggler]="product"
               class="p-button-text p-button-rounded p-button-plain"
-              [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
-            ></button>
+              [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
           </td>
           <td>{{ product.name }}</td>
           <td>{{ getAssociatedDryerName(product) }}</td>
           <td>
             <p-tag
               [value]="getStatus(product)"
-              [severity]="getStatusSeverity(product)"
-            ></p-tag>
+              [severity]="getStatusSeverity(product)"></p-tag>
           </td>
         </tr>
       </ng-template>
@@ -51,8 +47,7 @@
             <div class="p-3">
               <p-table
                 [value]="getWeeklyAppointments(product)"
-                dataKey="intervalBeginDate"
-              >
+                dataKey="intervalBeginDate">
                 <ng-template pTemplate="header">
                   <tr>
                     <th pSortableColumn="intervalBeginDate">
@@ -88,15 +83,13 @@
     [style]="{ width: '60vw' }"
     header="Machine Details"
     [modal]="true"
-    styleClass="p-fluid"
-  >
+    styleClass="p-fluid">
     <p-stepper [linear]="true">
       <p-stepperPanel header="Select machine type">
         <ng-template
           pTemplate="content"
           let-nextCallback="nextCallback"
-          let-index="index"
-        >
+          let-index="index">
           <div class="select-machine-type-header">
             <h1 class="select-machine-type-header-h">
               What type of machine do you want to add?
@@ -105,26 +98,25 @@
           <div class="select-machine-type-buttons">
             <div class="select-machine-type-buttons-left">
               <p-button
-              class="select-machine-type-button"
+                class="select-machine-type-button"
                 label="Washing machine"
+                severity="info"
                 [raised]="true"
                 (onClick)="
                   nextCallback.emit();
                   selectMachine(machineType.WASHING_MACHINE)
-                "
-              ></p-button>
+                "></p-button>
             </div>
             <div class="select-machine-type-buttons-right">
               <p-button
-              class="select-machine-type-button"
+                class="select-machine-type-button"
                 label="Dryer"
+                severity="info"
                 [raised]="true"
                 (onClick)="
                   nextCallback.emit(); selectMachine(machineType.DRYER)
-                "
-              ></p-button>
-            </div></div
-        ></ng-template>
+                "></p-button>
+            </div></div></ng-template>
       </p-stepperPanel>
 
       <p-stepperPanel header="Set machine details">
@@ -132,68 +124,110 @@
           pTemplate="content"
           let-prevCallback="prevCallback"
           let-nextCallback="nextCallback"
-          let-index="index"
-        >
+          let-index="index">
           <div class="set-machine-details-body">
-            <form class="" [formGroup]="newMachineForm">
-              <mat-form-field class="" appearance="outline">
-                <mat-label>{{isDryerSelected() ? 'Dryer name' : ''}}{{isWashingMachineSelected() ? 'Washing Machine name' : ''}}</mat-label>
-                <input type="text" matInput [formControl]="newMachineForm.controls['name']"
-                       placeholder="Ex. machine1">
-                <mat-error *ngIf="newMachineForm.controls['name'].hasError('required')">
-                  Name is required
-                </mat-error>
-              </mat-form-field>
+            <form 
+              [formGroup]="newMachineForm"
+              class="set-machine-details-body-form">
+              <p-floatLabel class="set-machine-details-body-form-item">
+                <input
+                  pInputText
+                  formControlName="name"
+                  type="text"
+                  id="machine-name"
+                  [ngClass]="{'ng-invalid ng-dirty': newMachineForm.get('name')?.invalid && newMachineForm.get('name')?.touched}"
+                  />
+                <label for="machine-name">
+                  {{isDryerSelected() ? 'Dryer name' :''}}
+                  {{isWashingMachineSelected() ? 'Washing Machine name' :''}}
+                </label>
+              </p-floatLabel>
 
-              <!-- <mat-form-field class="test1">
-                <mat-label>Favorite food</mat-label>
-                <mat-select [formControl]="newMachineForm.controls['associatedDryerOrWashingMachineId']">
-                  <mat-option *ngFor="let machine of getAvailableMachines()" [value]="machine.id">{{machine.name}}</mat-option>
-                </mat-select>
-              </mat-form-field> -->
-              <p-cascadeSelect
+              <p-dropdown
                 [options]="getAvailableMachines()"
-                optionGroupLabel="name"
-                [optionGroupChildren]="['data']" 
-                ></p-cascadeSelect>
-            </form>            
+                formControlName="associatedDryerOrWashingMachineId"
+                optionLabel="name"
+                optionValue="id"
+                placeholder="Select a Dryer"
+                class="set-machine-details-body-form-item"
+                emptyMessage="There are no available machines">
+              </p-dropdown>
+            </form>
           </div>
+
           <div class="set-machine-details-buttons-form">
-            <p-button
-              label="Back"
-              icon="pi pi-arrow-left"
-              (onClick)="prevCallback.emit()"
-            />
-            <p-button
-              label="Next"
-              icon="pi pi-arrow-right"
-              iconPos="right"
-              (onClick)="nextCallback.emit()"
-            /></div
-        ></ng-template>
+            <div class="set-machine-details-buttons-form-left">
+              <p-button
+                label="Back"
+                icon="pi pi-arrow-left"
+                severity="warning"
+                [raised]="true"
+                class="set-machine-details-buttons-form-button"
+                (onClick)="prevCallback.emit(); newMachineForm.reset()" />
+            </div>
+
+            <div class="set-machine-details-buttons-form-right">
+              <p-button
+                label="Next"
+                icon="pi pi-arrow-right"
+                iconPos="right"
+                [raised]="true"
+                severity="success"
+                class="set-machine-details-buttons-form-button"
+                (onClick)="newMachineForm.valid ? nextCallback.emit() : newMachineForm.controls['name'].markAsTouched()" />
+            </div>
+          </div>
+        </ng-template>
       </p-stepperPanel>
 
       <p-stepperPanel header="Confirm">
         <ng-template
           pTemplate="content"
           let-prevCallback="prevCallback"
-          let-index="index"
-        >
-          <div class="flex flex-column h-12rem">
-            <div
-              class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium"
-            >
-              Confirm
+          let-index="index">
+
+          <div class="set-machine-confirm-body-header">
+            <h1>Are you sure you want to add the following machine?</h1>
+          </div>
+
+          <div class="set-machine-confirm-body">
+            <div class="set-machine-confirm-body-left">
+              <p>Machine type:</p>
+              <p>Machine name:</p>
+              <p>Associated machine:</p>
+            </div>
+            <div class="set-machine-confirm-body-right">
+              <p>{{isDryerSelected() ? 'Dryer' : 'Washing machine'}}</p>
+              <p>{{newMachineForm.get('name')?.value}}</p>
+              <p>{{getAssociatedMachineName()}}</p>
             </div>
           </div>
-          <div class="flex pt-4 justify-content-start">
-            <p-button
-              label="Back"
-              icon="pi pi-arrow-left"
-              (onClick)="prevCallback.emit()"
-            /></div
-        ></ng-template>
+
+          <div class="set-machine-confirm-buttons">
+            <div class="set-machine-confirm-buttons-left">
+              <p-button
+                label="Back"
+                icon="pi pi-arrow-left"
+                [raised]="true"
+                severity="warning"
+                class="set-machine-confirm-buttons-button"
+                (onClick)="prevCallback.emit();" />
+            </div>
+
+            <div class="set-machine-confirm-buttons-right">
+              <p-button
+                label="Confirm"
+                icon="pi pi-arrow-right"
+                iconPos="right"
+                [raised]="true"
+                severity="success"
+                class="set-machine-confirm-buttons-button"
+                (onClick)="submitNewMachineForm()" />
+            </div>
+          </div>
+        </ng-template>
       </p-stepperPanel>
+
     </p-stepper>
   </p-dialog>
 </div>

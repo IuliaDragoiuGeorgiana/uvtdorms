@@ -1,6 +1,8 @@
-package com.uvtdorms.controller;
+
+    package com.uvtdorms.controller;
 
 import com.uvtdorms.repository.dto.TokenDto;
+import com.uvtdorms.repository.dto.request.NewMachineDto;
 import com.uvtdorms.repository.dto.response.AvailableWashingMachineDto;
 import com.uvtdorms.repository.dto.response.WashingMachineDto;
 import com.uvtdorms.services.WashingMachineService;
@@ -31,8 +33,18 @@ public class WashingMachineController {
     }
 
     @GetMapping("/get-available-washing-machines")
-    public ResponseEntity<List<AvailableWashingMachineDto>> getAvailableWashingMachineFromDorm(Authentication authentication){        
+    public ResponseEntity<List<AvailableWashingMachineDto>> getAvailableWashingMachineFromDorm(
+            Authentication authentication) {
         TokenDto token = (TokenDto) authentication.getPrincipal();
         return ResponseEntity.ok(washingMachineService.getAvailableWashingMachinesFromDorm(token.getEmail()));
     }
+
+    @PostMapping("/create-washing-machine")
+    public ResponseEntity<Void> createWashingMachine(@RequestBody NewMachineDto newMachineDto,
+            Authentication authentication) {
+        TokenDto token = (TokenDto) authentication.getPrincipal();
+        washingMachineService.createNewWashingMachine(token.getEmail(), newMachineDto);
+        return ResponseEntity.ok().build();
+    }
+
 }

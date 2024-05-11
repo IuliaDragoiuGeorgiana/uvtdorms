@@ -11,6 +11,10 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AvailableDryerDto } from '../../interfaces/available-dryer-dto';
 import { AvailableWashingMachineDto } from '../../interfaces/available-washing-machine-dto';
 import { NewMachineDto } from '../../interfaces/new-machine-dto';
+import {
+  StatusMachine,
+  convertStringStatusMachineToEnum,
+} from '../../enums/status-machine';
 
 @Component({
   selector: 'app-dorm-machines-page',
@@ -29,6 +33,7 @@ export class DormMachinesPageComponent {
     isAvailable: true,
     associatedDryerId: '',
     weeklyAppointments: null,
+    statusMachine: StatusMachine.FUNCTIONAL,
   };
 
   public machineType = MachineType;
@@ -56,6 +61,16 @@ export class DormMachinesPageComponent {
     { type: MachineType.WASHING_MACHINE, name: 'Washing machines' },
     { type: MachineType.DRYER, name: 'Dryers' },
   ];
+
+  public isEditDialogVisible: boolean = false;
+  public machineStatusOptions = [
+    { label: 'Functional', value: StatusMachine.FUNCTIONAL },
+    { label: 'Broken', value: StatusMachine.BROKEN },
+  ];
+  public newMachineStatus: StatusMachine = StatusMachine.FUNCTIONAL;
+  private editedMachine: WashingMachine | Dryer | null = null;
+  public newAssociatedMachine: string = '';
+  public newMachineName: string = '';
 
   constructor(
     private dormAdministratorDetailsService: DormAdministratorDetailsService,
@@ -88,6 +103,7 @@ export class DormMachinesPageComponent {
               isAvailable: washingMachine.isAvailable,
               associatedDryerId: washingMachine.associatedDryerId,
               weeklyAppointments: null,
+              statusMachine: washingMachine.statusMachine,
             });
           });
         },
@@ -100,7 +116,6 @@ export class DormMachinesPageComponent {
   private getDryers(): void {
     this.dryerService.getDryerFromDorm(this.dormId).subscribe({
       next: (dryers) => {
-        console.log(dryers);
         this.dryers = dryers;
       },
       error(err) {
@@ -113,7 +128,6 @@ export class DormMachinesPageComponent {
     this.washingMachineService.getAvailableWashingMachine().subscribe({
       next: (washingMachines) => {
         this.availableWashingMachines.push(...washingMachines);
-        console.log(washingMachines);
       },
       error(err) {
         console.error(err);
@@ -319,7 +333,6 @@ export class DormMachinesPageComponent {
   public saveSomething(): void {
     this.submitted = true;
     this.addSomething = false;
-    console.log(this.washingMachine);
   }
 
   public selectMachine(machineType: MachineType): void {
@@ -349,6 +362,16 @@ export class DormMachinesPageComponent {
     return [];
   }
 
+  public getAvailableMachinesForEditing(): any[] {
+    if (this.isDryerLabelingSelected()) {
+      return this.availableWashingMachines;
+    } else if (this.isWashingMachineLabelingSelected()) {
+      return this.availableDryers;
+    }
+
+    return [];
+  }
+
   public getAssociatedMachineName(): string {
     for (let machine of this.getAvailableMachines()) {
       if (
@@ -372,7 +395,6 @@ export class DormMachinesPageComponent {
     if (this.isDryerSelected()) {
       this.dryerService.createDryer(newMachineDto).subscribe({
         next: () => {
-          console.log('Dryer created');
           window.location.reload();
         },
         error(err) {
@@ -382,7 +404,6 @@ export class DormMachinesPageComponent {
     } else if (this.isWashingMachineSelected()) {
       this.washingMachineService.createWashingMachine(newMachineDto).subscribe({
         next: () => {
-          console.log('Washing machine created');
           window.location.reload();
         },
         error(err) {
@@ -398,5 +419,101 @@ export class DormMachinesPageComponent {
 
   public isDryerLabelingSelected(): boolean {
     return this.listedMachinesType === MachineType.DRYER;
+  }
+
+  public editMachine(machine: any): void {
+    this.isEditDialogVisible = true;
+
+    this.newMachineStatus = convertStringStatusMachineToEnum(
+      machine.statusMachine
+    )!;
+
+    this.editedMachine = machine;
+    this.newMachineName = machine.name;
+
+    if (this.isWashingMachineLabelingSelected()) {
+      this.getAvailableDryer();
+      if (machine.associatedDryerId !== null) {
+        this.availableDryers.push(
+          ...[
+            {
+              id: machine.associatedDryerId,
+              name: this.getAssociatedDryerName(machine),
+            },
+          ]
+        );
+      }
+      this.newAssociatedMachine =
+        machine.associatedDryerId !== null ? machine.associatedDryerId : '';
+    } else if (this.isDryerLabelingSelected()) {
+      this.getAvailableWashingMachine();
+      if (machine.associatedWashingMachineId !== null) {
+        this.availableWashingMachines.push(
+          ...[
+            {
+              id: machine.associatedWashingMachineId,
+              name: this.getAssociatedWashingMachineName(machine),
+            },
+          ]
+        );
+      }
+      this.newAssociatedMachine =
+        machine.associatedWashingMachineId !== null
+          ? machine.associatedWashingMachineId
+          : '';
+    }
+  }
+
+  private saveWashingMachine(washingMachine: WashingMachine): void {
+    washingMachine.statusMachine = this.newMachineStatus;
+    washingMachine.associatedDryerId = this.newAssociatedMachine;
+    washingMachine.name = this.newMachineName;
+    this.washingMachineService.updateWashingMachine(washingMachine).subscribe({
+      next: (washingMachine) => {
+        for (let wm of this.washingMachines) {
+          if (wm.id === washingMachine.id) {
+            wm.associatedDryerId = washingMachine.associatedDryerId;
+            wm.isAvailable = washingMachine.isAvailable;
+            wm.name = washingMachine.name;
+            wm.statusMachine = washingMachine.statusMachine;
+            wm.weeklyAppointments = washingMachine.weeklyAppointments;
+          }
+        }
+      },
+      error(err) {
+        console.error(err);
+      },
+    });
+  }
+
+  private saveDryer(dryer: Dryer): void {
+    dryer.statusMachine = this.newMachineStatus;
+    dryer.associatedWashingMachineId = this.newAssociatedMachine;
+    dryer.name = this.newMachineName;
+    this.dryerService.updateDryer(dryer).subscribe({
+      next: (dryer) => {
+        for (let d of this.dryers) {
+          if (d.id === dryer.id) {
+            d.associatedWashingMachineId = dryer.associatedWashingMachineId;
+            d.isAvailable = dryer.isAvailable;
+            d.name = dryer.name;
+            d.statusMachine = dryer.statusMachine;
+            d.weeklyAppointments = dryer.weeklyAppointments;
+          }
+        }
+      },
+      error(err) {
+        console.error(err);
+      },
+    });
+  }
+
+  public saveMachine(): void {
+    if (this.isWashingMachineLabelingSelected()) {
+      this.saveWashingMachine(this.editedMachine! as WashingMachine);
+    } else if (this.isDryerLabelingSelected()) {
+      this.saveDryer(this.editedMachine! as Dryer);
+    }
+    this.isEditDialogVisible = false;
   }
 }

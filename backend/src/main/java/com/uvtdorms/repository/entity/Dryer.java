@@ -38,9 +38,10 @@ public class Dryer {
     @JoinColumn(name = "associated_washing_machine_id")
     private WashingMachine associatedWashingMachine;
 
-    public void setWashingMachine (WashingMachine washingMachine) {
+    public void setWashingMachine(WashingMachine washingMachine) {
         this.associatedWashingMachine = washingMachine;
-        washingMachine.setAssociatedDryer(this);
+        if (washingMachine != null) {
+            washingMachine.setAssociatedDryer(this);
+        }
     }
 }
-

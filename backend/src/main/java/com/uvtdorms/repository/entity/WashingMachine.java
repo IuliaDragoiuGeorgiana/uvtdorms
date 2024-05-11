@@ -40,6 +40,8 @@ public class WashingMachine {
 
     public void setDryer(Dryer dryer) {
         this.associatedDryer = dryer;
-        dryer.setAssociatedWashingMachine(this);
+        if (dryer != null) {
+            dryer.setAssociatedWashingMachine(this);
+        }
     }
 }

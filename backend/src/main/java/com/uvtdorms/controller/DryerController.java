@@ -36,11 +36,17 @@ public class DryerController {
         return ResponseEntity.ok(dryerService.getAvailableDryerFromDorm(token.getEmail()));
 
     }
-    
+
     @PostMapping("/create-dryer")
     public ResponseEntity<Void> createDryer(@RequestBody NewMachineDto newMachineDto, Authentication authentication) {
         TokenDto token = (TokenDto) authentication.getPrincipal();
         dryerService.createNewDryer(token.getEmail(), newMachineDto);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/update-dryer")
+    public ResponseEntity<DryerDto> updateDryer(@RequestBody DryerDto dryerDto) {
+        dryerService.updateDryer(dryerDto);
+        return ResponseEntity.ok(dryerDto);
     }
 }

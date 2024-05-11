@@ -1,5 +1,5 @@
 
-    package com.uvtdorms.controller;
+package com.uvtdorms.controller;
 
 import com.uvtdorms.repository.dto.TokenDto;
 import com.uvtdorms.repository.dto.request.NewMachineDto;
@@ -47,4 +47,9 @@ public class WashingMachineController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/update-washing-machine")
+    public ResponseEntity<WashingMachineDto> updateWahingMachine(@RequestBody WashingMachineDto washingMachineDto) {
+        washingMachineService.updateWashingMachine(washingMachineDto);
+        return ResponseEntity.ok(washingMachineDto);
+    }
 }

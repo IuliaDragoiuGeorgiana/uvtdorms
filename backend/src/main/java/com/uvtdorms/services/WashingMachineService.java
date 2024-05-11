@@ -32,7 +32,7 @@ public class WashingMachineService implements IWashingMachineService {
     private final IWashingMachineRepository washingMachineRepository;
     private final IDryerRepository dryerRepository;
     private final IDormRepository dormRepository;
-    private final IUserRepository  userRepository;
+    private final IUserRepository userRepository;
     private final ModelMapper modelMapper;
 
     @Override
@@ -66,9 +66,8 @@ public class WashingMachineService implements IWashingMachineService {
                 .map(machine -> modelMapper.map(machine, AvailableWashingMachineDto.class))
                 .collect(Collectors.toList());
     }
-    
-    public void createNewWashingMachine(String  administratorEmail, NewMachineDto newWashingMachineDto)
-    {
+
+    public void createNewWashingMachine(String administratorEmail, NewMachineDto newWashingMachineDto) {
         User user = userRepository.getByEmail(administratorEmail)
                 .orElseThrow(() -> new AppException("User not found", HttpStatus.NOT_FOUND));
         DormAdministratorDetails dormAdministratorDetails = user.getDormAdministratorDetails();
@@ -78,14 +77,39 @@ public class WashingMachineService implements IWashingMachineService {
         Dorm dorm = dormAdministratorDetails.getDorm();
         WashingMachine newWashingMachine = WashingMachine.builder().dorm(dorm)
                 .machineNumber(newWashingMachineDto.name()).status(StatusMachine.FUNCTIONAL).build();
-        if(!newWashingMachineDto.associatedDryerOrWashingMachineId().equals("")) 
-        {
+        if (!newWashingMachineDto.associatedDryerOrWashingMachineId().equals("")) {
             UUID associatedMachineUuid = UUID.fromString(newWashingMachineDto.associatedDryerOrWashingMachineId());
             Dryer dryer = dryerRepository.findById(associatedMachineUuid)
                     .orElseThrow(() -> new AppException("Dryer not found", HttpStatus.NOT_FOUND));
             newWashingMachine.setDryer(dryer);
         }
-        washingMachineRepository.save(newWashingMachine);       
+        washingMachineRepository.save(newWashingMachine);
+    }
+
+    public void updateWashingMachine(final WashingMachineDto washingMachineDto) {
+        UUID washingMachineUuid = UUID.fromString(washingMachineDto.getId());
+        WashingMachine washingMachine = washingMachineRepository.findById(washingMachineUuid)
+                .orElseThrow(() -> new AppException("Washing machine not found", HttpStatus.NOT_FOUND));
+
+        if (washingMachineDto.getName().isEmpty()) {
+            throw new AppException("Invalid washing machine name", HttpStatus.BAD_REQUEST);
+        }
+        washingMachine.setMachineNumber(washingMachineDto.getName());
+
+        washingMachine.setStatus(washingMachineDto.getStatusMachine());
+
+        if (!washingMachineDto.getAssociatedDryerId().isEmpty()) {
+            UUID associatedDryerUuid = UUID.fromString(washingMachineDto.getAssociatedDryerId());
+            Dryer dryer = dryerRepository.findById(associatedDryerUuid)
+                    .orElseThrow(() -> new AppException("Dryer not found", HttpStatus.NOT_FOUND));
+            if (washingMachine.getAssociatedDryer() != null) {
+                washingMachine.getAssociatedDryer().setAssociatedWashingMachine(null);
+            }
+            washingMachine.setDryer(dryer);
+        } else {
+            washingMachine.setDryer(null);
+        }
+        washingMachineRepository.save(washingMachine);
     }
 
 }

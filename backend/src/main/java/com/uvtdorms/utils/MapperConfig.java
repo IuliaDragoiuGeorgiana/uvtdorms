@@ -41,6 +41,7 @@ public class MapperConfig {
                 using(ctx -> ((UUID) ctx.getSource()).toString()).map(source.getMachineId(), destination.getId());
                 map(source.getMachineNumber(), destination.getName());
                 map(source.getAssociatedDryer().getDryerId(), destination.getAssociatedDryerId());
+                map(source.getStatus(), destination.getStatusMachine());
 
                 Converter<StatusMachine, Boolean> statusConverter = new Converter<StatusMachine, Boolean>() {
                     public Boolean convert(MappingContext<StatusMachine, Boolean> context) {
@@ -73,6 +74,7 @@ public class MapperConfig {
                 using(ctx -> ((UUID) ctx.getSource()).toString()).map(source.getDryerId(), destination.getId());
                 map(source.getDryerNumber(), destination.getName());
                 map(source.getAssociatedWashingMachine().getMachineId(), destination.getAssociatedWashingMachineId());
+                map(source.getStatus(), destination.getStatusMachine());
 
                 Converter<StatusMachine, Boolean> statusConverter = new Converter<StatusMachine, Boolean>() {
                     public Boolean convert(MappingContext<StatusMachine, Boolean> context) {

@@ -1,3 +1,4 @@
+import { StatusMachine } from '../enums/status-machine';
 import { LaundryAppointmentDto } from './laundry-appointment-dto';
 
 export interface WashingMachine {
@@ -6,4 +7,5 @@ export interface WashingMachine {
   isAvailable: boolean;
   associatedDryerId: string;
   weeklyAppointments: LaundryAppointmentDto[] | null;
+  statusMachine: StatusMachine;
 }

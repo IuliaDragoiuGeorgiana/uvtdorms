@@ -16,7 +16,7 @@
             >
             </p-dropdown>
           </div>
-          <p-button icon="pi pi-plus" (click)="openNew()"></p-button>
+          <p-button icon="pi pi-plus" (click)="openNew()" severity="success"></p-button>
         </div>
       </ng-template>
       <ng-template pTemplate="header">
@@ -30,6 +30,7 @@
             {{isWashingMachineLabelingSelected() ? 'Associated Dryer' : ''}}
           </th>
           <th>Status</th>
+          <th></th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-product let-expanded="expanded">
@@ -52,6 +53,17 @@
             <p-tag
               [value]="getStatus(product)"
               [severity]="getStatusSeverity(product)"></p-tag>
+          </td>
+          <td>
+            <button
+              type="button"
+              pButton
+              pRipple
+              icon="pi pi-pencil"
+              (click)="editMachine(product)"
+              severity="info"
+            >
+            </button>
           </td>
         </tr>
       </ng-template>
@@ -244,4 +256,59 @@
 
     </p-stepper>
   </p-dialog>
+  <p-dialog 
+    [header]="isWashingMachineLabelingSelected() ? 'Edit Washing machine' :
+              isDryerLabelingSelected() ? 'Edit Dryer' : ''"
+    [modal]="true"
+    [(visible)]="isEditDialogVisible"
+    [style]="{ width: '25rem' }">
+    <div class="edit-machine-body">
+      <div class="edit-machine-name edit-machine-item-container">
+          <label for="name" class="edit-machine-name-label">
+            {{isWashingMachineLabelingSelected() ? 'Washing Machine Name' : ''}}
+            {{isDryerLabelingSelected() ? 'Dryer Name' : ''}}
+          </label>
+          <input pInputText [(ngModel)]="newMachineName" id="name" class="edit-machine-name-input edit-machine-item" autocomplete="off" />
+      </div>
+
+      <div class="edit-associated-machine edit-machine-item-container">
+        <label for="associated-machine" class="edit-associated-machine-label">
+          {{isWashingMachineLabelingSelected() ? 'Associated Dryer' : ''}}
+          {{isDryerLabelingSelected() ? 'Associated Washing Machine' : ''}}
+        </label>
+        <p-dropdown
+          [options]="getAvailableMachinesForEditing()"
+          [(ngModel)]="newAssociatedMachine"
+          optionLabel="name"
+          optionValue="id"
+          class="edit-machine-item"
+          [placeholder]="
+            isDryerLabelingSelected() ? 'Select Associated Washing Machine' :
+            isWashingMachineLabelingSelected() ? 'Select Associated Dryer' : ''
+          "
+          emptyMessage="There are no available machines"
+          id="associated-machine">
+        </p-dropdown>
+      </div>
+
+      <div class="edit-machine-status edit-machine-item-container">
+        <label for="machine-status" class="edit-machine-status-label">
+          {{isWashingMachineLabelingSelected() ? 'Washing Machine Status' : ''}}
+          {{isDryerLabelingSelected() ? 'Dryer Status' : ''}}
+        </label>
+        <p-dropdown
+          [options]="machineStatusOptions"
+          [(ngModel)]="newMachineStatus"
+          optionLabel="label"
+          optionValue="value"
+          class="edit-machine-item"
+        >
+        </p-dropdown>
+      </div>
+    </div>
+    <div class="edit-machine-buttons">
+        <p-button label="Cancel" severity="secondary" (click)="isEditDialogVisible = false" />
+        <p-button label="Save" (click)="saveMachine()" />
+    </div>
+</p-dialog>
 </div>

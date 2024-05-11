@@ -91,6 +91,32 @@ public class DryerService implements IDryerService {
             newDryer.setWashingMachine(washingMachine);
         }
         dryerRepository.save(newDryer);
+    }
 
+    public void updateDryer(final DryerDto dryerDto) {
+        UUID dryerUuid = UUID.fromString(dryerDto.getId());
+        Dryer dryer = dryerRepository.findById(dryerUuid)
+                .orElseThrow(() -> new AppException("Dryer not found", HttpStatus.NOT_FOUND));
+
+        if (dryerDto.getName().isEmpty()) {
+            throw new AppException("Invalid dryer name", HttpStatus.BAD_REQUEST);
+        }
+        dryer.setDryerNumber(dryerDto.getName());
+
+        dryer.setStatus(dryerDto.getStatusMachine());
+
+        if (!dryerDto.getAssociatedWashingMachineId().isEmpty()) {
+            UUID associatedWashingMachineUuid = UUID.fromString(dryerDto.getAssociatedWashingMachineId());
+            WashingMachine washingMachine = washingMachineRepository.findById(associatedWashingMachineUuid)
+                    .orElseThrow(() -> new AppException("Dryer not found", HttpStatus.NOT_FOUND));
+            if (dryer.getAssociatedWashingMachine() != null)
+            {
+                dryer.getAssociatedWashingMachine().setAssociatedDryer(null);
+            }
+            dryer.setAssociatedWashingMachine(washingMachine);
+        } else {
+            dryer.setWashingMachine(null);
+        }
+        dryerRepository.save(dryer);
     }
 }

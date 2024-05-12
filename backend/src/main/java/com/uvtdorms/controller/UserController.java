@@ -1,6 +1,8 @@
 package com.uvtdorms.controller;
 
 import com.uvtdorms.repository.dto.request.ChangePasswordDto;
+import com.uvtdorms.repository.dto.request.ChangeProfilePictureDto;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,6 +44,13 @@ public class UserController {
         TokenDto userToken = (TokenDto) authentication.getPrincipal();
         System.out.println("Password: " + password.newPassword());
         userService.updatePassword(password, userToken.getEmail());
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/update-profile-picture")
+    public ResponseEntity<Void> changeProfilePicture(Authentication authentication, @RequestBody ChangeProfilePictureDto profilePicture){
+        TokenDto userToken = (TokenDto) authentication.getPrincipal();
+        userService.changeProfilePicture(profilePicture, userToken.getEmail());
         return ResponseEntity.ok().build();
     }
 }

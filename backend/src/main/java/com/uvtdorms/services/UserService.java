@@ -1,10 +1,12 @@
 package com.uvtdorms.services;
 
 import java.nio.CharBuffer;
+import java.util.Base64;
 
 import com.uvtdorms.exception.AppException;
 import com.uvtdorms.repository.dto.TokenDto;
 import com.uvtdorms.repository.dto.request.ChangePasswordDto;
+import com.uvtdorms.repository.dto.request.ChangeProfilePictureDto;
 import com.uvtdorms.repository.dto.request.CredentialsDto;
 import com.uvtdorms.repository.dto.request.UpdatePhoneNumberDto;
 import com.uvtdorms.repository.dto.response.UserDetailsDto;
@@ -72,6 +74,17 @@ public class UserService implements IUserService {
         User user = userRepository.getByEmail(email)
                 .orElseThrow(() -> new AppException("User not found!", HttpStatus.NOT_FOUND));
         user.setPassword(passwordEncoder.encode(CharBuffer.wrap(changePasswordDto.newPassword())));
+        userRepository.save(user);
+    }
+
+    public void changeProfilePicture(ChangeProfilePictureDto changeProfilePictureDto, String userEmail)
+    {
+        User user = userRepository.getByEmail(userEmail)
+                .orElseThrow(() -> new AppException("User not found!", HttpStatus.NOT_FOUND));
+
+        byte[] decodedImage = Base64.getDecoder().decode(changeProfilePictureDto.image());
+        user.setProfilePicture(decodedImage);
+
         userRepository.save(user);
     }
 }

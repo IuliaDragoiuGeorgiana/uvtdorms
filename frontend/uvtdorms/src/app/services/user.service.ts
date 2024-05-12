@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { UserDetailsDto } from '../interfaces/user-details-dto';
 import { EditPhoneNumberDto } from '../interfaces/edit-phone-number-dto';
 import { ChangePasswordDto } from '../interfaces/change-password-dto';
+import { ChangeProfilePictureDto } from '../interfaces/change-profile-picture-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +18,7 @@ export class UserService {
   private userRole: Role | null = null;
   private updatePhoneNumberUrl = '/update-phone-number';
   private updatePasswordUrl = '/update-password';
+  private updateProfilePictureUrl = '/update-profile-picture';
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
@@ -52,6 +54,14 @@ export class UserService {
     return this.http.post<void>(
       this.userServiceUrl + this.updatePasswordUrl,
       changePasswordDto,
+      { headers: this.authService.getHeader() }
+    );
+  }
+
+  updateProfilePicture(changeProfilePictureDto: ChangeProfilePictureDto): Observable<void> {
+    return this.http.post<void>(
+      this.userServiceUrl + this.updateProfilePictureUrl,
+      changeProfilePictureDto,
       { headers: this.authService.getHeader() }
     );
   }

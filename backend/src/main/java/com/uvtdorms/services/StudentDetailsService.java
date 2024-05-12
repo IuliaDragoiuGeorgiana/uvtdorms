@@ -124,6 +124,7 @@ public class StudentDetailsService implements IStudentDetailsService {
                         throw new AppException("Phone number already in use.", HttpStatus.CONFLICT);
         }
 
+
         private Room getSelectedRoomOnRegister(final String dormName, final String roomNumber) {
                 Dorm dorm = dormRepository.getByDormName(dormName);
 

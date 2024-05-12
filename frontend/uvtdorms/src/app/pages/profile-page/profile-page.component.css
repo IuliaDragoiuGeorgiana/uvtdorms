@@ -29,13 +29,25 @@
 
 .profile-page-profile-picture-container {
   position: relative;
-  height: 35%;
-  background: rgba(0, 0, 0, 0.2);
+  width: 70%;
+  border-radius: 50%;
+  overflow: hidden;
+  padding-top: 70%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .profile-page-picture{
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  height: 90%;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .profil-page-picture-container-hover-effect-icon
@@ -53,9 +65,13 @@
 {
   z-index: 10;
   position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
   background-color: rgba(0, 0, 0, 0.2);
-  width: 100%;
-  height: 100%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  height: 90%;
   display: flex;
   align-items: center;
   justify-content: center;

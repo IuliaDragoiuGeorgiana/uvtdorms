@@ -17,6 +17,7 @@ import { NewRegisterRequestDialogComponent } from '../../elements/dialogs/new-re
 import { Role } from '../../enums/role';
 import { EditPhoneNumberDialogComponent } from '../../elements/dialogs/edit-phone-number-dialog/edit-phone-number-dialog.component';
 import { ChangePasswordDialogComponent } from '../../elements/dialogs/change-password-dialog/change-password-dialog.component';
+import { ChangeProfilePictureDto } from '../../interfaces/change-profile-picture-dto';
 
 @Component({
   selector: 'app-profile-page',
@@ -93,8 +94,40 @@ export class ProfilePageComponent {
     this.dialog.open(EditPhoneNumberDialogComponent);
   }
 
-  openChangePasswordDialog()
-  {
-    this.dialog.open(ChangePasswordDialogComponent)
+  openChangePasswordDialog() {
+    this.dialog.open(ChangePasswordDialogComponent);
   }
+
+  private extractBase64Data(base64String: string): string {
+    const commaIndex = base64String.indexOf(',');
+    if (commaIndex !== -1 && commaIndex + 1 < base64String.length) {
+      return base64String.substring(commaIndex + 1);
+    }
+
+    return base64String;
+  }
+
+  public onFilesSelected(event: any): void {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const base64String = e.target?.result as string;
+      const base64Data = this.extractBase64Data(base64String);
+      let changeProfilePictureDto: ChangeProfilePictureDto = {
+        image: base64Data,
+      };
+      this.userService.updateProfilePicture(changeProfilePictureDto).subscribe({
+        next: () => {
+          console.log('Profile picture updated');
+          window.location.reload();
+        },
+        error(err) {
+          console.error(err);
+        },
+      });
+    };
+    reader.readAsDataURL(file);
+  }
+
+
 }

@@ -5,14 +5,28 @@
     <div
       class="profile-page-general-details-item profile-page-profile-picture-container"
     >
-      <div class="profil-page-picture-container-hover-effect">
-        <mat-icon class="profil-page-picture-container-hover-effect-icon">image</mat-icon>
+      <div
+        class="profil-page-picture-container-hover-effect"
+        (click)="fileInput.click()"
+      >
+        <mat-icon class="profil-page-picture-container-hover-effect-icon"
+          >image</mat-icon
+        >
       </div>
       <img
         src="data:image/png;base64, {{ user?.profilePicture }}"
         class="profile-page-picture"
       />
+
+      <input
+        #fileInput
+        type="file"
+        (change)="onFilesSelected($event)"
+        accept="image/*"
+        style="display: none"
+      />
     </div>
+    
     <div class="profile-page-general-details-item profile-page-name-container">
       <p>{{ user?.firstName }} {{ user?.lastName }}</p>
     </div>

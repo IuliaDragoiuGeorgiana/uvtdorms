@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { FreeIntervalsDto } from '../interfaces/free-intervals-dto';
 import { CreateLaundryAppointmentDto } from '../interfaces/create-laundry-appointment-dto';
 import { LaundryAppointmentDto } from '../interfaces/laundry-appointment-dto';
+import { StudentLaundryAppointmentsDto } from '../interfaces/student-laundry-appointments-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -19,8 +20,9 @@ export class AppointmentService {
     '/get-weekly-appointments-for-dorm-for-washing-machine';
   private getWeeklyAppointmentsForDormForDryerUrl =
     '/get-weekly-appointments-for-dorm-for-dryer';
+  private getStudentAppointmentsUrl = '/get-student-laundry-appointments';
 
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(private http: HttpClient, private authService: AuthService) { }
 
   createAppointment(data: CreateLaundryAppointmentDto): Observable<void> {
     return this.http.post<void>(
@@ -46,7 +48,7 @@ export class AppointmentService {
     let washingMachineIdDto = { washingMachineId: washingMachineId };
     return this.http.post<LaundryAppointmentDto[]>(
       this.appointmentServiceUrl +
-        this.getWeeklyAppointmentsForDormForWashingMachineUrl,
+      this.getWeeklyAppointmentsForDormForWashingMachineUrl,
       washingMachineIdDto,
       { headers: this.authService.getHeader() }
     );
@@ -62,4 +64,13 @@ export class AppointmentService {
       { headers: this.authService.getHeader() }
     );
   }
+
+  getStudentLaundryAppointments(): Observable<StudentLaundryAppointmentsDto[]> {
+    return this.http.get<StudentLaundryAppointmentsDto[]>(
+      this.appointmentServiceUrl + this.getStudentAppointmentsUrl,
+      { headers: this.authService.getHeader() }
+    );
+  }
+
 }
+

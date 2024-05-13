@@ -10,6 +10,7 @@ import com.uvtdorms.repository.dto.request.CreateLaundryAppointmentDto;
 import com.uvtdorms.repository.dto.request.GetFreeIntervalDto;
 import com.uvtdorms.repository.dto.response.FreeIntervalsDto;
 import com.uvtdorms.repository.dto.response.LaundryAppointmentsDto;
+import com.uvtdorms.repository.dto.response.StudentLaundryAppointmentsDto;
 import com.uvtdorms.repository.entity.Dorm;
 import com.uvtdorms.repository.entity.DormAdministratorDetails;
 import com.uvtdorms.repository.entity.Dryer;
@@ -220,4 +221,32 @@ public class LaundryAppointmentService {
                                 appointmentEntity -> modelMapper.map(appointmentEntity, LaundryAppointmentsDto.class))
                                 .toList();
         }
+
+        public List<StudentLaundryAppointmentsDto> getStudentLaundryAppointments(String email) {
+
+                User user = userRepository.getByEmail(email)
+                                .orElseThrow(() -> new AppException("User not found", HttpStatus.NOT_FOUND));
+
+                StudentDetails student = studentDetailsRepository.findByUser(user)
+                                .orElseThrow(() -> new AppException("The user is not a student",
+                                                HttpStatus.BAD_REQUEST));
+
+                CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+                CriteriaQuery<LaundryAppointment> cq = cb.createQuery(LaundryAppointment.class);
+                Root<LaundryAppointment> appointment = cq.from(LaundryAppointment.class);
+
+                Predicate studentPredicate = cb.equal(appointment.get("student"), student);
+
+                cq.where(studentPredicate);
+
+                List<LaundryAppointment> appointments = entityManager.createQuery(cq).getResultList();
+                return appointments.stream().map(
+                                appointmentEntity -> modelMapper.map(appointmentEntity, StudentLaundryAppointmentsDto.class))
+                                .toList();
+                                
+            
+        }
+
+  
+        
 }

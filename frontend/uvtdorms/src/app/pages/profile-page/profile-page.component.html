@@ -128,10 +128,65 @@
       </mat-tab>
       <mat-tab *ngIf="isStudent()">
         <ng-template mat-tab-label>
-          <mat-icon class="example-tab-icon">calendar_today</mat-icon>
+          <mat-icon class="example-tab-icon">calendar_today </mat-icon>
           My laundry appointments
         </ng-template>
-        <!-- Content 2 -->
+        <p-table
+          [value]="studentLaundryAppointments"
+          [tableStyle]="{ 'min-width': '100%' }"
+          [paginator]="true"
+          [rows]="10"
+          [showCurrentPageReport]="true"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} requests"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th>
+                <div class="userLaundryAppointmentsCell">
+                  Washing machine name
+                </div>
+              </th>
+              <th><div class="userLaundryAppointmentsCell">Dryer name</div></th>
+              <th><div class="userLaundryAppointmentsCell">Appointment date</div></th>
+              <th><div class="userLaundryAppointmentsCell">Status</div></th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-laundry>
+            <tr>
+              <td>
+                <div class="userLaundryAppointmentsCell">
+                  {{ laundry.washingMachineNumber }}
+                </div>
+              </td>
+              <td>
+                <div class="userLaundryAppointmentsCell">
+                  {{ laundry.dryerNumber }}
+                </div>
+              </td>
+              <td>
+                <div class="userLaundryAppointmentsCell">
+                  {{ formatLaundryAppoitnmentDate(laundry.intervalBeginDate) }}
+                </div>
+              </td>
+              <td>
+                <div class="userLaundryAppointmentsCell">
+                  <p-tag
+                    [value]="laundry.statusLaundry"
+                    [severity]="getLaundryStatusSeverity(laundry.statusLaundry)"
+                  ></p-tag>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="paginatorright">
+            <p-button
+              type="button"
+              icon="pi pi-plus"
+              styleClass="p-button-text"
+              (click)="showRegisterRequestDialog()"
+            ></p-button>
+          </ng-template>
+        </p-table>
       </mat-tab>
     </mat-tab-group>
   </div>

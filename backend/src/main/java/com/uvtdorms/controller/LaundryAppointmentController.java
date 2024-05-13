@@ -7,6 +7,7 @@ import com.uvtdorms.repository.dto.request.GetFreeIntervalDto;
 import com.uvtdorms.repository.dto.request.WashingMachineIdDto;
 import com.uvtdorms.repository.dto.response.FreeIntervalsDto;
 import com.uvtdorms.repository.dto.response.LaundryAppointmentsDto;
+import com.uvtdorms.repository.dto.response.StudentLaundryAppointmentsDto;
 import com.uvtdorms.services.LaundryAppointmentService;
 
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -59,5 +61,11 @@ public class LaundryAppointmentController {
 
         return ResponseEntity.ok(laundryAppointmentService.getWeeklyAppointmentsForDormForDryer(
                 getWeeklyAppointmentsForDormForDryerDto.id(), tokenDto.getEmail()));
+    }
+
+    @GetMapping("/get-student-laundry-appointments")
+    public ResponseEntity<List<StudentLaundryAppointmentsDto>> getStudentLaundryAppointments(Authentication authentication) {
+        TokenDto tokenDto = (TokenDto) authentication.getPrincipal();
+        return ResponseEntity.ok(laundryAppointmentService.getStudentLaundryAppointments(tokenDto.getEmail()));
     }
 }

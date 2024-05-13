@@ -18,6 +18,8 @@ import { Role } from '../../enums/role';
 import { EditPhoneNumberDialogComponent } from '../../elements/dialogs/edit-phone-number-dialog/edit-phone-number-dialog.component';
 import { ChangePasswordDialogComponent } from '../../elements/dialogs/change-password-dialog/change-password-dialog.component';
 import { ChangeProfilePictureDto } from '../../interfaces/change-profile-picture-dto';
+import { AppointmentService } from '../../services/appointment.service';
+import { StudentLaundryAppointmentsDto } from '../../interfaces/student-laundry-appointments-dto';
 
 @Component({
   selector: 'app-profile-page',
@@ -28,12 +30,14 @@ export class ProfilePageComponent {
   public user: UserDetailsDto | undefined = undefined;
   public registerRequests: ListedRegisterRequestDto[] = [];
   public isRegisterRequestDialogVisible: boolean = false;
+  public studentLaundryAppointments: StudentLaundryAppointmentsDto[] = [];
 
   constructor(
     private userService: UserService,
     private registerRequestService: RegisterRequestService,
     private roomService: RoomService,
     private dormService: DormService,
+    private laundryAppointmentService: AppointmentService,
     private dialog: MatDialog
   ) {}
 
@@ -55,6 +59,15 @@ export class ProfilePageComponent {
         console.error(err);
       },
     });
+
+    this.laundryAppointmentService.getStudentLaundryAppointments().subscribe({
+      next: (value) => {
+        this.studentLaundryAppointments = value;
+      },
+      error(err) {
+        console.error(err);
+      },
+    });
   }
 
   getRequestStatusSeverity(status: string) {
@@ -68,6 +81,31 @@ export class ProfilePageComponent {
       default:
         return 'info';
     }
+  }
+
+  getLaundryStatusSeverity(status: string) {
+    switch (status) {
+      case 'SCHEDULED':
+        return 'in progress';
+      case 'COMPLETED':
+        return 'done';
+      default:
+        return 'info';
+    }
+  }
+
+  public formatLaundryAppoitnmentDate(date: any): string {
+    return (
+      date[0] +
+      '/' +
+      date[1] +
+      '/' +
+      date[2] +
+      ' ' +
+      (Number(date[3]) <= 9 ? '0' + date[3] : date[3]) +
+      ':' +
+      (Number(date[4]) <= 9 ? '0' + date[4] : date[4])
+    );
   }
 
   showRegisterRequestDialog() {
@@ -128,6 +166,4 @@ export class ProfilePageComponent {
     };
     reader.readAsDataURL(file);
   }
-
-
 }

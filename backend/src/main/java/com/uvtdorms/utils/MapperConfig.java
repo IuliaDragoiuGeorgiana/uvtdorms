@@ -10,6 +10,7 @@ import com.uvtdorms.repository.dto.response.LaundryAppointmentsDto;
 import com.uvtdorms.repository.dto.response.ListedRegisterRequestDto;
 import com.uvtdorms.repository.dto.response.RegisterRequestDto;
 import com.uvtdorms.repository.dto.response.StudentDetailsDto;
+import com.uvtdorms.repository.dto.response.StudentLaundryAppointmentsDto;
 import com.uvtdorms.repository.dto.response.WashingMachineDto;
 import com.uvtdorms.repository.entity.DormAdministratorDetails;
 import com.uvtdorms.repository.entity.Dryer;
@@ -159,6 +160,15 @@ public class MapperConfig {
                 map(source.getStudent().getUser().getEmail(), destination.getStudentEmail());
                 map(source.getWashMachine().getMachineId(), destination.getWashingMachineId());
                 map(source.getDryer().getDryerId(), destination.getDryerId());
+                map(source.getIntervalBeginDate(), destination.getIntervalBeginDate());
+            }
+        });
+
+        modelMapper.addMappings(new PropertyMap<LaundryAppointment, StudentLaundryAppointmentsDto>() {
+            @Override
+            protected void configure() {
+                map(source.getWashMachine().getMachineNumber(), destination.getWashingMachineNumber());
+                map(source.getDryer().getDryerNumber(), destination.getDryerNumber());
                 map(source.getIntervalBeginDate(), destination.getIntervalBeginDate());
             }
         });

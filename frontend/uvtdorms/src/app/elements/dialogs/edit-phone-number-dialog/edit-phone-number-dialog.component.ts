@@ -32,11 +32,12 @@ export class EditPhoneNumberDialogComponent {
   ) {}
 
   onEditPhoneNumber() {
+    this.isPhoneNumberAlreadyExists = false;
+    this.editPhoneNumberForm.get('phoneNumber')?.updateValueAndValidity();
     if (this.editPhoneNumberForm.invalid) return;
     let editPhoneNumberDto: EditPhoneNumberDto = {
       phoneNumber: this.phoneNumber?.value!,
     };
-    this.isPhoneNumberAlreadyExists = false;
     this.editPhoneNumberForm.get('phoneNumber')?.updateValueAndValidity();
     this.userService.updatePhoneNumber(editPhoneNumberDto).subscribe({
       next: (response) => {
@@ -55,7 +56,6 @@ export class EditPhoneNumberDialogComponent {
 
   phoneNumberAlreadyExists(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
-      console.info('Hellooo');
       if (this.isPhoneNumberAlreadyExists) {
         return { phoneNumberExists: true };
       }

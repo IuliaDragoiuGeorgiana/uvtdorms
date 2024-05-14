@@ -150,3 +150,10 @@
   align-items: center;
   justify-content: center;
 }
+
+.userLaundryAppointmentsCell
+{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

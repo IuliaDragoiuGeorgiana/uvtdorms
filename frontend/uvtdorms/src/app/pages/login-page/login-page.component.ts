@@ -17,6 +17,7 @@ import { RegisterDialogData } from '../../interfaces/register-dialog-data';
 import { MatDialog } from '@angular/material/dialog';
 import { RegisterErrorDialogComponent } from '../../elements/dialogs/register/register-error-dialog/register-error-dialog.component';
 import { RegisterConfirmDialogComponent } from '../../elements/dialogs/register/register-confirm-dialog/register-confirm-dialog.component';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-login-page',
@@ -26,6 +27,7 @@ import { RegisterConfirmDialogComponent } from '../../elements/dialogs/register/
 export class LoginPageComponent {
   hide = true;
   showLogin = true;
+  isLoadingOverlayVisible = false;
   dormsNames: string[] = [];
   private validRoomNumbers: string[] = [];
 
@@ -35,7 +37,8 @@ export class LoginPageComponent {
     private userService: UserService,
     private dormService: DormService,
     private roomService: RoomService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private messageService: MessageService
   ) {}
 
   ngOnInit() {
@@ -44,6 +47,7 @@ export class LoginPageComponent {
         this.dormsNames = dormNames.names;
       },
     });
+    this.dialog.open(RegisterConfirmDialogComponent);
   }
 
   loginForm = new FormGroup({
@@ -131,6 +135,9 @@ export class LoginPageComponent {
           this.userService.setRole(convertStringRoleToEnum(tokenDto.role)!);
           this.router.navigate(['/profile']);
         },
+        error: () => {
+          this.showUnsuccessfulLoginMessage();
+        },
       });
   }
 
@@ -139,14 +146,15 @@ export class LoginPageComponent {
 
     let registerStudentDto: RegisterStudentDto =
       this.convertRegisterFormToRegisterStudentDto();
+    this.isLoadingOverlayVisible = true;
     this.authService.registerStudent(registerStudentDto).subscribe({
       next: () => {
-        console.log('nice');
+        this.isLoadingOverlayVisible = false;
         this.dialog.open(RegisterConfirmDialogComponent);
+        this.showLogin = !this.showLogin;
       },
       error: (error) => {
-        console.error(error);
-        console.log(error.error.message);
+        this.isLoadingOverlayVisible = false;
         let registerDialogData: RegisterDialogData = {
           message: error.error.message,
         };
@@ -170,5 +178,13 @@ export class LoginPageComponent {
     };
 
     return registerStudentDto;
+  }
+
+  private showUnsuccessfulLoginMessage() {
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Something went wrong',
+      detail: 'Please check your email and password and try again.',
+    });
   }
 }

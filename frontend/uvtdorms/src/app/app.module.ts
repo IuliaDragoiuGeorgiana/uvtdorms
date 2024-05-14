@@ -67,6 +67,7 @@ import { CascadeSelectModule } from 'primeng/cascadeselect';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { FloatLabelModule } from 'primeng/floatlabel';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @NgModule({
   declarations: [
@@ -132,6 +133,7 @@ import { FloatLabelModule } from 'primeng/floatlabel';
     DropdownModule,
     InputTextModule,
     FloatLabelModule,
+    ProgressSpinnerModule,
   ],
   providers: [
     provideHttpClient(withFetch()),

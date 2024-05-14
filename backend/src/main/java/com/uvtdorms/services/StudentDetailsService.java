@@ -71,7 +71,7 @@ public class StudentDetailsService implements IStudentDetailsService {
                                 .firstName(registerStudentDto.firstName())
                                 .lastName(registerStudentDto.lastName())
                                 .email(registerStudentDto.email())
-                                .phoneNumber(registerStudentDto.email())
+                                .phoneNumber(registerStudentDto.phoneNumber())
                                 .password(passwordEncoder.encode(generatedPassword))
                                 .role(Role.STUDENT)
                                 .isActive(false)
@@ -120,10 +120,10 @@ public class StudentDetailsService implements IStudentDetailsService {
                                 .isPresent())
                         throw new AppException("Student already exists.", HttpStatus.CONFLICT);
 
+                System.out.println("Phone number: " + registerStudentDto.phoneNumber());
                 if (userRepository.findByPhoneNumber(registerStudentDto.phoneNumber()).isPresent())
                         throw new AppException("Phone number already in use.", HttpStatus.CONFLICT);
         }
-
 
         private Room getSelectedRoomOnRegister(final String dormName, final String roomNumber) {
                 Dorm dorm = dormRepository.getByDormName(dormName);

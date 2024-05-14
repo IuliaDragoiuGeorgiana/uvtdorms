@@ -29,10 +29,10 @@
 
 .profile-page-profile-picture-container {
   position: relative;
-  width: 70%;
+  width: 60%;
   border-radius: 50%;
   overflow: hidden;
-  padding-top: 70%;
+  padding-top: 60%;
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -88,13 +88,12 @@
 .profile-page-name-container p {
   margin: 0;
   font-size: 1.7rem;
+  color: var(--uvt-blue);
 }
 
 .profile-page-other-details-container {
   height: 35%;
   width: 90%;
-  border-bottom: 1px solid rgba(128, 128, 128, 0.1);
-  border-top: 1px solid rgba(128, 128, 128, 0.1);
   border-radius: 5px;
   display: flex;
   align-items: center;
@@ -116,9 +115,17 @@
   justify-content: space-between;
 }
 
+.profile-page-settings-button-container-divider
+{
+  width: 10%;
+}
+
 .profile-page-settings-button-container button {
+  width: 45%;
   background-color: var(--uvt-blue);
   color: white !important;
+  font-size: 0.7vw;
+  font-weight: 500;
 }
 
 .profile-page-tabs-conatiner {
@@ -156,4 +163,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.profile-page-settings-button
+{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40%;
+  height: 100% !important;
 }

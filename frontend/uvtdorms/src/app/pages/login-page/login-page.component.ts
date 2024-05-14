@@ -47,7 +47,6 @@ export class LoginPageComponent {
         this.dormsNames = dormNames.names;
       },
     });
-    this.dialog.open(RegisterConfirmDialogComponent);
   }
 
   loginForm = new FormGroup({

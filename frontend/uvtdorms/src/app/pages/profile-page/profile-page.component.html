@@ -46,10 +46,11 @@
     <div
       class="profile-page-general-details-item profile-page-settings-button-container"
     >
-      <button mat-button (click)="openEditPhoneNumberDialog()">
+      <button mat-button class="profile-page-settings-button" (click)="openEditPhoneNumberDialog()">
         Change phone number
       </button>
-      <button mat-button (click)="openChangePasswordDialog()">
+      <div class="profile-page-settings-button-container-divider"></div>
+      <button class="profile-page-settings-button" mat-button (click)="openChangePasswordDialog()">
         Change password
       </button>
     </div>
@@ -178,7 +179,6 @@
               </td>
             </tr>
           </ng-template>
-         
         </p-table>
       </mat-tab>
     </mat-tab-group>

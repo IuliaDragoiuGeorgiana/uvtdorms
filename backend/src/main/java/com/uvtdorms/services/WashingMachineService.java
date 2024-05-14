@@ -107,6 +107,9 @@ public class WashingMachineService implements IWashingMachineService {
             }
             washingMachine.setDryer(dryer);
         } else {
+            if (washingMachine.getAssociatedDryer() != null) {
+                washingMachine.getAssociatedDryer().setAssociatedWashingMachine(null);
+            }
             washingMachine.setDryer(null);
         }
         washingMachineRepository.save(washingMachine);

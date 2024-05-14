@@ -68,6 +68,8 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { FieldsetModule } from 'primeng/fieldset';
+import { CardModule } from 'primeng/card';
 
 @NgModule({
   declarations: [
@@ -134,6 +136,8 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     InputTextModule,
     FloatLabelModule,
     ProgressSpinnerModule,
+    FieldsetModule,
+    CardModule,
   ],
   providers: [
     provideHttpClient(withFetch()),

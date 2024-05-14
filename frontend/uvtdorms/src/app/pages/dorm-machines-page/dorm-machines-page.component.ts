@@ -38,17 +38,25 @@ export class DormMachinesPageComponent {
 
   public machineType = MachineType;
   public selectedMachineType: MachineType | null = null;
-  private availableWashingMachines: AvailableWashingMachineDto[] = [
+
+  private initialAvailableWashingMachines: AvailableWashingMachineDto[] = [
     {
       id: '',
       name: 'No associated washing machine',
     },
   ];
-  private availableDryers: AvailableDryerDto[] = [
+  private availableWashingMachines: AvailableWashingMachineDto[] = [
+    this.initialAvailableWashingMachines[0],
+  ];
+
+  private initialAvailableDryers: AvailableDryerDto[] = [
     {
       id: '',
       name: 'No associated dryer',
     },
+  ];
+  private availableDryers: AvailableDryerDto[] = [
+    this.initialAvailableDryers[0],
   ];
 
   public newMachineForm = new FormGroup({
@@ -125,6 +133,7 @@ export class DormMachinesPageComponent {
   }
 
   private getAvailableWashingMachine(): void {
+    this.availableWashingMachines = [this.initialAvailableWashingMachines[0]];
     this.washingMachineService.getAvailableWashingMachine().subscribe({
       next: (washingMachines) => {
         this.availableWashingMachines.push(...washingMachines);
@@ -136,9 +145,15 @@ export class DormMachinesPageComponent {
   }
 
   private getAvailableDryer(): void {
+    this.availableDryers = [this.initialAvailableDryers[0]];
     this.dryerService.getAvailableDryer().subscribe({
       next: (dryers) => {
-        this.availableDryers.push(...dryers);
+        for (let dryer of dryers) {
+          this.addNewAvailableDryer({
+            id: dryer.id,
+            name: dryer.name,
+          });
+        }
       },
       error(err) {
         console.error(err);
@@ -155,7 +170,7 @@ export class DormMachinesPageComponent {
   }
 
   private getWashingMachineStatus(washingMachine: WashingMachine): string {
-    if (!washingMachine.isAvailable) {
+    if (!this.isWashingMachineFunctional(washingMachine.statusMachine)) {
       return 'Not available';
     }
 
@@ -203,10 +218,17 @@ export class DormMachinesPageComponent {
     return '';
   }
 
+  private isWashingMachineFunctional(status: any) {
+    if (status === 'FUNCTIONAL') {
+      return true;
+    }
+    return false;
+  }
+
   private getWashingMachineStatusSeverity(
     washingMachine: WashingMachine
   ): string {
-    if (!washingMachine.isAvailable) {
+    if (!this.isWashingMachineFunctional(washingMachine.statusMachine)) {
       return 'danger';
     }
 
@@ -434,14 +456,10 @@ export class DormMachinesPageComponent {
     if (this.isWashingMachineLabelingSelected()) {
       this.getAvailableDryer();
       if (machine.associatedDryerId !== null) {
-        this.availableDryers.push(
-          ...[
-            {
-              id: machine.associatedDryerId,
-              name: this.getAssociatedDryerName(machine),
-            },
-          ]
-        );
+        this.addNewAvailableDryer({
+          id: machine.associatedDryerId,
+          name: this.getAssociatedDryerName(machine),
+        });
       }
       this.newAssociatedMachine =
         machine.associatedDryerId !== null ? machine.associatedDryerId : '';
@@ -515,5 +533,15 @@ export class DormMachinesPageComponent {
       this.saveDryer(this.editedMachine! as Dryer);
     }
     this.isEditDialogVisible = false;
+  }
+
+  private addNewAvailableDryer(dryer: AvailableDryerDto): void {
+    for (let d of this.availableDryers) {
+      if (d.id === dryer.id) {
+        return;
+      }
+    }
+
+    this.availableDryers.push(dryer);
   }
 }

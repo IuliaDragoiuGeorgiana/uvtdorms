@@ -34,21 +34,20 @@ public class LaundryAppointment {
     @JoinColumn(name = "dryer_id")
     private Dryer dryer;
 
-   @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     private StatusLaundry statusLaundry;
 
     public LaundryAppointment(
             LocalDateTime intervalBeginDate,
             StudentDetails student,
             WashingMachine washMachine,
-            Dryer dryer)
-    {
+            Dryer dryer) {
         this.intervalBeginDate = intervalBeginDate;
         this.student = student;
         this.washMachine = washMachine;
         this.dryer = dryer;
         this.statusLaundry = StatusLaundry.SCHEDULED;
-        this.intervalEndDate= intervalBeginDate.plusHours(2);
-        this.creationDate=LocalDateTime.now();
+        this.intervalEndDate = intervalBeginDate.plusHours(2);
+        this.creationDate = LocalDateTime.now();
     }
 }

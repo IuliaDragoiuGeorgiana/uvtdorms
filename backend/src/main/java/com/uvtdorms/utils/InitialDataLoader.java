@@ -63,14 +63,13 @@ public class InitialDataLoader implements CommandLineRunner {
         }
     }
 
-    @SuppressWarnings("null")
     private void initializeStudents() {
         Optional<Room> room = roomRepository.getRoomByRoomNumber(roomsNamesList.get(0));
         if (room.isPresent()) {
             User user = User.builder()
                     .firstName("Iulia")
                     .lastName("Dragoiu")
-                    .email("iulia.dragoiu02@e-uvt.ro")
+                    .email("iulia.dragoiu03@e-uvt.ro")
                     .phoneNumber("0729616799")
                     .password(passwordEncoder.encode("iuliad"))
                     .role(Role.STUDENT)
@@ -83,7 +82,6 @@ public class InitialDataLoader implements CommandLineRunner {
         }
     }
 
-    @SuppressWarnings("null")
     private void initializeDormsAdministrators() {
         Dorm dorm = dormRepository.getByDormName(dormsNamesList.get(0));
 
@@ -127,7 +125,6 @@ public class InitialDataLoader implements CommandLineRunner {
         }
     }
 
-    @SuppressWarnings("null")
     private Dorm createDorm(String dormName, String address) {
         Dorm dorm = Dorm.builder()
                 .dormName(dormName)
@@ -148,7 +145,8 @@ public class InitialDataLoader implements CommandLineRunner {
         return washingMachine;
     }
 
-    private Dryer createDryer(String dryerName, Dorm dorm, StatusMachine statusMachine, WashingMachine associatedWashingMachine) {
+    private Dryer createDryer(String dryerName, Dorm dorm, StatusMachine statusMachine,
+            WashingMachine associatedWashingMachine) {
         Dryer dryer = Dryer.builder().dryerNumber(dryerName).dorm(dorm).status(statusMachine)
                 .associatedWashingMachine(associatedWashingMachine).build();
         dryerRepository.save(dryer);
@@ -156,7 +154,6 @@ public class InitialDataLoader implements CommandLineRunner {
         return dryer;
     }
 
-    @SuppressWarnings("null")
     private Room createRoom(String roomNumber, Dorm dorm) {
         Room room = Room.builder().dorm(dorm).roomNumber(roomNumber).build();
 
@@ -165,7 +162,6 @@ public class InitialDataLoader implements CommandLineRunner {
         return room;
     }
 
-    @SuppressWarnings("null")
     private User createDormAdministrator(String firstName, String lastName, String email, String phoneNumber,
             String password, Dorm dorm, String profilePictureFileName) {
         byte[] profilePicture = new byte[0];
@@ -197,7 +193,6 @@ public class InitialDataLoader implements CommandLineRunner {
         return admin;
     }
 
-    @SuppressWarnings("null")
     private void createRegisterRequest(String firstName, String lastName, String email, String phoneNumber,
             String password, Room room, String matriculationNumber, String profilePictureFileName) {
         byte[] profilePicture = new byte[0];
@@ -237,7 +232,6 @@ public class InitialDataLoader implements CommandLineRunner {
         studentDetailsRepository.save(student);
     }
 
-    @SuppressWarnings("null")
     private StudentDetails createStudent(String firstName, String lastName, String email, String phoneNumber,
             String password, Room room, String matriculationNumber, String profilePictureFileName) {
         byte[] profilePicture = new byte[0];
@@ -271,10 +265,21 @@ public class InitialDataLoader implements CommandLineRunner {
         return student;
     }
 
+    public LaundryAppointment createLaundryAppointment(LocalDateTime intervalBeginDate, StudentDetails student,
+            WashingMachine washingMachine) {
+        LaundryAppointment laundryAppointment = new LaundryAppointment(intervalBeginDate, student, washingMachine,
+                washingMachine.getAssociatedDryer());
+
+        laundryAppointmentRepository.save(laundryAppointment);
+
+        return laundryAppointment;
+    }
+
     @Override
     @Transactional
     public void run(String... args) throws Exception {
         Dorm dorm13 = createDorm("D13", "Street1");
+
         WashingMachine dorm13Machine1 = createWashingMachine("Machine1", dorm13, StatusMachine.FUNCTIONAL, null);
         WashingMachine dorm13Machine2 = createWashingMachine("Machine2", dorm13, StatusMachine.FUNCTIONAL, null);
         WashingMachine dorm13Machine3 = createWashingMachine("Machine3", dorm13, StatusMachine.FUNCTIONAL, null);
@@ -285,15 +290,29 @@ public class InitialDataLoader implements CommandLineRunner {
 
         dorm13Machine1.setDryer(dorm13Dryer1);
         dorm13Machine2.setDryer(dorm13Dryer2);
-        createDormAdministrator("Tom", "Hanks", "tom.hanks@e-uvt.ro", "0712345678", "hello", dorm13, "user-profile.jpg");
+
+        createDormAdministrator("Tom", "Hanks", "tom.hanks@e-uvt.ro", "0712345678", "hello", dorm13,
+                "user-profile.jpg");
+
         Room room1 = createRoom("1", dorm13);
         Room room2 = createRoom("2", dorm13);
-        createStudent("Taylor", "Swift", "taylor.swift@e-uvt.ro", "0765891234", "hello", room1, "I2345",
+
+        StudentDetails taylorSwift = createStudent("Taylor", "Swift", "taylor.swift@e-uvt.ro", "0765891234", "hello",
+                room1, "I2345",
                 "user-profile.jpg");
+        StudentDetails emmaWatson = createStudent("Emma", "Watson", "emma.watson@e-uvt.ro", "0763213213", "hello",
+                room2, "I1234",
+                "user-profile.jpg");
+
         createRegisterRequest("Vin", "Diesel", "vin.diesel@e-uvt.ro", "0789123456", "hello", room1, "I1234",
                 "user-profile.jpg");
         createRegisterRequest("IuliBuli", "Geo", "iuliadragoiu2@gmail.com", "0789133456", "hello", room2, "I1834",
                 "user-profile.jpg");
+
+        createLaundryAppointment(LocalDateTime.now().withHour(8).withMinute(0).withSecond(0), taylorSwift,
+                dorm13Machine1);
+        createLaundryAppointment(LocalDateTime.now().withHour(10).withMinute(0).withSecond(0), emmaWatson,
+                dorm13Machine1);
 
         initializeDorms();
         initializeRooms();

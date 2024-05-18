@@ -89,6 +89,8 @@ export class ProfilePageComponent {
         return 'in progress';
       case 'COMPLETED':
         return 'done';
+      case 'CANCELED':
+        return 'danger';
       default:
         return 'info';
     }

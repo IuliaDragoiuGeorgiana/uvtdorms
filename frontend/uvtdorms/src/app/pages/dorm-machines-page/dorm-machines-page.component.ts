@@ -201,7 +201,8 @@ export class DormMachinesPageComponent {
     if (!dryer.isAvailable) {
       return 'Not available';
     }
-
+    console.log(dryer);
+    console.log(this.washingMachines);
     let associatedWashingMachine = this.washingMachines.find(
       (washingMachine) => washingMachine.associatedDryerId === dryer.id
     );
@@ -339,8 +340,6 @@ export class DormMachinesPageComponent {
   }
 
   public formatDate(date: any[]): string {
-
-
     return (
       date[0] +
       '-' +
@@ -524,6 +523,7 @@ export class DormMachinesPageComponent {
     dryer.statusMachine = this.newMachineStatus;
     dryer.associatedWashingMachineId = this.newAssociatedMachine;
     dryer.name = this.newMachineName;
+    console.log(dryer);
     this.dryerService.updateDryer(dryer).subscribe({
       next: (dryer) => {
         for (let d of this.dryers) {

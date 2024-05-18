@@ -21,6 +21,11 @@ export class AppComponent {
   ngOnInit() {
     let initialPath =
       location.pathname != '/' ? location.pathname : '/not-found';
+    let initialQuery = location.search;
+    if (initialQuery != '' && initialPath != '/not-found') {
+      initialPath += initialQuery;
+    }
+    console.log(initialQuery);
     console.log(initialPath);
     if (this.authService.getAuthToken() != null) {
       this.authService.loginWithToken().subscribe({

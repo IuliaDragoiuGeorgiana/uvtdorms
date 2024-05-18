@@ -71,6 +71,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { FieldsetModule } from 'primeng/fieldset';
 import { CardModule } from 'primeng/card';
 import { LoadingScreenComponent } from './elements/loading-screen/loading-screen.component';
+import { KeepLaundryAppointmentPageComponent } from './pages/keep-laundry-appointment-page/keep-laundry-appointment-page.component';
 
 @NgModule({
   declarations: [
@@ -93,6 +94,7 @@ import { LoadingScreenComponent } from './elements/loading-screen/loading-screen
     ChangePasswordDialogComponent,
     DormMachinesPageComponent,
     LoadingScreenComponent,
+    KeepLaundryAppointmentPageComponent,
   ],
   imports: [
     BrowserModule,

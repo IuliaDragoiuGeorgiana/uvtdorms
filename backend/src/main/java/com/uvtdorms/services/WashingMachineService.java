@@ -3,6 +3,7 @@ package com.uvtdorms.services;
 import com.uvtdorms.exception.AppException;
 import com.uvtdorms.repository.IDormRepository;
 import com.uvtdorms.repository.IDryerRepository;
+import com.uvtdorms.repository.ILaundryAppointmentRepository;
 import com.uvtdorms.repository.IUserRepository;
 import com.uvtdorms.repository.IWashingMachineRepository;
 import com.uvtdorms.repository.dto.request.NewMachineDto;
@@ -11,8 +12,10 @@ import com.uvtdorms.repository.dto.response.WashingMachineDto;
 import com.uvtdorms.repository.entity.Dorm;
 import com.uvtdorms.repository.entity.DormAdministratorDetails;
 import com.uvtdorms.repository.entity.Dryer;
+import com.uvtdorms.repository.entity.LaundryAppointment;
 import com.uvtdorms.repository.entity.User;
 import com.uvtdorms.repository.entity.WashingMachine;
+import com.uvtdorms.repository.entity.enums.StatusLaundry;
 import com.uvtdorms.repository.entity.enums.StatusMachine;
 import com.uvtdorms.services.interfaces.IWashingMachineService;
 
@@ -22,6 +25,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -33,7 +37,9 @@ public class WashingMachineService implements IWashingMachineService {
     private final IDryerRepository dryerRepository;
     private final IDormRepository dormRepository;
     private final IUserRepository userRepository;
+    private final ILaundryAppointmentRepository laundryAppointmentRepository;
     private final ModelMapper modelMapper;
+    private final EmailService emailService;
 
     @Override
     public List<WashingMachineDto> getWashingMachinesFromDorm(String dormId) throws AppException {
@@ -86,6 +92,22 @@ public class WashingMachineService implements IWashingMachineService {
         washingMachineRepository.save(newWashingMachine);
     }
 
+    private void cancelLaundryAppointmentsForWashingMachineForTheRestOfTheWeek(WashingMachine washingMachine) {
+        List<LaundryAppointment> laundryAppointments = laundryAppointmentRepository.findByWashMachine(washingMachine)
+                .stream()
+                .filter(appointment -> appointment.getIntervalBeginDate().isAfter(LocalDateTime.now()))
+                .collect(Collectors.toList());
+
+        for (LaundryAppointment appointment : laundryAppointments) {
+            if (appointment.getStatusLaundry() == StatusLaundry.SCHEDULED) {
+                appointment.setStatusLaundry(StatusLaundry.CANCELED);
+                emailService.sendLaundryAppointmentCanceledBecauseOfWashingMachineFailure(
+                        appointment.getStudent().getUser().getEmail(),
+                        appointment.getIntervalBeginDate().toString());
+            }
+        }
+    }
+
     public void updateWashingMachine(final WashingMachineDto washingMachineDto) {
         UUID washingMachineUuid = UUID.fromString(washingMachineDto.getId());
         WashingMachine washingMachine = washingMachineRepository.findById(washingMachineUuid)
@@ -97,6 +119,9 @@ public class WashingMachineService implements IWashingMachineService {
         washingMachine.setMachineNumber(washingMachineDto.getName());
 
         washingMachine.setStatus(washingMachineDto.getStatusMachine());
+        if (washingMachineDto.getStatusMachine() == StatusMachine.BROKEN) {
+            cancelLaundryAppointmentsForWashingMachineForTheRestOfTheWeek(washingMachine);
+        }
 
         if (!washingMachineDto.getAssociatedDryerId().isEmpty()) {
             UUID associatedDryerUuid = UUID.fromString(washingMachineDto.getAssociatedDryerId());

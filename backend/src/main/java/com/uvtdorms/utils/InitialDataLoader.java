@@ -103,28 +103,6 @@ public class InitialDataLoader implements CommandLineRunner {
 
     }
 
-    private void initializeAppointments() {
-        Optional<User> user = userRepository.getByEmail("iulia.dragoiu02@e-uvt.ro");
-        if (user.isEmpty())
-            return;
-
-        Optional<StudentDetails> student = studentDetailsRepository.findByUser(user.get());
-        if (student.isEmpty())
-            return;
-
-        Dorm dorm = dormRepository.getByDormName(dormsNamesList.get(0));
-
-        List<WashingMachine> washingMachines = washingMachineRepository.findByDorm(dorm);
-        List<Dryer> dryers = dryerRepository.findByDorm(dorm);
-
-        for (int i = 0; i < washingMachines.size() && i < dryers.size(); i++) {
-            LocalDateTime intervalBeginDate = LocalDate.now().plusDays(1).atTime(8, 0);
-            LaundryAppointment laundryAppointment = new LaundryAppointment(intervalBeginDate, student.get(),
-                    washingMachines.get(i), dryers.get(i));
-            laundryAppointmentRepository.save(laundryAppointment);
-        }
-    }
-
     private Dorm createDorm(String dormName, String address) {
         Dorm dorm = Dorm.builder()
                 .dormName(dormName)
@@ -303,13 +281,19 @@ public class InitialDataLoader implements CommandLineRunner {
         StudentDetails emmaWatson = createStudent("Emma", "Watson", "emma.watson@e-uvt.ro", "0763213213", "hello",
                 room2, "I1234",
                 "user-profile.jpg");
+        StudentDetails iuliaDragoiu = createStudent("Iulia", "Dragoiu", "iulia.dragoiu02@e-uvt.ro", "0747319234",
+                "hello",
+                room2, "I1239",
+                "user-profile.jpg");
 
         createRegisterRequest("Vin", "Diesel", "vin.diesel@e-uvt.ro", "0789123456", "hello", room1, "I1235",
                 "user-profile.jpg");
         createRegisterRequest("IuliBuli", "Geo", "iuliadragoiu2@gmail.com", "0789133456", "hello", room2, "I1834",
                 "user-profile.jpg");
 
-        createLaundryAppointment(LocalDateTime.now().withHour(8).withMinute(0).withSecond(0), taylorSwift,
+        createLaundryAppointment(LocalDateTime.now().plusDays(1).withHour(8).withMinute(0).withSecond(0), taylorSwift,
+                dorm13Machine1);
+        createLaundryAppointment(LocalDateTime.now().plusDays(1).withHour(10).withMinute(0).withSecond(0), iuliaDragoiu,
                 dorm13Machine1);
         createLaundryAppointment(LocalDateTime.now().withHour(10).withMinute(0).withSecond(0), emmaWatson,
                 dorm13Machine1);
@@ -318,7 +302,6 @@ public class InitialDataLoader implements CommandLineRunner {
         initializeRooms();
         initializeStudents();
         initializeDormsAdministrators();
-        initializeAppointments();
     }
 
     private byte[] loadImage(String resourceName) throws IOException {

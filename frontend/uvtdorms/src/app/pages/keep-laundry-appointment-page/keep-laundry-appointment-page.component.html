@@ -1,0 +1,21 @@
+<app-loading-screen *ngIf="isLoadingScreenVisible"></app-loading-screen>
+<p-confirmDialog />
+<div *ngIf="!isLoadingScreenVisible" class="keep-laundry-appointment-page-container">
+    <div class="keep-laundry-appointment-card">
+        <div class="card-title">
+            <i class="pi pi-exclamation-circle card-title-icon"></i>
+            <h1 class="card-title-text">
+                Your laundry appointment was canceled.
+            </h1>
+        </div>
+        <div class="card-description">
+            <p class="card-description-text">
+                The dryer you had an appointment to has broken. If you wish to keep your laundry appointment, but without the dryer, please click the button below.
+            </p>
+        </div>
+        <div class="card-buttons">
+            <button pButton label="Keep appointment" class="card-button" severity="info" (click)="confirmKeep()"></button>
+            <button pButton label="Cancel" class="card-button" severity="danger" (click)="confirmCancel()"></button>
+        </div>
+    </div>
+</div>

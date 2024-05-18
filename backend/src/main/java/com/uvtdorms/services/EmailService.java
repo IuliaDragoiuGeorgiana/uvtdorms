@@ -88,4 +88,28 @@ public class EmailService {
 
         sendMail(to, subject, htmlContent);
     }
+
+    public void sendLaundryAppointmentCanceledBecauseOfWashingMachineFailure(final String email, final String date) {
+        String subject = "Laundry appointment canceled";
+        Context context = new Context();
+        context.setVariable("subject", subject);
+        context.setVariable("date", date);
+
+        String htmlContent = templateEngine.process("laundry-appointment-canceled.html", context);
+
+        sendMail(email, subject, htmlContent);
+    }
+
+    public void sendLaundryAppointmentCanceledBecauseOfDryerFailure(final String email, final String date,
+            final String modifiableAppointmentId) {
+        String subject = "Laundry appointment canceled";
+        Context context = new Context();
+        context.setVariable("subject", subject);
+        context.setVariable("date", date);
+        context.setVariable("id", modifiableAppointmentId);
+
+        String htmlContent = templateEngine.process("laundry-appointment-should-be-modified", context);
+
+        sendMail(email, subject, htmlContent);
+    }
 }

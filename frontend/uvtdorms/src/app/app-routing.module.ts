@@ -6,6 +6,7 @@ import { ProfilePageComponent } from './pages/profile-page/profile-page.componen
 import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
 import { StudentsAdministationPageComponent } from './pages/students-administation-page/students-administation-page.component';
 import { DormMachinesPageComponent } from './pages/dorm-machines-page/dorm-machines-page.component';
+import { KeepLaundryAppointmentPageComponent } from './pages/keep-laundry-appointment-page/keep-laundry-appointment-page.component';
 
 const routes: Routes = [
   { path: 'laundry-appointments', component: LaundryAppointmentsPageComponent },
@@ -19,6 +20,10 @@ const routes: Routes = [
   {
     path: 'dorm-machines-administration',
     component: DormMachinesPageComponent,
+  },
+  {
+    path: 'keep-laundry-appointment/:id',
+    component: KeepLaundryAppointmentPageComponent,
   },
 
   { path: '', redirectTo: '/login', pathMatch: 'full' },

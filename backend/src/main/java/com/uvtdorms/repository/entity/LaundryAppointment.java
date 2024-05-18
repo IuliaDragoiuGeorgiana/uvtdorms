@@ -37,6 +37,9 @@ public class LaundryAppointment {
     @Enumerated(EnumType.STRING)
     private StatusLaundry statusLaundry;
 
+    @OneToOne
+    private ModifiableLaundryAppointment modifiableLaundryAppointment;
+
     public LaundryAppointment(
             LocalDateTime intervalBeginDate,
             StudentDetails student,

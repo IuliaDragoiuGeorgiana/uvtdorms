@@ -304,7 +304,7 @@ public class InitialDataLoader implements CommandLineRunner {
                 room2, "I1234",
                 "user-profile.jpg");
 
-        createRegisterRequest("Vin", "Diesel", "vin.diesel@e-uvt.ro", "0789123456", "hello", room1, "I1234",
+        createRegisterRequest("Vin", "Diesel", "vin.diesel@e-uvt.ro", "0789123456", "hello", room1, "I1235",
                 "user-profile.jpg");
         createRegisterRequest("IuliBuli", "Geo", "iuliadragoiu2@gmail.com", "0789133456", "hello", room2, "I1834",
                 "user-profile.jpg");

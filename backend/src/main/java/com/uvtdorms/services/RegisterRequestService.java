@@ -49,13 +49,13 @@ public class RegisterRequestService {
     public void acceptRegisterRequest(final RegisterRequestDto registerRequestDto) throws AppException {
         RegisterRequest registerRequest = getRegisterRequestByRegisterRequestDto(registerRequestDto);
         
-
         if (registerRequest.getStatus() != RegisterRequestStatus.RECEIVED) {
             throw new AppException("Invalid registration request!", HttpStatus.BAD_REQUEST);
         }
         
         registerRequest.getStudent().setRoom(registerRequest.getRoom());
         registerRequest.getStudent().getUser().setRole(Role.STUDENT);
+        registerRequest.getStudent().getUser().setIsActive(true);
         registerRequest.setStatus(RegisterRequestStatus.ACCEPTED);
 
         registerRequestRepository.save(registerRequest);

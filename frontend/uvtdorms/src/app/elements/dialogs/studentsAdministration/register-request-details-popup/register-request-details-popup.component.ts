@@ -9,6 +9,8 @@ import { RegisterRequestService } from '../../../../services/register-request.se
   styleUrl: './register-request-details-popup.component.css',
 })
 export class RegisterRequestDetailsPopupComponent {
+  public isLoadingScreenVisible: boolean = false;
+
   constructor(
     public dialogRef: MatDialogRef<RegisterRequestDetailsPopupComponent>,
     @Inject(MAT_DIALOG_DATA) public data: RegisterRequestDto,
@@ -20,6 +22,7 @@ export class RegisterRequestDetailsPopupComponent {
   }
 
   decline(): void {
+    this.isLoadingScreenVisible = true;
     this.registerRequestService.declineRegisterRequest(this.data).subscribe({
       error: (error) => {
         console.error(error);
@@ -27,16 +30,23 @@ export class RegisterRequestDetailsPopupComponent {
       next: () => {
         window.location.reload();
       },
+      complete: () => {
+        this.isLoadingScreenVisible = false;
+      },
     });
   }
 
   accept(): void {
+    this.isLoadingScreenVisible = true;
     this.registerRequestService.acceptRegisterRequest(this.data).subscribe({
       error: (error) => {
         console.error(error);
       },
       next: () => {
         window.location.reload();
+      },
+      complete: () => {
+        this.isLoadingScreenVisible = false;
       },
     });
   }

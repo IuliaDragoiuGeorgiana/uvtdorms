@@ -86,6 +86,7 @@ export class StudentsAdministationPageComponent implements AfterViewInit {
       },
     });
   }
+
   openRemoveStudentFromDormDialog(student: StudentDetailsDto): void {
     this.dialog.open(RemoveStudentFromDormDialogComponent, {
       data: {
@@ -94,7 +95,7 @@ export class StudentsAdministationPageComponent implements AfterViewInit {
         lastName: student.lastName,
         dormName: student.dormName,
       },
-    })
+    });
   }
 
   applyFilter(event: Event): void {

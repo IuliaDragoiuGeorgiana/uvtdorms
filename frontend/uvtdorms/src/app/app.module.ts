@@ -70,6 +70,7 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { FieldsetModule } from 'primeng/fieldset';
 import { CardModule } from 'primeng/card';
+import { LoadingScreenComponent } from './elements/loading-screen/loading-screen.component';
 
 @NgModule({
   declarations: [
@@ -91,6 +92,7 @@ import { CardModule } from 'primeng/card';
     EditPhoneNumberDialogComponent,
     ChangePasswordDialogComponent,
     DormMachinesPageComponent,
+    LoadingScreenComponent,
   ],
   imports: [
     BrowserModule,

@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
   styleUrl: './app.component.css',
 })
 export class AppComponent {
-  title = 'uvtdorms';
+  public title: string = 'uvtdorms';
 
   constructor(
     private authService: AuthService,
@@ -19,7 +19,8 @@ export class AppComponent {
   ) {}
 
   ngOnInit() {
-    let initialPath = location.pathname != '/' ? location.pathname : '/not-found';
+    let initialPath =
+      location.pathname != '/' ? location.pathname : '/not-found';
     console.log(initialPath);
     if (this.authService.getAuthToken() != null) {
       this.authService.loginWithToken().subscribe({
@@ -32,7 +33,7 @@ export class AppComponent {
         },
         error: () => {
           this.router.navigate(['/login']);
-        }
+        },
       });
     } else {
       this.router.navigate(['/login']);

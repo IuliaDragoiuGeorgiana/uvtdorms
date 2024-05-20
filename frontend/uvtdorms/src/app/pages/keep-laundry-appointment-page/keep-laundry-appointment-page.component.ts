@@ -22,7 +22,6 @@ export class KeepLaundryAppointmentPageComponent {
     private messageService: MessageService
   ) {
     this.id = this.route.snapshot.paramMap.get('id')!;
-    console.log('ID: ', this.id);
   }
 
   ngOnInit() {

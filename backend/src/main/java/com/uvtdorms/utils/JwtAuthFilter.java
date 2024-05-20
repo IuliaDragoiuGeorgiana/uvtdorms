@@ -23,7 +23,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             "/api/auth/login",
             "/api/dorms/dorms-names",
             "/api/auth/register-student",
-            "/api/rooms/get-rooms-numbers-from-dorm/**");
+            "/api/rooms/get-rooms-numbers-from-dorm/**",
+            "/api/password-reset/**");
 
     private final AntPathMatcher pathMatcher;
 

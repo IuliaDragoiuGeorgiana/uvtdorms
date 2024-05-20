@@ -28,6 +28,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/dorms/dorms-names").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/register-student").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/rooms/get-rooms-numbers-from-dorm/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/password-reset/**").permitAll()
                         .anyRequest().authenticated());
         return http.build();
     }

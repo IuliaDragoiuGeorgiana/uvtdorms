@@ -112,4 +112,15 @@ public class EmailService {
 
         sendMail(email, subject, htmlContent);
     }
+
+    public void sendRestPasswordEmail(final String email, final String token) {
+        String subject = "Reset password";
+        Context context = new Context();
+        context.setVariable("subject", subject);
+        context.setVariable("token", token);
+
+        String htmlContent = templateEngine.process("reset-password-email.html", context);
+
+        sendMail(email, subject, htmlContent);
+    }
 }

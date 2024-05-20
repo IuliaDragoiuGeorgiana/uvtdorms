@@ -37,11 +37,21 @@ export class AppComponent {
           });
         },
         error: () => {
-          this.router.navigate(['/login']);
+          if (
+            !initialPath.startsWith('/reset-password') &&
+            !initialPath.startsWith('/forgot-password')
+          ) {
+            this.router.navigate(['/login']);
+          }
         },
       });
     } else {
-      this.router.navigate(['/login']);
+      if (
+        !initialPath.startsWith('/reset-password') &&
+        !initialPath.startsWith('/forgot-password')
+      ) {
+        this.router.navigate(['/login']);
+      }
     }
   }
 }

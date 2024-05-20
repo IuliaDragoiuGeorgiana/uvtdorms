@@ -186,4 +186,8 @@ export class LoginPageComponent {
       detail: 'Please check your email and password and try again.',
     });
   }
+
+  public redirectToForgotPassword() {
+    this.router.navigate(['/forgot-password']);
+  }
 }

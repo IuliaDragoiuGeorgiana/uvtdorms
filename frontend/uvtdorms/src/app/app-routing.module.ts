@@ -7,6 +7,8 @@ import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.com
 import { StudentsAdministationPageComponent } from './pages/students-administation-page/students-administation-page.component';
 import { DormMachinesPageComponent } from './pages/dorm-machines-page/dorm-machines-page.component';
 import { KeepLaundryAppointmentPageComponent } from './pages/keep-laundry-appointment-page/keep-laundry-appointment-page.component';
+import { ForgotPasswordPageComponent } from './pages/forgot-password-page/forgot-password-page.component';
+import { ChangeForgottenPasswordPageComponent } from './pages/change-forgotten-password-page/change-forgotten-password-page.component';
 
 const routes: Routes = [
   { path: 'laundry-appointments', component: LaundryAppointmentsPageComponent },
@@ -24,6 +26,14 @@ const routes: Routes = [
   {
     path: 'keep-laundry-appointment/:id',
     component: KeepLaundryAppointmentPageComponent,
+  },
+  {
+    path: 'forgot-password',
+    component: ForgotPasswordPageComponent,
+  },
+  {
+    path: 'reset-password/:token',
+    component: ChangeForgottenPasswordPageComponent,
   },
 
   { path: '', redirectTo: '/login', pathMatch: 'full' },

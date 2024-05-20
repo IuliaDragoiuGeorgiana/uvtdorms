@@ -72,6 +72,11 @@ import { FieldsetModule } from 'primeng/fieldset';
 import { CardModule } from 'primeng/card';
 import { LoadingScreenComponent } from './elements/loading-screen/loading-screen.component';
 import { KeepLaundryAppointmentPageComponent } from './pages/keep-laundry-appointment-page/keep-laundry-appointment-page.component';
+import { ForgotPasswordPageComponent } from './pages/forgot-password-page/forgot-password-page.component';
+import { ChangeForgottenPasswordPageComponent } from './pages/change-forgotten-password-page/change-forgotten-password-page.component';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
+import { PasswordModule } from 'primeng/password';
 
 @NgModule({
   declarations: [
@@ -95,6 +100,8 @@ import { KeepLaundryAppointmentPageComponent } from './pages/keep-laundry-appoin
     DormMachinesPageComponent,
     LoadingScreenComponent,
     KeepLaundryAppointmentPageComponent,
+    ForgotPasswordPageComponent,
+    ChangeForgottenPasswordPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -142,6 +149,9 @@ import { KeepLaundryAppointmentPageComponent } from './pages/keep-laundry-appoin
     ProgressSpinnerModule,
     FieldsetModule,
     CardModule,
+    IconFieldModule,
+    InputIconModule,
+    PasswordModule,
   ],
   providers: [
     provideHttpClient(withFetch()),

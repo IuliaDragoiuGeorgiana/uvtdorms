@@ -9,6 +9,7 @@ import { DormMachinesPageComponent } from './pages/dorm-machines-page/dorm-machi
 import { KeepLaundryAppointmentPageComponent } from './pages/keep-laundry-appointment-page/keep-laundry-appointment-page.component';
 import { ForgotPasswordPageComponent } from './pages/forgot-password-page/forgot-password-page.component';
 import { ChangeForgottenPasswordPageComponent } from './pages/change-forgotten-password-page/change-forgotten-password-page.component';
+import { TicketsPageComponent } from './pages/tickets-page/tickets-page.component';
 
 const routes: Routes = [
   { path: 'laundry-appointments', component: LaundryAppointmentsPageComponent },
@@ -34,6 +35,11 @@ const routes: Routes = [
   {
     path: 'reset-password/:token',
     component: ChangeForgottenPasswordPageComponent,
+  },
+
+  {
+    path:'tickets',
+    component : TicketsPageComponent,
   },
 
   { path: '', redirectTo: '/login', pathMatch: 'full' },

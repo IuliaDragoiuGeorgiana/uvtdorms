@@ -77,6 +77,9 @@ import { ChangeForgottenPasswordPageComponent } from './pages/change-forgotten-p
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { PasswordModule } from 'primeng/password';
+import { TicketsPageComponent } from './pages/tickets-page/tickets-page.component';
+import { CheckboxModule } from 'primeng/checkbox';
+import { EditorModule } from 'primeng/editor';
 
 @NgModule({
   declarations: [
@@ -102,6 +105,7 @@ import { PasswordModule } from 'primeng/password';
     KeepLaundryAppointmentPageComponent,
     ForgotPasswordPageComponent,
     ChangeForgottenPasswordPageComponent,
+    TicketsPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -152,6 +156,8 @@ import { PasswordModule } from 'primeng/password';
     IconFieldModule,
     InputIconModule,
     PasswordModule,
+    CheckboxModule,
+    EditorModule,
   ],
   providers: [
     provideHttpClient(withFetch()),

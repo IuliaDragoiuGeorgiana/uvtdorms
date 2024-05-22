@@ -1,0 +1,87 @@
+<div class="tickets-main-container">
+  <div class="tickets-form-container">
+    <div class="tickets-form-header">
+      <h1 class="tickets-form-header-content">
+        Tickets
+      </h1>
+    </div>
+    <form
+      [formGroup]="ticketForm"
+      (ngSubmit)="onSubmitTicket()"
+      class="tickets-form-content"
+    >
+      <div class="p-fluid">
+        <div class="p-field">
+          <label for="title" class="tickets-form-label">Title</label>
+          <input
+            id="title"
+            type="text"
+            pInputText
+            formControlName="title"
+            placeholder="Enter title"
+          />
+          <div
+            *ngIf="title?.invalid && (title?.dirty || title?.touched)"
+            class="p-error"
+          >
+            <small *ngIf="title?.errors?.['required']"
+              >Title is required.</small
+            >
+          </div>
+        </div>
+
+        <div class="p-field">
+          <label for="description" class="tickets-form-label">Description</label>
+          <p-editor formControlName="description" [style]="{ height: '220px' }" />
+          <div
+            *ngIf="
+              description?.invalid &&
+              (description?.dirty || description?.touched)
+            "
+            class="p-error"
+          >
+            <small *ngIf="description?.errors?.['required']"
+              >Description is required.</small
+            >
+          </div>
+        </div>
+
+        <div class="p-field">
+          <label for="category" class="tickets-form-label">Category</label>
+          <p-dropdown
+            id="category"
+            [options]="categories"
+            formControlName="category"
+            placeholder="Select a category"
+          ></p-dropdown>
+        </div>
+
+        <div class="p-field-checkbox">
+          <p-checkbox
+            binary="true"
+            formControlName="reportedBefore"
+            id="reportedBefore"
+          ></p-checkbox>
+          <label for="reportedBefore"  class="tickets-form-label tickets-form-checkbox-label"
+            > Has the issue been reported before?</label
+          >
+        </div>
+      </div>
+    </form>
+    <div class="tickets-form-footer">
+      <button
+        pButton
+        type="submit"
+        label="Submit"
+        class="tickets-actions-submit"
+      ></button>
+      <button
+        pButton
+        type="button"
+        label="Cancel"
+        class="tickets-actions-cancel"
+        (click)="onCancelTicket()"
+      ></button>
+    </div>
+  </div>
+</div>

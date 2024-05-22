@@ -39,9 +39,13 @@ public class StudentDetails {
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     private List<RegisterRequest> studentRegisterRequests;
 
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    private List<Ticket> tickets;
+    
     public StudentDetails(String matriculationNumber, User user, Room room) {
         this.matriculationNumber = matriculationNumber;
         this.user = user;
         this.room = room;
     }
+
 }

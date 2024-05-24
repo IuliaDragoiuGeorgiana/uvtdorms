@@ -34,8 +34,16 @@ Tickets  </button>
       class="navbar-button"
       *ngIf="isDormAdmistrator()"
     >
-      Students
-    </button>
+Students    </button>
+    <button
+    routerLink="/tickets-administration"
+    routerLinkActive="active"
+    class="navbar-button"
+    *ngIf="isDormAdmistrator()"
+  >
+    Tickets
+  </button>
+
   </div>
   <div class="right-wing">
     <button mat-icon-button [matMenuTriggerFor]="menu" *ngIf="role() != null">

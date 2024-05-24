@@ -10,6 +10,7 @@ import { KeepLaundryAppointmentPageComponent } from './pages/keep-laundry-appoin
 import { ForgotPasswordPageComponent } from './pages/forgot-password-page/forgot-password-page.component';
 import { ChangeForgottenPasswordPageComponent } from './pages/change-forgotten-password-page/change-forgotten-password-page.component';
 import { TicketsPageComponent } from './pages/tickets-page/tickets-page.component';
+import { TicketsAdministrationPageComponent } from './pages/tickets-administration-page/tickets-administration-page.component';
 
 const routes: Routes = [
   { path: 'laundry-appointments', component: LaundryAppointmentsPageComponent },
@@ -40,6 +41,11 @@ const routes: Routes = [
   {
     path:'tickets',
     component : TicketsPageComponent,
+  },
+
+  {
+    path:'tickets-administration',
+    component : TicketsAdministrationPageComponent,
   },
 
   { path: '', redirectTo: '/login', pathMatch: 'full' },

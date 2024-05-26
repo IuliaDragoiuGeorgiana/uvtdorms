@@ -36,4 +36,7 @@ public class Dorm {
 
     @OneToOne(mappedBy = "dorm", cascade = CascadeType.ALL)
     private DormAdministratorDetails dormAdministratorDetails;
+
+    @OneToMany(mappedBy = "dorm", cascade = CascadeType.ALL)
+    private List<Ticket> tickets;
 }

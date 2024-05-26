@@ -80,6 +80,7 @@ import { PasswordModule } from 'primeng/password';
 import { TicketsPageComponent } from './pages/tickets-page/tickets-page.component';
 import { CheckboxModule } from 'primeng/checkbox';
 import { EditorModule } from 'primeng/editor';
+import { TicketsAdministrationPageComponent } from './pages/tickets-administration-page/tickets-administration-page.component';
 
 @NgModule({
   declarations: [
@@ -106,6 +107,7 @@ import { EditorModule } from 'primeng/editor';
     ForgotPasswordPageComponent,
     ChangeForgottenPasswordPageComponent,
     TicketsPageComponent,
+    TicketsAdministrationPageComponent,
   ],
   imports: [
     BrowserModule,

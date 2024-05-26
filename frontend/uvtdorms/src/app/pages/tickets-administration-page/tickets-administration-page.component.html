@@ -1,1 +1,47 @@
-<p>tickets-administration-page works!</p>
+<div class="tickets-administration-page-main-container">
+    <div class="crad">
+        <p-table
+            [value]="tickets"
+            dataKey="creationDate"
+            [tableStyle]="{ 'min-width': '60rem' }">
+            <ng-template pTemplate="caption">
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                <th style="width: 5rem"></th>
+                <th pSortableColumn="creationDate">
+                    creationDate <p-sortIcon field="creationDate"></p-sortIcon>
+                </th>
+                <th>
+                    Title
+                </th>
+                <th>Status</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-ticket let-expanded="expanded">
+                <tr>
+                <td>
+                    <button
+                    type="button"
+                    pButton
+                    pRipple
+                    [pRowToggler]="ticket"
+                    class="p-button-text p-button-rounded p-button-plain"
+                    [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+                </td>
+                <td>{{ formatDate(ticket.creationDate) }}</td>
+                <td>
+                    {{ticket.title}}
+                </td>
+                <td>
+                    <p-tag
+                    [value]="ticket.statusTicket"
+                    [severity]="getStatusSeverity(ticket.statusTicket)"></p-tag>
+                </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="rowexpansion" let-product>
+            </ng-template>
+        </p-table>
+    </div>
+</div>

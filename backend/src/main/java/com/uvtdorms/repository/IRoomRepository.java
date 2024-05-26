@@ -10,9 +10,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
-public interface IRoomRepository extends JpaRepository<Room, Long> {
+public interface IRoomRepository extends JpaRepository<Room, UUID> {
     @Transactional
     public Optional<Room> getRoomByRoomNumber(String roomNumber);
 

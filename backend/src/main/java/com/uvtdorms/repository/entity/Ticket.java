@@ -37,6 +37,10 @@ public class Ticket{
     private boolean alreadyAnuncement;
 
     @ManyToOne
+    @JoinColumn(name = "dorm_id")
+    private Dorm dorm;
+
+    @ManyToOne
     @JoinColumn(name = "student_id")
     private StudentDetails student;
 }

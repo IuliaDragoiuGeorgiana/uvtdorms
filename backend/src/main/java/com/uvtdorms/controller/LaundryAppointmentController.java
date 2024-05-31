@@ -68,4 +68,12 @@ public class LaundryAppointmentController {
         TokenDto tokenDto = (TokenDto) authentication.getPrincipal();
         return ResponseEntity.ok(laundryAppointmentService.getStudentLaundryAppointments(tokenDto.getEmail()));
     }
+
+    @PostMapping("/delete-appointment")
+    public ResponseEntity<Void> deleteAppointment( Authentication authentication) {
+        TokenDto tokenDto = (TokenDto) authentication.getPrincipal();
+    laundryAppointmentService.deleteScheduledAppointment(tokenDto.getEmail());
+    return ResponseEntity.ok().build();
+    }
+    
 }

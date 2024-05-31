@@ -1,6 +1,7 @@
 .dorm-administrator-details-container {
-    width: 90%;
+    width: 90%; 
     height: 100%;
+    
   }
   
   .details-header {
@@ -8,6 +9,7 @@
     color: var(--uvt-blue);
     font-family: Arial, sans-serif;
     text-align: center;
+    font-weight: 300;
   }
   
   .detail-item {

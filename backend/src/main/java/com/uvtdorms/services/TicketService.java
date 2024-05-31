@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.antlr.v4.runtime.atn.SemanticContext.Predicate;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import com.uvtdorms.repository.IStudentDetailsRepository;
 import com.uvtdorms.repository.ITicketRepository;
 import com.uvtdorms.repository.IUserRepository;
 import com.uvtdorms.repository.dto.request.CreateTicketDto;
+import com.uvtdorms.repository.dto.response.StudentTicketsDto;
 import com.uvtdorms.repository.dto.response.TicketDto;
 import com.uvtdorms.repository.entity.DormAdministratorDetails;
 import com.uvtdorms.repository.entity.StudentDetails;
@@ -19,6 +21,10 @@ import com.uvtdorms.repository.entity.Ticket;
 import com.uvtdorms.repository.entity.User;
 import com.uvtdorms.repository.entity.enums.StatusTicket;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -28,6 +34,7 @@ public class TicketService {
   private final ITicketRepository ticketRepository;
   private final IUserRepository userRepository;
   private final IStudentDetailsRepository studentDetailsRepository;
+  private final EntityManager entityManager;
   private final ModelMapper modelMapper;
 
   public void createTicket(String email, CreateTicketDto createTicketDto) {
@@ -64,5 +71,22 @@ public class TicketService {
     List<Ticket> tickets = ticketRepository.findByDorm(dormAdministrator.getDorm());
 
     return tickets.stream().map(ticket -> modelMapper.map(ticket, TicketDto.class)).collect(Collectors.toList());
+  }
+
+
+  public List<StudentTicketsDto> getStudentTickets(String email) {
+    User user = userRepository.getByEmail(email)
+        .orElseThrow(() -> new AppException("User not found", HttpStatus.NOT_FOUND));
+
+    StudentDetails student = studentDetailsRepository.findByUser(user)
+        .orElseThrow(() -> new AppException("Student not found", HttpStatus.NOT_FOUND));
+
+    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+    CriteriaQuery <Ticket> criteriaQuery = criteriaBuilder.createQuery(Ticket.class);
+    Root <Ticket> root = criteriaQuery.from(Ticket.class);
+    criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("student"), student));
+    List<Ticket> tickets = entityManager.createQuery(criteriaQuery).getResultList();
+    return tickets.stream().map(ticket -> modelMapper.map(ticket, StudentTicketsDto.class)).collect(Collectors.toList());
+    
   }
 }

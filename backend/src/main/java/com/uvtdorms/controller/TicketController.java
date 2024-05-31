@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.uvtdorms.repository.dto.TokenDto;
 import com.uvtdorms.repository.dto.request.CreateTicketDto;
+import com.uvtdorms.repository.dto.response.StudentTicketsDto;
 import com.uvtdorms.repository.dto.response.TicketDto;
 import com.uvtdorms.services.TicketService;
 
@@ -35,5 +36,11 @@ public class TicketController {
     public ResponseEntity<List<TicketDto>> getTicketsFromDorm(Authentication authentication) {
         String email = ((TokenDto) authentication.getPrincipal()).getEmail();
         return ResponseEntity.ok(ticketService.getTicketsFromDorm(email));
+    }
+
+    @GetMapping("/get-student-tickets")
+    public ResponseEntity<List<StudentTicketsDto>> getStudentTickets(Authentication authentication) {
+        TokenDto tokenDto = (TokenDto) authentication.getPrincipal();
+        return ResponseEntity.ok(ticketService.getStudentTickets(tokenDto.getEmail()));
     }
 }

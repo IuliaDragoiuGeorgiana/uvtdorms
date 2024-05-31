@@ -30,9 +30,7 @@ export class RegisterRequestDetailsPopupComponent {
       next: () => {
         window.location.reload();
       },
-      complete: () => {
-        this.isLoadingScreenVisible = false;
-      },
+    
     });
   }
 
@@ -45,9 +43,7 @@ export class RegisterRequestDetailsPopupComponent {
       next: () => {
         window.location.reload();
       },
-      complete: () => {
-        this.isLoadingScreenVisible = false;
-      },
+      
     });
   }
 }

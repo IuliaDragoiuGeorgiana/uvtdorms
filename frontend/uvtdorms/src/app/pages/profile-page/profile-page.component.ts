@@ -20,6 +20,9 @@ import { ChangePasswordDialogComponent } from '../../elements/dialogs/change-pas
 import { ChangeProfilePictureDto } from '../../interfaces/change-profile-picture-dto';
 import { AppointmentService } from '../../services/appointment.service';
 import { StudentLaundryAppointmentsDto } from '../../interfaces/student-laundry-appointments-dto';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { TicketService } from '../../services/ticket.service';
+import { StudentTicketsDto } from '../../interfaces/student-tickets-dto';
 
 @Component({
   selector: 'app-profile-page',
@@ -31,14 +34,18 @@ export class ProfilePageComponent {
   public registerRequests: ListedRegisterRequestDto[] = [];
   public isRegisterRequestDialogVisible: boolean = false;
   public studentLaundryAppointments: StudentLaundryAppointmentsDto[] = [];
+  public studentTickets: StudentTicketsDto[] = [];
 
   constructor(
     private userService: UserService,
     private registerRequestService: RegisterRequestService,
+    private ticketService: TicketService,
     private roomService: RoomService,
     private dormService: DormService,
     private laundryAppointmentService: AppointmentService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private confirmService: ConfirmationService,
+    private messajeService: MessageService
   ) {}
 
   ngOnInit() {
@@ -63,6 +70,16 @@ export class ProfilePageComponent {
     this.laundryAppointmentService.getStudentLaundryAppointments().subscribe({
       next: (value) => {
         this.studentLaundryAppointments = value;
+      },
+      error(err) {
+        console.error(err);
+      },
+    });
+
+   this.ticketService.getStudentTickets().subscribe({
+      next: (value) => {
+        console.log(value);
+        this.studentTickets = value;
       },
       error(err) {
         console.error(err);
@@ -96,6 +113,17 @@ export class ProfilePageComponent {
     }
   }
 
+  getTicketStatusSeverity(status: string) {
+    switch (status) {
+      case 'OPEN':
+        return 'in progress';
+      case 'CLOSED':
+        return 'done';
+      default:
+        return 'info';
+    }
+  }
+
   public formatLaundryAppoitnmentDate(date: any): string {
     return (
       date[0] +
@@ -109,6 +137,8 @@ export class ProfilePageComponent {
       (Number(date[4]) <= 9 ? '0' + date[4] : date[4])
     );
   }
+
+
 
   showRegisterRequestDialog() {
     this.dialog.open(NewRegisterRequestDialogComponent);
@@ -168,4 +198,38 @@ export class ProfilePageComponent {
     };
     reader.readAsDataURL(file);
   }
+
+  confirmDeletion(event:Event){
+    this.confirmService.confirm({
+      target: event.target as EventTarget,
+      message: 'Are you sure that you want to delete this appointment?',
+      icon: 'pi pi-exclamation-triangle',
+      header: 'Confirmation',
+      acceptButtonStyleClass:"p-button-danger p-button-text",
+      rejectButtonStyleClass:"p-button-text p-button-text",
+      acceptIcon:"none",
+      rejectIcon:"none",
+
+      accept: () => {
+          this.deleteAppointment();
+          console.log('Appointment deleted1');
+      },
+     
+  });
+  }
+
+  deleteAppointment() {
+    this.laundryAppointmentService.deleteAppointment().subscribe({
+      next: () => {
+        console.log('Appointment deleted2');
+        this.messajeService.add({severity:'info', summary:'Confirmed', detail:'You have deleted the appointment'});
+        window.location.reload();
+      },
+      error(err) {
+        console.error(err);
+      },
+    });
+  }
+
+  
 }

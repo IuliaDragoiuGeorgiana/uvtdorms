@@ -165,6 +165,13 @@
   justify-content: center;
 }
 
+.userTicketCell
+{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .profile-page-settings-button
 {
   display: flex;

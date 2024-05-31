@@ -11,6 +11,7 @@ import com.uvtdorms.repository.dto.response.ListedRegisterRequestDto;
 import com.uvtdorms.repository.dto.response.RegisterRequestDto;
 import com.uvtdorms.repository.dto.response.StudentDetailsDto;
 import com.uvtdorms.repository.dto.response.StudentLaundryAppointmentsDto;
+import com.uvtdorms.repository.dto.response.StudentTicketsDto;
 import com.uvtdorms.repository.dto.response.TicketDto;
 import com.uvtdorms.repository.dto.response.WashingMachineDto;
 import com.uvtdorms.repository.entity.DormAdministratorDetails;
@@ -186,6 +187,18 @@ public class MapperConfig {
                 map(source.isAlreadyAnuncement(), destination.isAlreadyAnuncement());
                 map(source.getStudent().getUser().getEmail(), destination.getStudentEmail());
                 map(source.getStudent().getRoom().getRoomNumber(), destination.getRoomNumber());
+            }
+        });
+
+        modelMapper.addMappings(new PropertyMap<Ticket, StudentTicketsDto>() {
+            @Override
+            protected void configure() {
+                map(source.getCreationDate(), destination.getCreationDate());
+                map(source.getStatusTicket(), destination.getStatusTicket());
+                map(source.getTipInterventie(), destination.getTipInterventie());
+                map(source.getTitle(), destination.getTitle());
+                map(source.getDescription(), destination.getDescription());
+                map(source.isAlreadyAnuncement(), destination.isAlreadyAnuncement());
             }
         });
 

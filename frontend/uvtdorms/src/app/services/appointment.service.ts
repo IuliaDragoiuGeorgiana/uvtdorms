@@ -21,6 +21,7 @@ export class AppointmentService {
   private getWeeklyAppointmentsForDormForDryerUrl =
     '/get-weekly-appointments-for-dorm-for-dryer';
   private getStudentAppointmentsUrl = '/get-student-laundry-appointments';
+  private deleteAppointmentUrl = '/delete-appointment';
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
@@ -68,6 +69,14 @@ export class AppointmentService {
   getStudentLaundryAppointments(): Observable<StudentLaundryAppointmentsDto[]> {
     return this.http.get<StudentLaundryAppointmentsDto[]>(
       this.appointmentServiceUrl + this.getStudentAppointmentsUrl,
+      { headers: this.authService.getHeader() }
+    );
+  }
+
+  deleteAppointment(): Observable<void> {
+    return this.http.post<void>(
+      this.appointmentServiceUrl + this.deleteAppointmentUrl,
+      {},
       { headers: this.authService.getHeader() }
     );
   }

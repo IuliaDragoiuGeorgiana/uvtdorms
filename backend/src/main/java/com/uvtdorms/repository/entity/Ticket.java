@@ -17,7 +17,7 @@ import com.uvtdorms.repository.entity.enums.TipInterventie;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "tikets")
+@Table(name = "tickets")
 public class Ticket{
 
     @Id

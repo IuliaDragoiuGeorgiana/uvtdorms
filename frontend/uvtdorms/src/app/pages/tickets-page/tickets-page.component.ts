@@ -63,6 +63,7 @@ export class TicketsPageComponent {
       next: () => {
         this.displayConfirmMessage();
         this.loadigScreen = false;
+        console.log('Ticket created');
       },
       error: () => {
         this.displayErrorMessage();

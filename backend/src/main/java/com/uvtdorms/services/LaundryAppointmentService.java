@@ -18,6 +18,7 @@ import com.uvtdorms.repository.entity.LaundryAppointment;
 import com.uvtdorms.repository.entity.StudentDetails;
 import com.uvtdorms.repository.entity.User;
 import com.uvtdorms.repository.entity.WashingMachine;
+import com.uvtdorms.repository.entity.enums.StatusLaundry;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -241,12 +242,37 @@ public class LaundryAppointmentService {
 
                 List<LaundryAppointment> appointments = entityManager.createQuery(cq).getResultList();
                 return appointments.stream().map(
-                                appointmentEntity -> modelMapper.map(appointmentEntity, StudentLaundryAppointmentsDto.class))
+                                appointmentEntity -> modelMapper.map(appointmentEntity,
+                                                StudentLaundryAppointmentsDto.class))
                                 .toList();
-                                
-            
+
         }
 
-  
-        
+        @Transactional
+        public void deleteScheduledAppointment(String email) throws AppException {
+                User user = userRepository.getByEmail(email)
+                                .orElseThrow(() -> new AppException("User not found", HttpStatus.NOT_FOUND));
+                StudentDetails student = studentDetailsRepository.findByUser(user)
+                                .orElseThrow(() -> new AppException("The user is not a student",
+                                                HttpStatus.BAD_REQUEST));
+
+                CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+                CriteriaQuery<LaundryAppointment> cq = cb.createQuery(LaundryAppointment.class);
+                Root<LaundryAppointment> appointment = cq.from(LaundryAppointment.class);
+
+                Predicate studentPredicate = cb.equal(appointment.get("student"), student);
+                Predicate statusPredicate = cb.equal(appointment.get("statusLaundry"), StatusLaundry.SCHEDULED);
+                cq.where(studentPredicate, statusPredicate);
+
+                List<LaundryAppointment> appointments = entityManager.createQuery(cq).getResultList();
+
+                if (appointments.isEmpty()) {
+                        throw new AppException("The student has no scheduled appointments", HttpStatus.BAD_REQUEST);
+                }
+
+                for (LaundryAppointment appointmentEntity : appointments) {
+                        laundryAppointmentRepository.delete(appointmentEntity);
+                }
+        }
+
 }

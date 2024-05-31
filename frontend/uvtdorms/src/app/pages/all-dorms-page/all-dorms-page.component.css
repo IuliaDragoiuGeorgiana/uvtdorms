@@ -1,0 +1,65 @@
+.all-dorms-page-main-container
+{
+    width: 100vw;
+    height: 94vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.all-dorms-table-container
+{
+    width: 85%;
+    height: 85%;
+    box-shadow: 0px 0px 10px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+.all-dorms-table-caption
+{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.add-new-dorm-buttons
+{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.add-new-dorm-body
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 1vh 0;
+    margin-bottom: 2vh;
+}
+
+.add-new-dorm-form-element
+{
+    width: 80%;
+    margin: 1vh 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.add-new-dorm-form-input-element
+{
+    width: 100%;
+}
+
+@layer primeng
+{
+    :host ::ng-deep .p-dropdown,
+    :host ::ng-deep .p-float-label
+    {
+        width: 100%;
+    }
+}

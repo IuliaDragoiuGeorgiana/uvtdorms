@@ -1,7 +1,11 @@
 package com.uvtdorms.services;
 
 import com.uvtdorms.repository.dto.response.DisplayDormAdministratorDetailsDto;
+import com.uvtdorms.repository.dto.response.DormAdministratorDto;
 import com.uvtdorms.repository.dto.response.DormIdDto;
+
+import java.util.List;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -48,5 +52,17 @@ public class DormAdministratorService {
                 Dorm administratedDorm = getAdministratorDormByEmail(dormAdministratorEmail);
 
                 return DormIdDto.builder().id(administratedDorm.getDormId().toString()).build();
+        }
+
+        public List<DormAdministratorDto> getAvailableDormAdministrators() {
+                List<DormAdministratorDetails> availableDormAdministrators = dormAdministratorDetailsRepository
+                                .findByDorm(null);
+
+                System.out.println(availableDormAdministrators.size());
+
+                return availableDormAdministrators.stream()
+                                .map(dormAdministratorDetails -> modelMapper.map(dormAdministratorDetails,
+                                                DormAdministratorDto.class))
+                                .toList();
         }
 }

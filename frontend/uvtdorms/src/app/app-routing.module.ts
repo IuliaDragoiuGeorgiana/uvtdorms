@@ -11,6 +11,7 @@ import { ForgotPasswordPageComponent } from './pages/forgot-password-page/forgot
 import { ChangeForgottenPasswordPageComponent } from './pages/change-forgotten-password-page/change-forgotten-password-page.component';
 import { TicketsPageComponent } from './pages/tickets-page/tickets-page.component';
 import { TicketsAdministrationPageComponent } from './pages/tickets-administration-page/tickets-administration-page.component';
+import { AllDormsPageComponent } from './pages/all-dorms-page/all-dorms-page.component';
 
 const routes: Routes = [
   { path: 'laundry-appointments', component: LaundryAppointmentsPageComponent },
@@ -39,13 +40,18 @@ const routes: Routes = [
   },
 
   {
-    path:'tickets',
-    component : TicketsPageComponent,
+    path: 'tickets',
+    component: TicketsPageComponent,
   },
 
   {
-    path:'tickets-administration',
-    component : TicketsAdministrationPageComponent,
+    path: 'tickets-administration',
+    component: TicketsAdministrationPageComponent,
+  },
+
+  {
+    path: 'dorms-administration',
+    component: AllDormsPageComponent,
   },
 
   { path: '', redirectTo: '/login', pathMatch: 'full' },

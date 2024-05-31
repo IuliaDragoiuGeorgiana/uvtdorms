@@ -25,9 +25,13 @@ export class NavbarComponent {
   isStudent(): boolean {
     return this.role() === Role.STUDENT;
   }
-  isDormAdmistrator(): boolean{
-    return this.role() === Role.ADMINISTRATOR;
 
+  isDormAdmistrator(): boolean {
+    return this.role() === Role.ADMINISTRATOR;
+  }
+
+  isAppAdministrator(): boolean {
+    return this.role() === Role.APPLICATION_ADMINISTRATOR;
   }
 
   logout() {

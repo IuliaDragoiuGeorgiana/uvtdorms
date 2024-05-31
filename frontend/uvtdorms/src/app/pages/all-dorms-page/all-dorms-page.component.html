@@ -1,0 +1,88 @@
+<p-dialog header="Add new dorm" [modal]="true" [(visible)]="isAddNewDormDialogVisible" [style]="{ width: '25rem' }">
+    <form class="add-new-dorm-body" [formGroup]="addNewDormForm">
+        <p-floatLabel class="add-new-dorm-form-element">
+            <input class="add-new-dorm-form-input-element" pInputText id="name" formControlName="name" [ngClass]="{'ng-dirty': addNewFormNameRequiredError, 'ng-invalid': addNewFormNameRequiredError}" />
+            <label for="name">Dorm name</label>
+        </p-floatLabel>
+        <p-floatLabel class="add-new-dorm-form-element">
+            <input 
+                class="add-new-dorm-form-input-element"
+                pInputText
+                id="address"
+                formControlName="address"
+                [ngClass]="{'ng-dirty': addNewFormAddressRequiredError, 'ng-invalid': addNewFormAddressRequiredError}" />
+            <label for="address">Dorm address</label>
+        </p-floatLabel>
+        <p-dropdown 
+            class="add-new-dorm-form-element"
+            [options]="availableAdministrators.concat(defaultAvailableAdministrators)"
+            formControlName="administratorEmail"
+            placeholder="Select the dorm administrator"
+            optionLabel="name"
+            optionValue="email" />
+    </form>
+    <div class="add-new-dorm-buttons">
+        <p-button label="Cancel" severity="secondary" (click)="isAddNewDormDialogVisible = false" />
+        <p-button label="Save" severity="info" (click)="submitAddNewDormForm()" />
+    </div>
+</p-dialog>
+<div class="all-dorms-page-main-container">
+    <div class="all-dorms-table-container">
+        <p-table
+            #dt2
+            [value]="dorms"
+            dataKey="name"
+            [rows]="10"
+            [rowsPerPageOptions]="[10, 25, 50]"
+            [loading]="loading"
+            [paginator]="true"
+            [globalFilterFields]="['name', 'administratorEmail', 'address']"
+            [tableStyle]="{ 'min-width': '75rem' }"
+        >
+            <ng-template pTemplate="caption">
+                <div class="all-dorms-table-caption">
+                    Dorms
+                    <div class="flex">
+                        <p-iconField iconPosition="left" class="ml-auto">
+                            <p-inputIcon>
+                                <i class="pi pi-search"></i>
+                            </p-inputIcon>
+                            <input 
+                                #inputF
+                                pInputText 
+                                type="text" 
+                                (input)="dt2.filterGlobal(inputF.value, 'contains')" 
+                                placeholder="Search keyword" />
+                        </p-iconField>
+                    </div>
+                    <p-button icon="pi pi-plus" severity="success" (click)="isAddNewDormDialogVisible = true"/>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width:22%">Dorm name</th>
+                    <th style="width:22%">Dorm address</th>
+                    <th style="width:22%">Dorm administrator</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-dorm>
+                <tr>
+                    <td>
+                        {{ dorm.name }}
+                    </td>
+                    <td>
+                        {{ dorm.address }}
+                    </td>
+                    <td>
+                        {{ dorm.administratorEmail }}
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="5">No customers found.</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>

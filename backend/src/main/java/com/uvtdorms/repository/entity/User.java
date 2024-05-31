@@ -49,5 +49,8 @@ public class User {
 
     @Lob
     private byte[] profilePicture;
-    
+
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
 }

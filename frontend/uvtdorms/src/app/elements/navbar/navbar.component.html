@@ -43,6 +43,9 @@ Students    </button>
   >
     Tickets
   </button>
+  <button routerLink="/dorms-administration" routerLinkActive="active" class="navbar-button" *ngIf="isAppAdministrator()">
+    Dorms
+  </button>
 
   </div>
   <div class="right-wing">

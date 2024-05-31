@@ -4,6 +4,8 @@ import com.uvtdorms.repository.dto.response.AvailableDryerDto;
 import com.uvtdorms.repository.dto.response.AvailableWashingMachineDto;
 import com.uvtdorms.repository.dto.response.DisplayDormAdministratorDetailsDto;
 import com.uvtdorms.repository.dto.response.DisplayStudentDetailsDto;
+import com.uvtdorms.repository.dto.response.DormAdministratorDto;
+import com.uvtdorms.repository.dto.response.DormDto;
 import com.uvtdorms.repository.dto.response.DryerDto;
 import com.uvtdorms.repository.dto.response.EmailDto;
 import com.uvtdorms.repository.dto.response.LaundryAppointmentsDto;
@@ -14,6 +16,7 @@ import com.uvtdorms.repository.dto.response.StudentLaundryAppointmentsDto;
 import com.uvtdorms.repository.dto.response.StudentTicketsDto;
 import com.uvtdorms.repository.dto.response.TicketDto;
 import com.uvtdorms.repository.dto.response.WashingMachineDto;
+import com.uvtdorms.repository.entity.Dorm;
 import com.uvtdorms.repository.entity.DormAdministratorDetails;
 import com.uvtdorms.repository.entity.Dryer;
 import com.uvtdorms.repository.entity.LaundryAppointment;
@@ -199,6 +202,24 @@ public class MapperConfig {
                 map(source.getTitle(), destination.getTitle());
                 map(source.getDescription(), destination.getDescription());
                 map(source.isAlreadyAnuncement(), destination.isAlreadyAnuncement());
+            }
+        });
+
+        modelMapper.addMappings(new PropertyMap<Dorm, DormDto>() {
+            @Override
+            protected void configure() {
+                map(source.getDormName(), destination.getName());
+                map(source.getAddress(), destination.getAddress());
+                map(source.getDormAdministratorDetails().getAdministrator().getEmail(),
+                        destination.getAdministratorEmail());
+            }
+        });
+
+        modelMapper.addMappings(new PropertyMap<DormAdministratorDetails, DormAdministratorDto>() {
+            @Override
+            protected void configure() {
+                map(source.getAdministrator().getFullName(), destination.getName());
+                map(source.getAdministrator().getEmail(), destination.getEmail());
             }
         });
 

@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.uvtdorms.repository.dto.request.UpdateDormAdministratorDto;
 import com.uvtdorms.repository.dto.response.DormDto;
+import com.uvtdorms.repository.dto.response.DormIdDto;
 import com.uvtdorms.repository.dto.response.DormsNamesDto;
 import com.uvtdorms.services.DormService;
 
@@ -34,6 +36,19 @@ public class DormController {
     @PostMapping("/add-dorm")
     public ResponseEntity<Void> addDorm(@RequestBody DormDto dormDto) {
         dormService.addDorm(dormDto);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/update-dorm-administrator")
+    public ResponseEntity<Void> updateDormAdministrator(
+            @RequestBody UpdateDormAdministratorDto updateDormAdministratorDto) {
+        dormService.updateDormAdministrator(updateDormAdministratorDto);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/delete-dorm")
+    public ResponseEntity<Void> deleteDorm(@RequestBody DormIdDto dormId) {
+        dormService.deleteDorm(dormId.getId());
         return ResponseEntity.ok().build();
     }
 }

@@ -39,4 +39,8 @@ public class Dorm {
 
     @OneToMany(mappedBy = "dorm", cascade = CascadeType.ALL)
     private List<Ticket> tickets;
+
+    public String getIdString() {
+        return dormId.toString();
+    }
 }

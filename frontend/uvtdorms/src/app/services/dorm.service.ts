@@ -4,6 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { DormNamesDto } from '../interfaces/dorm-names';
 import { DormDto } from '../interfaces/dorm-dto';
+import { UpdateDormAdministratorDto } from '../interfaces/update-dorm-administrator-dto';
+import { DormId } from '../interfaces/dorm-id';
 
 @Injectable({
   providedIn: 'root',
@@ -13,6 +15,8 @@ export class DormService {
   private getDormNamesUrl = '/dorms-names';
   private getAllDormsUrl = '/all-dorms';
   private addDormUrl = '/add-dorm';
+  private updateDormAdministratorUrl = '/update-dorm-administrator';
+  private deleteDormUrl = '/delete-dorm';
 
   constructor(private http: HttpClient, private auth: AuthService) {}
 
@@ -33,6 +37,24 @@ export class DormService {
     return this.http.post<void>(
       this.dromServiceUrl + this.addDormUrl,
       dormDto,
+      { headers: this.auth.getHeader() }
+    );
+  }
+
+  updateDormAdministrator(
+    updateDormAdministratorDto: UpdateDormAdministratorDto
+  ): Observable<void> {
+    return this.http.post<void>(
+      this.dromServiceUrl + this.updateDormAdministratorUrl,
+      updateDormAdministratorDto,
+      { headers: this.auth.getHeader() }
+    );
+  }
+
+  deleteDorm(dormIdDto: DormId): Observable<void> {
+    return this.http.post<void>(
+      this.dromServiceUrl + this.deleteDormUrl,
+      dormIdDto,
       { headers: this.auth.getHeader() }
     );
   }

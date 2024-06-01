@@ -85,6 +85,7 @@ import { AllDormsPageComponent } from './pages/all-dorms-page/all-dorms-page.com
 import { DormAdministratorsPageComponent } from './pages/dorm-administrators-page/dorm-administrators-page.component';
 import { AddNewDormDialogComponent } from './pages/all-dorms-page/add-new-dorm-dialog/add-new-dorm-dialog.component';
 import { EditDormDialogComponent } from './pages/all-dorms-page/edit-dorm-dialog/edit-dorm-dialog.component';
+import { DormAdministratorsComponent } from './dorm-administrators/dorm-administrators.component';
 
 @NgModule({
   declarations: [
@@ -116,6 +117,7 @@ import { EditDormDialogComponent } from './pages/all-dorms-page/edit-dorm-dialog
     DormAdministratorsPageComponent,
     AddNewDormDialogComponent,
     EditDormDialogComponent,
+    DormAdministratorsComponent,
   ],
   imports: [
     BrowserModule,

@@ -212,6 +212,9 @@ public class MapperConfig {
                 map(source.getAddress(), destination.getAddress());
                 map(source.getDormAdministratorDetails().getAdministrator().getEmail(),
                         destination.getAdministratorEmail());
+                map(source.getDormAdministratorDetails().getAdministrator().getFullName(),
+                        destination.getAdministratorName());
+                map(source.getIdString(), destination.getId());
             }
         });
 

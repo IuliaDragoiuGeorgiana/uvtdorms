@@ -24,15 +24,16 @@ export class ChangePasswordDialogComponent {
     private userService: UserService,
     public dialogRef: MatDialogRef<ChangePasswordDialogComponent>
   ) {
-    this.changePasswordForm = new FormGroup(
-      {
-        newPassword: new FormControl('', [
-          Validators.required,
-          this.passwordStrengthValidator(),
-        ]),
-        confirmPassword: new FormControl('', [Validators.required, this.passwordsMatchValidator()]),
-      }
-    );
+    this.changePasswordForm = new FormGroup({
+      newPassword: new FormControl('', [
+        Validators.required,
+        this.passwordStrengthValidator(),
+      ]),
+      confirmPassword: new FormControl('', [
+        Validators.required,
+        this.passwordsMatchValidator(),
+      ]),
+    });
   }
 
   private passwordStrengthValidator(): ValidatorFn {
@@ -73,26 +74,23 @@ export class ChangePasswordDialogComponent {
       const value = control.value;
       const errors: ValidationErrors = {};
 
-      if(!value) {
+      if (!value) {
         return null;
       }
 
-      if(value !== this.changePasswordForm.getRawValue().newPassword)
-      {
+      if (value !== this.changePasswordForm.getRawValue().newPassword) {
         errors['mismatch'] = true;
         return errors;
       }
 
       return Object.keys(errors).length === 0 ? null : errors;
-    }
+    };
   }
 
   onChangePassword() {
     if (this.changePasswordForm.invalid) return;
     this.userService.updatePasswoed(this.changePasswordForm.value).subscribe({
       next: (response) => {
-        console.log(response);
-        console.log('Password updated successfully');
         window.location.reload();
       },
       error: (error) => {

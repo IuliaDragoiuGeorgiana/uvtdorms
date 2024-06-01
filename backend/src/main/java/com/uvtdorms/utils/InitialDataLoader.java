@@ -247,7 +247,8 @@ public class InitialDataLoader implements CommandLineRunner {
                                 "hello",
                                 room2, "I1234",
                                 "user-profile.jpg");
-                StudentDetails iuliaDragoiu = createStudent("Iulia", "Dragoiu", "iulia.dragoiu02@e-uvt.ro",
+                StudentDetails iuliaDragoiu = createStudent("Iulia", "Dragoiu",
+                                "iulia.dragoiu02@e-uvt.ro",
                                 "0747319234",
                                 "hello",
                                 room2, "I1239",

@@ -12,6 +12,7 @@ import { ChangeForgottenPasswordPageComponent } from './pages/change-forgotten-p
 import { TicketsPageComponent } from './pages/tickets-page/tickets-page.component';
 import { TicketsAdministrationPageComponent } from './pages/tickets-administration-page/tickets-administration-page.component';
 import { AllDormsPageComponent } from './pages/all-dorms-page/all-dorms-page.component';
+import { DormAdministratorsPageComponent } from './pages/dorm-administrators-page/dorm-administrators-page.component';
 
 const routes: Routes = [
   { path: 'laundry-appointments', component: LaundryAppointmentsPageComponent },
@@ -52,6 +53,11 @@ const routes: Routes = [
   {
     path: 'dorms-administration',
     component: AllDormsPageComponent,
+  },
+
+  {
+    path: 'dorm-administrators',
+    component: DormAdministratorsPageComponent,
   },
 
   { path: '', redirectTo: '/login', pathMatch: 'full' },

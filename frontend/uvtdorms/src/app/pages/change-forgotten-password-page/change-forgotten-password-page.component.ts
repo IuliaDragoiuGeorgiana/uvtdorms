@@ -43,7 +43,6 @@ export class ChangeForgottenPasswordPageComponent {
 
   ngOnInit(): void {
     this.token = this.route.snapshot.paramMap.get('token')!;
-    console.log('Token: ', this.token);
 
     this.isValidationOngoing = true;
     let resetPasswordTokenDto = {
@@ -137,7 +136,6 @@ export class ChangeForgottenPasswordPageComponent {
   }
 
   resetPassword(): void {
-    console.log(this.resetPasswordForm.value);
     if (this.resetPasswordForm.invalid) {
       this.resetPasswordForm.markAllAsTouched();
       return;

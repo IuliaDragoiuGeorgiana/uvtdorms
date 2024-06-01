@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.antlr.v4.runtime.atn.SemanticContext.Predicate;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -73,7 +72,6 @@ public class TicketService {
     return tickets.stream().map(ticket -> modelMapper.map(ticket, TicketDto.class)).collect(Collectors.toList());
   }
 
-
   public List<StudentTicketsDto> getStudentTickets(String email) {
     User user = userRepository.getByEmail(email)
         .orElseThrow(() -> new AppException("User not found", HttpStatus.NOT_FOUND));
@@ -82,11 +80,12 @@ public class TicketService {
         .orElseThrow(() -> new AppException("Student not found", HttpStatus.NOT_FOUND));
 
     CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-    CriteriaQuery <Ticket> criteriaQuery = criteriaBuilder.createQuery(Ticket.class);
-    Root <Ticket> root = criteriaQuery.from(Ticket.class);
+    CriteriaQuery<Ticket> criteriaQuery = criteriaBuilder.createQuery(Ticket.class);
+    Root<Ticket> root = criteriaQuery.from(Ticket.class);
     criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("student"), student));
     List<Ticket> tickets = entityManager.createQuery(criteriaQuery).getResultList();
-    return tickets.stream().map(ticket -> modelMapper.map(ticket, StudentTicketsDto.class)).collect(Collectors.toList());
-    
+    return tickets.stream().map(ticket -> modelMapper.map(ticket, StudentTicketsDto.class))
+        .collect(Collectors.toList());
+
   }
 }

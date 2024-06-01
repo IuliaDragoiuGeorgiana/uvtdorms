@@ -41,7 +41,6 @@ export class EditPhoneNumberDialogComponent {
     this.editPhoneNumberForm.get('phoneNumber')?.updateValueAndValidity();
     this.userService.updatePhoneNumber(editPhoneNumberDto).subscribe({
       next: (response) => {
-        console.log(response);
         window.location.reload();
       },
       error: (error) => {

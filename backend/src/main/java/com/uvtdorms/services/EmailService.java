@@ -46,6 +46,33 @@ public class EmailService {
         sendMail(to, subject, htmlContent);
     }
 
+    public void newDormAdministratorCreatedWithAssociatedDorm(final String to, final String name, final String dormName,
+            final String password) {
+        String subject = "New dorm administrator account created";
+        Context context = new Context();
+        context.setVariable("subject", subject);
+        context.setVariable("name", name);
+        context.setVariable("dormName", dormName);
+        context.setVariable("password", password);
+
+        String htmlContent = templateEngine.process("new-dorm-administrator-added.html", context);
+
+        sendMail(to, subject, htmlContent);
+    }
+
+    public void newDormAdministratorCreated(final String to, final String name,
+            final String password) {
+        String subject = "New dorm administrator account created";
+        Context context = new Context();
+        context.setVariable("subject", subject);
+        context.setVariable("name", name);
+        context.setVariable("password", password);
+
+        String htmlContent = templateEngine.process("new-dorm-administrator-added-without-dorm.html", context);
+
+        sendMail(to, subject, htmlContent);
+    }
+
     public void sendRegisterConfirm(final String to, final String name, final String generatedPassword) {
         String subject = "Confirm registration request";
         Context context = new Context();

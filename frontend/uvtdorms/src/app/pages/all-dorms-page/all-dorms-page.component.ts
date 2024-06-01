@@ -6,7 +6,12 @@ import { DormAdministratorDto } from '../../interfaces/dorm-administrator-dto';
 import { DormAdministratorDetailsService } from '../../services/dorm-administrator-details.service';
 import { UpdateDormAdministratorDto } from '../../interfaces/update-dorm-administrator-dto';
 import { DormId } from '../../interfaces/dorm-id';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import {
+  ConfirmationService,
+  MessageService,
+  OverlayListenerOptions,
+  OverlayOptions,
+} from 'primeng/api';
 
 @Component({
   selector: 'app-all-dorms-page',
@@ -21,9 +26,6 @@ export class AllDormsPageComponent {
   public availableAdministrators: DormAdministratorDto[] = [];
   public loading: boolean = true;
   public isAddNewDormDialogVisible: boolean = false;
-
-  // public isEditDormDialogVisible: boolean = false;
-  // public editingColumn
 
   public editDormNewAdministratorEmail: string = '';
 
@@ -64,7 +66,6 @@ export class AllDormsPageComponent {
       next: (dorms: DormDto[]) => {
         this.dorms = dorms;
         this.loading = false;
-        console.log(this.dorms);
       },
       error: (error) => {
         console.error(error);
@@ -186,5 +187,16 @@ export class AllDormsPageComponent {
 
   get addNewFormAddressRequiredError(): boolean {
     return this.addNewDormForm.controls['address'].hasError('required');
+  }
+
+  getOverlayOptions(): OverlayOptions {
+    return {
+      listener: (event: Event, options?: OverlayListenerOptions) => {
+        if (options?.type === 'scroll') {
+          return false;
+        }
+        return options?.valid;
+      },
+    };
   }
 }

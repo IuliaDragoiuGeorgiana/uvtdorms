@@ -44,6 +44,7 @@
         </p-floatLabel>
         <p-dropdown 
             class="add-new-dorm-form-element"
+            [overlayOptions]="getOverlayOptions()"
             [options]="availableAdministrators.concat(defaultAvailableAdministrators)"
             formControlName="administratorEmail"
             placeholder="Select the dorm administrator"
@@ -107,6 +108,7 @@
                         <p-cellEditor>
                             <ng-template pTemplate="input">
                                 <p-dropdown
+                                    [overlayOptions]="getOverlayOptions()"
                                     [options]="getAvailableAdministratorsForEditingDorm(dorm)" 
                                     placeholder="Select the dorm administrator"
                                     optionLabel="name"

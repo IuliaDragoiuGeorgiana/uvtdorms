@@ -201,8 +201,7 @@ export class DormMachinesPageComponent {
     if (!dryer.isAvailable) {
       return 'Not available';
     }
-    console.log(dryer);
-    console.log(this.washingMachines);
+
     let associatedWashingMachine = this.washingMachines.find(
       (washingMachine) => washingMachine.associatedDryerId === dryer.id
     );

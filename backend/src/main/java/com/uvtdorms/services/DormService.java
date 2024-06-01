@@ -13,6 +13,7 @@ import com.uvtdorms.repository.IDormAdministratorDetailsRepository;
 import com.uvtdorms.repository.IDormRepository;
 import com.uvtdorms.repository.IUserRepository;
 import com.uvtdorms.repository.dto.request.UpdateDormAdministratorDto;
+import com.uvtdorms.repository.dto.response.AvailableDormDto;
 import com.uvtdorms.repository.dto.response.DormDto;
 import com.uvtdorms.repository.dto.response.DormsNamesDto;
 import com.uvtdorms.repository.entity.Dorm;
@@ -111,5 +112,11 @@ public class DormService {
         }
 
         dormRepository.delete(dorm);
+    }
+
+    public List<AvailableDormDto> getAvailableDorms() {
+        List<Dorm> dorms = dormRepository.getByDormAdministratorDetails(null);
+
+        return dorms.stream().map(dorm -> mapper.map(dorm, AvailableDormDto.class)).toList();
     }
 }

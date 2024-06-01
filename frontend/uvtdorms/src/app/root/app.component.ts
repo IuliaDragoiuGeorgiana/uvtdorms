@@ -25,8 +25,7 @@ export class AppComponent {
     if (initialQuery != '' && initialPath != '/not-found') {
       initialPath += initialQuery;
     }
-    console.log(initialQuery);
-    console.log(initialPath);
+
     if (this.authService.getAuthToken() != null) {
       this.authService.loginWithToken().subscribe({
         next: (tokenDto) => {

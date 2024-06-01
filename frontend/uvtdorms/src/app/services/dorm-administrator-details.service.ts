@@ -5,6 +5,10 @@ import { Observable } from 'rxjs';
 import { DisplayDormAdministratorDetailsDto } from '../interfaces/display-dorm-administrator-details-dto';
 import { DormId } from '../interfaces/dorm-id';
 import { DormAdministratorDto } from '../interfaces/dorm-administrator-dto';
+import { AddNewDormAdministratorDto } from '../interfaces/add-new-dorm-administrator-dto';
+import { UpdateDormAdministratorDto } from '../interfaces/update-dorm-administrator-dto';
+import { EmailDto } from '../interfaces/email-dto';
+import { DetailedDormAdministratorDto } from '../interfaces/detailed-dorm-administrator-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +20,11 @@ export class DormAdministratorDetailsService {
   private getAdministratedDormIdUrl = '/get-administrated-dorm-id';
   private getAvailableDormAdministratorsUrl =
     '/get-available-dorm-administrators';
+  private getAllDormAdministratorsUrl = '/get-all-dorm-administrators';
+  private addDormAdministratorUrl = '/add-new-dorm-administrator';
+  private updateDormAdministratorAssociatedDormUrl =
+    '/update-dorm-administrator-associated-dorm';
+  private deleteDormAdministratorUrl = '/delete-dorm-administrator';
 
   constructor(private http: HttpClient, private auth: AuthService) {}
 
@@ -38,6 +47,43 @@ export class DormAdministratorDetailsService {
     return this.http.get<DormAdministratorDto[]>(
       this.dormAdministratorDetailsServiceUrl +
         this.getAvailableDormAdministratorsUrl,
+      { headers: this.auth.getHeader() }
+    );
+  }
+
+  getAllDormAdministrators(): Observable<DetailedDormAdministratorDto[]> {
+    return this.http.get<DetailedDormAdministratorDto[]>(
+      this.dormAdministratorDetailsServiceUrl +
+        this.getAllDormAdministratorsUrl,
+      { headers: this.auth.getHeader() }
+    );
+  }
+
+  addNewDormAdministrator(
+    addNewDormAdministratorDto: AddNewDormAdministratorDto
+  ): Observable<void> {
+    return this.http.post<void>(
+      this.dormAdministratorDetailsServiceUrl + this.addDormAdministratorUrl,
+      addNewDormAdministratorDto,
+      { headers: this.auth.getHeader() }
+    );
+  }
+
+  updateDormAdministratorAssociatedDorm(
+    updateDormAdministratorDto: UpdateDormAdministratorDto
+  ): Observable<void> {
+    return this.http.post<void>(
+      this.dormAdministratorDetailsServiceUrl +
+        this.updateDormAdministratorAssociatedDormUrl,
+      updateDormAdministratorDto,
+      { headers: this.auth.getHeader() }
+    );
+  }
+
+  deleteDormAdministrator(emailDto: EmailDto): Observable<void> {
+    return this.http.post<void>(
+      this.dormAdministratorDetailsServiceUrl + this.deleteDormAdministratorUrl,
+      emailDto,
       { headers: this.auth.getHeader() }
     );
   }

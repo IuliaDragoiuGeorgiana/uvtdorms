@@ -34,7 +34,6 @@ export class EditRoomNumberDialogComponent {
   ) {
     roomService.getRoomsNumbersFromDrom(data.dormName).subscribe({
       next: (roomNumbers) => {
-        console.log(roomNumbers);
         this.validRoomNumbers = roomNumbers.numbers;
       },
       error: (error) => {
@@ -52,20 +51,18 @@ export class EditRoomNumberDialogComponent {
 
   onEditRoomNumber(): void {
     if (this.editRoomNumberForm.invalid) return;
-    console.log(this.editRoomNumberForm);
     let editRoomDto: EditRoomDto = {
       studentEmail: this.data.studentEmail,
       roomNumber: this.roomNumber?.value!,
     };
     this.studentDetailsService.updateRoomNumber(editRoomDto).subscribe({
       next: () => {
-        console.log('room number updated');
         window.location.reload();
       },
       error: (error) => {
         console.log(error);
-      }
-    })
+      },
+    });
   }
 
   onNoClick(): void {

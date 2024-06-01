@@ -83,9 +83,6 @@ import { EditorModule } from 'primeng/editor';
 import { TicketsAdministrationPageComponent } from './pages/tickets-administration-page/tickets-administration-page.component';
 import { AllDormsPageComponent } from './pages/all-dorms-page/all-dorms-page.component';
 import { DormAdministratorsPageComponent } from './pages/dorm-administrators-page/dorm-administrators-page.component';
-import { AddNewDormDialogComponent } from './pages/all-dorms-page/add-new-dorm-dialog/add-new-dorm-dialog.component';
-import { EditDormDialogComponent } from './pages/all-dorms-page/edit-dorm-dialog/edit-dorm-dialog.component';
-import { DormAdministratorsComponent } from './dorm-administrators/dorm-administrators.component';
 
 @NgModule({
   declarations: [
@@ -115,9 +112,6 @@ import { DormAdministratorsComponent } from './dorm-administrators/dorm-administ
     TicketsAdministrationPageComponent,
     AllDormsPageComponent,
     DormAdministratorsPageComponent,
-    AddNewDormDialogComponent,
-    EditDormDialogComponent,
-    DormAdministratorsComponent,
   ],
   imports: [
     BrowserModule,

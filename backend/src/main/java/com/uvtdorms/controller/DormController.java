@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.uvtdorms.repository.dto.request.UpdateDormAdministratorDto;
+import com.uvtdorms.repository.dto.response.AvailableDormDto;
 import com.uvtdorms.repository.dto.response.DormDto;
 import com.uvtdorms.repository.dto.response.DormIdDto;
 import com.uvtdorms.repository.dto.response.DormsNamesDto;
@@ -50,5 +51,10 @@ public class DormController {
     public ResponseEntity<Void> deleteDorm(@RequestBody DormIdDto dormId) {
         dormService.deleteDorm(dormId.getId());
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/available-dorms")
+    public ResponseEntity<List<AvailableDormDto>> getAvailableDorms() {
+        return ResponseEntity.ok(dormService.getAvailableDorms());
     }
 }

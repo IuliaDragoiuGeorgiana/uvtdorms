@@ -20,6 +20,14 @@
     *ngIf="isStudent()"
   >
 Tickets  </button>
+  <button
+      routerLink="/rooms-administration"
+      routerLinkActive="active"
+      class="navbar-button"
+      *ngIf="isDormAdmistrator()"
+    >
+      Rooms
+    </button>
     <button
       routerLink="/dorm-machines-administration"
       routerLinkActive="active"

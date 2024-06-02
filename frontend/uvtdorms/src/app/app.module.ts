@@ -83,6 +83,7 @@ import { EditorModule } from 'primeng/editor';
 import { TicketsAdministrationPageComponent } from './pages/tickets-administration-page/tickets-administration-page.component';
 import { AllDormsPageComponent } from './pages/all-dorms-page/all-dorms-page.component';
 import { DormAdministratorsPageComponent } from './pages/dorm-administrators-page/dorm-administrators-page.component';
+import { RoomsAdministrationPageComponent } from './pages/rooms-administration-page/rooms-administration-page.component';
 
 @NgModule({
   declarations: [
@@ -112,6 +113,7 @@ import { DormAdministratorsPageComponent } from './pages/dorm-administrators-pag
     TicketsAdministrationPageComponent,
     AllDormsPageComponent,
     DormAdministratorsPageComponent,
+    RoomsAdministrationPageComponent,
   ],
   imports: [
     BrowserModule,

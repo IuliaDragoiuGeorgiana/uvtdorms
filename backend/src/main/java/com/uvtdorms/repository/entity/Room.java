@@ -1,6 +1,7 @@
 package com.uvtdorms.repository.entity;
 
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,4 +33,12 @@ public class Room {
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
     private List<RegisterRequest> roomRegisterRequests;
+
+    @Transactional
+    public int getNumberOfStudents() {
+        if (studentDetails == null) {
+            return 0;
+        }
+        return studentDetails.size();
+    }
 }

@@ -4,6 +4,7 @@ import com.uvtdorms.repository.dto.response.AvailableDormDto;
 import com.uvtdorms.repository.dto.response.AvailableDryerDto;
 import com.uvtdorms.repository.dto.response.AvailableWashingMachineDto;
 import com.uvtdorms.repository.dto.response.DetailedDormAdministratorDto;
+import com.uvtdorms.repository.dto.response.DetailedRoomDto;
 import com.uvtdorms.repository.dto.response.DisplayDormAdministratorDetailsDto;
 import com.uvtdorms.repository.dto.response.DisplayStudentDetailsDto;
 import com.uvtdorms.repository.dto.response.DormAdministratorDto;
@@ -11,6 +12,7 @@ import com.uvtdorms.repository.dto.response.DormDto;
 import com.uvtdorms.repository.dto.response.DryerDto;
 import com.uvtdorms.repository.dto.response.EmailDto;
 import com.uvtdorms.repository.dto.response.LaundryAppointmentsDto;
+import com.uvtdorms.repository.dto.response.LightUserDto;
 import com.uvtdorms.repository.dto.response.ListedRegisterRequestDto;
 import com.uvtdorms.repository.dto.response.RegisterRequestDto;
 import com.uvtdorms.repository.dto.response.StudentDetailsDto;
@@ -23,6 +25,7 @@ import com.uvtdorms.repository.entity.DormAdministratorDetails;
 import com.uvtdorms.repository.entity.Dryer;
 import com.uvtdorms.repository.entity.LaundryAppointment;
 import com.uvtdorms.repository.entity.RegisterRequest;
+import com.uvtdorms.repository.entity.Room;
 import com.uvtdorms.repository.entity.StudentDetails;
 import com.uvtdorms.repository.entity.Ticket;
 import com.uvtdorms.repository.entity.User;
@@ -244,6 +247,22 @@ public class MapperConfig {
             protected void configure() {
                 map(source.getIdString(), destination.getId());
                 map(source.getDormName(), destination.getDormName());
+            }
+        });
+
+        modelMapper.addMappings(new PropertyMap<Room, DetailedRoomDto>() {
+            @Override
+            protected void configure() {
+                map(source.getRoomNumber(), destination.getRoomNumber());
+                map(source.getNumberOfStudents(), destination.getNumberOfStudents());
+            }
+        });
+
+        modelMapper.addMappings(new PropertyMap<StudentDetails, LightUserDto>() {
+            @Override
+            protected void configure() {
+                map(source.getUser().getFullName(), destination.getName());
+                map(source.getUser().getEmail(), destination.getEmail());
             }
         });
 

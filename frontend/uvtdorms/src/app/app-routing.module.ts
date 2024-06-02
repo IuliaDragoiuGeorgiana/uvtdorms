@@ -13,6 +13,7 @@ import { TicketsPageComponent } from './pages/tickets-page/tickets-page.componen
 import { TicketsAdministrationPageComponent } from './pages/tickets-administration-page/tickets-administration-page.component';
 import { AllDormsPageComponent } from './pages/all-dorms-page/all-dorms-page.component';
 import { DormAdministratorsPageComponent } from './pages/dorm-administrators-page/dorm-administrators-page.component';
+import { RoomsAdministrationPageComponent } from './pages/rooms-administration-page/rooms-administration-page.component';
 
 const routes: Routes = [
   { path: 'laundry-appointments', component: LaundryAppointmentsPageComponent },
@@ -58,6 +59,11 @@ const routes: Routes = [
   {
     path: 'dorm-administrators',
     component: DormAdministratorsPageComponent,
+  },
+
+  {
+    path: 'rooms-administration',
+    component: RoomsAdministrationPageComponent,
   },
 
   { path: '', redirectTo: '/login', pathMatch: 'full' },

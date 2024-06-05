@@ -1,3 +1,154 @@
+<app-loading-screen *ngIf="isLoadingScreenVisible"></app-loading-screen>
+<p-toast></p-toast>
+<p-confirmDialog #cd>
+  <ng-template pTemplate="headless" let-message>
+      <div class="confirm-dialog-header">
+          <div class="confirm-dialog-icon-container">
+              <i class="pi pi-question confirm-dialog-icon text-5xl"></i>
+          </div>
+          <span class="confirm-dialog-header-message">
+              {{ message.header }}
+          </span>
+          <p class="confirm-dialog-message mb-0">{{ message.message }}</p>
+          <div class="confirm-dialog-buttons flex align-items-center gap-2 mt-4">
+              <button 
+                  pButton 
+                  severity="danger"
+                  label="Delete" 
+                  (click)="cd.accept()" 
+                  class="w-8rem">
+              </button>
+              <button 
+                  pButton 
+                  label="Cancel" 
+                  (click)="cd.reject()" 
+                  class="p-button-outlined w-8rem ">
+              </button>
+          </div>
+      </div>
+  </ng-template>
+</p-confirmDialog>
+<p-dialog 
+  header=""
+  [(visible)]="isCreateEvenimentDialogVisible"
+  modal="true"
+  [style]="{ width: '50vw', height: '90vh' }">
+  <div class="new-eveniment-header">
+    <h1>Create new eveniment</h1>
+  </div>
+  <form class="new-eveniment-form" [formGroup]="newEvenimentForm">
+    <p-floatLabel class="new-eveniment-form-label">
+      <input 
+        formControlName="title"
+        id="title"
+        type="text"
+        [ngClass]="{'ng-dirty': hasNewEvenimentTitleError, 'ng-invalid': hasNewEvenimentTitleError}"
+        pInputText/>
+      <label for="title">Title</label>
+    </p-floatLabel>
+    <label class="new-eveniment-form-editor-label">Description</label>
+    <p-editor formControlName="description" class="new-eveniment-form-editor" [style]="{ height: '200px' }">
+      <ng-template pTemplate="header">
+          <span class="ql-formats">
+              <button type="button" class="ql-bold" aria-label="Bold"></button>
+              <button type="button" class="ql-italic" aria-label="Italic"></button>
+              <button type="button" class="ql-underline" aria-label="Underline"></button>
+          </span>
+      </ng-template>
+  </p-editor>
+  <div class="new-eveniment-input-switch-container">
+    <p>Can people attend to this eveniment?</p>
+    <p-inputSwitch formControlName="canPeopleAttend"/>
+  </div>
+  <label class="new-eveniment-form-calendar-label">Date</label>
+  <p-calendar 
+  formControlName="startDate"
+    class="new-eveniment-form-calendar"
+    inputId="calendar-24h" 
+    [showTime]="true" 
+    [minDate]="minDate" 
+    [hourFormat]="'24'" />
+  </form>
+  <div class="new-eveniment-dialog-buttons">
+      <button
+        pButton
+        class="new-eveniment-dialog-button"
+        label="Cancel"
+        severity="secondary"
+        (click)="isCreateEvenimentDialogVisible = false; newEvenimentForm.reset()">
+      </button>
+      <button
+        pButton
+        class="new-eveniment-dialog-button"
+        label="Save"
+        severity="info"
+        (click)="createEveniment()">
+      </button>
+  </div>
+</p-dialog>
+
+<p-dialog 
+  header=""
+  [(visible)]="isEditEvenimentDialogVisible"
+  modal="true"
+  [style]="{ width: '50vw', height: '90vh' }">
+  <div class="new-eveniment-header">
+    <h1>Edit eveniment</h1>
+  </div>
+  <form class="new-eveniment-form" [formGroup]="editEvenimentForm">
+    <p-floatLabel class="new-eveniment-form-label">
+      <input 
+        formControlName="title"
+        id="title"
+        type="text"
+        [ngClass]="{'ng-dirty': hasEditEvenimentTitleError, 'ng-invalid': hasEditEvenimentTitleError}"
+        pInputText/>
+      <label for="title">Title</label>
+    </p-floatLabel>
+    <label class="new-eveniment-form-editor-label">Description</label>
+    <p-editor
+    #editor
+      formControlName="description"
+      class="new-eveniment-form-editor"
+      [style]="{ height: '200px' }">
+      <ng-template pTemplate="header">
+          <span class="ql-formats">
+              <button type="button" class="ql-bold" aria-label="Bold"></button>
+              <button type="button" class="ql-italic" aria-label="Italic"></button>
+              <button type="button" class="ql-underline" aria-label="Underline"></button>
+          </span>
+        </ng-template>
+  </p-editor>
+  <div class="new-eveniment-input-switch-container">
+    <p>Can people attend to this eveniment?</p>
+    <p-inputSwitch formControlName="canPeopleAttend"/>
+  </div>
+  <label class="new-eveniment-form-calendar-label">Date</label>
+  <p-calendar 
+  formControlName="startDate"
+    class="new-eveniment-form-calendar"
+    inputId="calendar-24h" 
+    [showTime]="true" 
+    [minDate]="minDate" 
+    [hourFormat]="'24'" />
+  </form>
+  <div class="new-eveniment-dialog-buttons">
+      <button
+        pButton
+        class="new-eveniment-dialog-button"
+        label="Cancel"
+        severity="secondary"
+        (click)="isEditEvenimentDialogVisible = false; editEvenimentForm.reset(); editEvenimentDto = undefined">
+      </button>
+      <button
+        pButton
+        class="new-eveniment-dialog-button"
+        label="Save"
+        severity="info"
+        (click)="updateEditedEveniment()">
+      </button>
+  </div>
+</p-dialog>
 <div class="profile-page-main-container">
   <div
     class="profile-page-general-details-container profile-page-inside-containers"
@@ -275,6 +426,72 @@
             </tr>
           </ng-template>
         </p-table>
+      </mat-tab>
+      <mat-tab class="x">
+        <ng-template mat-tab-label>
+          <mat-icon>whatshot</mat-icon>
+          My eveniments
+        </ng-template>
+        <div class="administrator-eveniments-tab-header">
+          <button
+            pButton
+            pRipple
+            type="button"
+            icon="pi pi-plus"
+            severity="success"
+            (click)="isCreateEvenimentDialogVisible = true"
+          >
+          </button>
+        </div>
+        <div class="eveniments-list-container">
+          <div class="eveniments-list">
+              <p-panel *ngFor="let eveniment of eveniments" class="eveniment" [toggleable]="true">
+                  <ng-template pTemplate="header">
+                      <div class="panel-header">
+                          <span class="panel-header-title">
+                              {{ eveniment.title }}
+                          </span>
+                          <span class="panel-header-adminName">
+                              {{ eveniment.dormAdministratorName }}
+                          </span>
+                      </div>
+                  </ng-template>
+                  <ng-template pTemplate="icons" class="panel-icons">
+                    <button
+                      icon="pi pi-pencil"
+                      (click)="openEditEvenimentDialog(eveniment)"
+                      pButton
+                      pRipple
+                      type="text"
+                      class="p-button-rounded p-button-text p-button-info mr-2"
+                    >
+                    </button>
+                  </ng-template>
+                  <ng-template pTemplate="footer">
+                      <div class="panel-footer">
+                          <button
+                              pButton
+                              type="button"
+                              label="Delete"
+                              severity="danger"
+                              class="attend-button"
+                              (click)="deleteEveniment(eveniment)"
+                          >
+                          </button>
+  
+                          <span class="panel-footer-attendees" *ngIf="eveniment.canPeopleAttend" >
+                              {{ eveniment.numberOfAttendees }} attending
+                          </span>
+  
+                          <span class="panel-footer-date">
+                              Starting at {{ formatDate(eveniment.startDate) }}
+                          </span>
+                      </div>
+                  </ng-template>
+                  <div class="panel-body" [innerHTML]="eveniment.description"></div>
+              </p-panel>
+          </div>
+      </div>
       </mat-tab>
     </mat-tab-group>
   </div>

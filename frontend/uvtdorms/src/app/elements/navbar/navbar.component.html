@@ -14,13 +14,22 @@
     </button>
 
     <button
-    routerLink="/tickets"
-    routerLinkActive="active"
-    class="navbar-button"
-    *ngIf="isStudent()"
-  >
-Tickets  </button>
-  <button
+      routerLink="/tickets"
+      routerLinkActive="active"
+      class="navbar-button"
+      *ngIf="isStudent()"
+    >
+      Tickets
+    </button>
+    <button
+      routerLink="/eveniments"
+      routerLinkActive="active"
+      class="navbar-button"
+      *ngIf="isStudent() || isDormAdmistrator()"
+    >
+      Eveniments
+    </button>
+    <button
       routerLink="/rooms-administration"
       routerLinkActive="active"
       class="navbar-button"
@@ -42,22 +51,32 @@ Tickets  </button>
       class="navbar-button"
       *ngIf="isDormAdmistrator()"
     >
-Students    </button>
+      Students
+    </button>
     <button
-    routerLink="/tickets-administration"
-    routerLinkActive="active"
-    class="navbar-button"
-    *ngIf="isDormAdmistrator()"
-  >
-    Tickets
-  </button>
-  <button routerLink="/dorms-administration" routerLinkActive="active" class="navbar-button" *ngIf="isAppAdministrator()">
-    Dorms
-  </button>
-  <button routerLink="/dorm-administrators" routerLinkActive="active" class="navbar-button" *ngIf="isAppAdministrator()">
-    Dorm administrators
-  </button>
-
+      routerLink="/tickets-administration"
+      routerLinkActive="active"
+      class="navbar-button"
+      *ngIf="isDormAdmistrator()"
+    >
+      Tickets
+    </button>
+    <button
+      routerLink="/dorms-administration"
+      routerLinkActive="active"
+      class="navbar-button"
+      *ngIf="isAppAdministrator()"
+    >
+      Dorms
+    </button>
+    <button
+      routerLink="/dorm-administrators"
+      routerLinkActive="active"
+      class="navbar-button"
+      *ngIf="isAppAdministrator()"
+    >
+      Dorm administrators
+    </button>
   </div>
   <div class="right-wing">
     <button mat-icon-button [matMenuTriggerFor]="menu" *ngIf="role() != null">

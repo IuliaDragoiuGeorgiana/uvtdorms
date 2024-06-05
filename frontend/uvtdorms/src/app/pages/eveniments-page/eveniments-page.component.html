@@ -1,0 +1,51 @@
+<div class="eveniments-page-main-container">
+    <div class="eveniments-list-container">
+        <div class="eveniments-list">
+            <p-panel *ngFor="let eveniment of eveniments" class="eveniment" [toggleable]="true">
+                <ng-template pTemplate="header">
+                    <div class="panel-header">
+                        <span class="panel-header-title">
+                            {{ eveniment.title }}
+                        </span>
+                        <span class="panel-header-adminName">
+                            {{ eveniment.dormAdministratorName }}
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="footer">
+                    <div class="panel-footer">
+                        <button
+                            *ngIf="eveniment.canPeopleAttend && !eveniment.isUserAttending"
+                            pButton
+                            (click)="updateAttend(eveniment)"
+                            type="button"
+                            label="Attend"
+                            severity="info"
+                            class="attend-button"
+                        >
+                        </button>
+                        <button
+                            *ngIf="eveniment.canPeopleAttend && eveniment.isUserAttending"
+                            pButton
+                            (click)="updateAttend(eveniment)"
+                            type="button"
+                            label="Cancel attend"
+                            severity="warning"
+                            class="attend-button"
+                        >
+                        </button>
+
+                        <span class="panel-footer-attendees" *ngIf="eveniment.canPeopleAttend">
+                            {{ eveniment.numberOfAttendees }} attending
+                        </span>
+
+                        <span class="panel-footer-date">
+                            Starting at {{ formatDate(eveniment.startDate) }}
+                        </span>
+                    </div>
+                </ng-template>
+                <div class="panel-body" [innerHTML]="eveniment.description"></div>
+            </p-panel>
+        </div>
+    </div>
+</div>

@@ -45,6 +45,9 @@ public class User {
     @OneToOne(mappedBy = "administrator", cascade = CascadeType.ALL)
     private DormAdministratorDetails dormAdministratorDetails;
 
+    @ManyToMany
+    private List<Eveniment> events;
+
     private Boolean isActive;
 
     @Lob

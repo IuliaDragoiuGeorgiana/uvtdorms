@@ -36,6 +36,7 @@ public class InitialDataLoader implements CommandLineRunner {
         private final PasswordEncoder passwordEncoder;
         private final IRegisterRequestRepository registerRequestRepository;
         private final ResourceLoader resourceLoader;
+        private final IEvenimentRepository evenimentRepository;
 
         private Dorm createDorm(String dormName, String address) {
                 Dorm dorm = Dorm.builder()
@@ -74,7 +75,8 @@ public class InitialDataLoader implements CommandLineRunner {
                 return room;
         }
 
-        private User createDormAdministrator(String firstName, String lastName, String email, String phoneNumber,
+        private DormAdministratorDetails createDormAdministrator(String firstName, String lastName, String email,
+                        String phoneNumber,
                         String password, Dorm dorm, String profilePictureFileName) {
                 byte[] profilePicture = new byte[0];
                 try {
@@ -102,7 +104,10 @@ public class InitialDataLoader implements CommandLineRunner {
 
                 dormAdministratorDetailsRepository.save(dormAdministratorDetails);
 
-                return admin;
+                if (dorm != null)
+                        dorm.setDormAdministratorDetails(dormAdministratorDetails);
+
+                return dormAdministratorDetails;
         }
 
         private void createRegisterRequest(String firstName, String lastName, String email, String phoneNumber,
@@ -214,6 +219,23 @@ public class InitialDataLoader implements CommandLineRunner {
                 return laundryAppointment;
         }
 
+        public Eveniment createEveniment(String title, String description, Dorm dorm, DormAdministratorDetails creator,
+                        LocalDateTime eventDate) {
+                Eveniment eveniment = Eveniment.builder().title(title).description(description).dorm(dorm)
+                                .createdBy(creator).startDate(eventDate).canPeopleAttend(true).build();
+
+                evenimentRepository.save(eveniment);
+
+                return eveniment;
+        }
+
+        public void attendUserToEveniment(Eveniment eveniment, User user) {
+                if (eveniment.getAttendees() == null)
+                        eveniment.setAttendees(new ArrayList<>());
+                eveniment.getAttendees().add(user);
+                evenimentRepository.save(eveniment);
+        }
+
         @Override
         @Transactional
         public void run(String... args) throws Exception {
@@ -233,7 +255,8 @@ public class InitialDataLoader implements CommandLineRunner {
                 dorm13Machine1.setDryer(dorm13Dryer1);
                 dorm13Machine2.setDryer(dorm13Dryer2);
 
-                createDormAdministrator("Tom", "Hanks", "tom.hanks@e-uvt.ro", "0712345678", "hello", dorm13,
+                DormAdministratorDetails dorm13Admin = createDormAdministrator("Tom", "Hanks", "tom.hanks@e-uvt.ro",
+                                "0712345678", "hello", dorm13,
                                 "user-profile.jpg");
 
                 Room room1 = createRoom("1", dorm13);
@@ -276,6 +299,18 @@ public class InitialDataLoader implements CommandLineRunner {
                 createDormAdministrator("Hayao", "Miyazaki", "hayao.miyazaki@e-uvt.ro", "0782132131", "hello",
                                 null,
                                 "user-profile.jpg");
+
+                createEveniment("Movie Marathon: Sci-Fi Extravaganza!",
+                                "<p>Calling all sci-fi enthusiasts! Get ready for a night of epic proportions with our Movie Marathon: Sci-Fi Extravaganza! We'll be screening a selection of classic and new sci-fi films, with popcorn and snacks provided. So grab your friends, put on your spacesuits (optional!), and join us for an unforgettable journey through the cosmos!</p><p>Schedule:<br>- 7:00 PM: Arrival and snacks<br>- 7:30 PM: Movie 1 (title to be announced)<br>- 9:30 PM: Intermission with games and trivia<br>- 10:00 PM: Movie 2 (title to be announced)</p>",
+                                dorm13, dorm13.getDormAdministratorDetails(), LocalDateTime.now().plusDays(2));
+
+                createEveniment("Volunteer Bake Sale: Supporting the Animal Shelter",
+                                "<p>Calling all bakers and dessert enthusiasts! We're hosting a Volunteer Bake Sale to raise funds for the local animal shelter. Put your baking skills to the test and donate your delicious creations (or simply come by to indulge!). All proceeds will go towards providing care and comfort for homeless animals.</p><p>How to Participate:<br>- Sign up to donate baked goods by contacting [email protected]<br>- Donations can be dropped off at the event location on the day of the sale.</p>",
+                                dorm13, dorm13.getDormAdministratorDetails(), LocalDateTime.now().plusMonths(2));
+
+                createEveniment("Plant Swap Party: Grow Your Collection!",
+                                "<p>Calling all plant lovers! Join us for a fun and sustainable Plant Swap Party. Bring a healthy, unwanted plant from your collection and swap it for something new! It's a great way to expand your plant family, declutter your space, and meet other plant enthusiasts. We'll also have resources and tips on plant care available.</p><p>What to Bring:<br>- A healthy, unwanted plant (pots included)<br>- Your enthusiasm for all things green!</p>",
+                                dorm13, dorm13.getDormAdministratorDetails(), LocalDateTime.now().plusWeeks(3));
         }
 
         private byte[] loadImage(String resourceName) throws IOException {

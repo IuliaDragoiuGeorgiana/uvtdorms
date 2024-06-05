@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -29,4 +30,7 @@ public class DormAdministratorDetails {
     @OneToOne
     @JoinColumn(name = "dorm_id")
     private Dorm dorm;
+
+    @OneToMany
+    private List<Eveniment> createdEvents;
 }

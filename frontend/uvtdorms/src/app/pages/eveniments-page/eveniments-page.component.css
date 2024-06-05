@@ -1,0 +1,90 @@
+.eveniments-page-main-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 94vh;
+}
+
+.eveniments-list-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 60%;
+  height: 100%;
+  overflow-y: auto;
+  position: relative;
+}
+
+.eveniments-list-container::-webkit-scrollbar {
+  display: none;
+}
+
+.eveniments-list-container {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.eveniments-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  margin-top: 5vh;
+  margin-bottom: 10vh;
+}
+
+.eveniment {
+  width: 100% !important;
+  margin-bottom: 3vh;
+  margin-top: 3vh;
+}
+
+.panel-header {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: center;
+}
+
+.panel-header-title {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: black;
+  margin-bottom: 1vh;
+  margin-top: 1vh;
+}
+
+.panel-header-adminName {
+  color: rgb(177, 177, 177);
+}
+
+.panel-body {
+  font-size: 1.15em;
+}
+
+.panel-footer {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.panel-footer-attendees {
+  color: rgb(200, 200, 200);
+}
+
+.panel-footer-date {
+  color: rgb(177, 177, 177);
+  font-size: 0.9em;
+}
+
+.attend-button {
+  width: 20%;
+}

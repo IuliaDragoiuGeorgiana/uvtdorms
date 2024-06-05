@@ -14,6 +14,7 @@ import { TicketsAdministrationPageComponent } from './pages/tickets-administrati
 import { AllDormsPageComponent } from './pages/all-dorms-page/all-dorms-page.component';
 import { DormAdministratorsPageComponent } from './pages/dorm-administrators-page/dorm-administrators-page.component';
 import { RoomsAdministrationPageComponent } from './pages/rooms-administration-page/rooms-administration-page.component';
+import { EvenimentsPageComponent } from './pages/eveniments-page/eveniments-page.component';
 
 const routes: Routes = [
   { path: 'laundry-appointments', component: LaundryAppointmentsPageComponent },
@@ -64,6 +65,11 @@ const routes: Routes = [
   {
     path: 'rooms-administration',
     component: RoomsAdministrationPageComponent,
+  },
+
+  {
+    path: 'eveniments',
+    component: EvenimentsPageComponent,
   },
 
   { path: '', redirectTo: '/login', pathMatch: 'full' },

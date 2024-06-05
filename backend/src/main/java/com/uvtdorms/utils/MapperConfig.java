@@ -11,6 +11,7 @@ import com.uvtdorms.repository.dto.response.DormAdministratorDto;
 import com.uvtdorms.repository.dto.response.DormDto;
 import com.uvtdorms.repository.dto.response.DryerDto;
 import com.uvtdorms.repository.dto.response.EmailDto;
+import com.uvtdorms.repository.dto.response.EvenimentDetailsDto;
 import com.uvtdorms.repository.dto.response.LaundryAppointmentsDto;
 import com.uvtdorms.repository.dto.response.LightUserDto;
 import com.uvtdorms.repository.dto.response.ListedRegisterRequestDto;
@@ -23,6 +24,7 @@ import com.uvtdorms.repository.dto.response.WashingMachineDto;
 import com.uvtdorms.repository.entity.Dorm;
 import com.uvtdorms.repository.entity.DormAdministratorDetails;
 import com.uvtdorms.repository.entity.Dryer;
+import com.uvtdorms.repository.entity.Eveniment;
 import com.uvtdorms.repository.entity.LaundryAppointment;
 import com.uvtdorms.repository.entity.RegisterRequest;
 import com.uvtdorms.repository.entity.Room;
@@ -263,6 +265,20 @@ public class MapperConfig {
             protected void configure() {
                 map(source.getUser().getFullName(), destination.getName());
                 map(source.getUser().getEmail(), destination.getEmail());
+            }
+        });
+
+        modelMapper.addMappings(new PropertyMap<Eveniment, EvenimentDetailsDto>() {
+            @Override
+            protected void configure() {
+                map(source.getIdString(), destination.getId());
+                map(source.getTitle(), destination.getTitle());
+                map(source.getDescription(), destination.getDescription());
+                map(source.getCreatedBy().getAdministrator().getEmail(), destination.getDormAdministratorEmail());
+                map(source.getCreatedBy().getAdministrator().getFullName(), destination.getDormAdministratorName());
+                map(source.getCanPeopleAttend(), destination.getCanPeopleAttend());
+                map(source.getNumberOfAttendees(), destination.getNumberOfAttendees());
+                map(source.getStartDate(), destination.getStartDate());
             }
         });
 

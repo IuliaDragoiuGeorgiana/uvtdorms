@@ -84,6 +84,10 @@ import { TicketsAdministrationPageComponent } from './pages/tickets-administrati
 import { AllDormsPageComponent } from './pages/all-dorms-page/all-dorms-page.component';
 import { DormAdministratorsPageComponent } from './pages/dorm-administrators-page/dorm-administrators-page.component';
 import { RoomsAdministrationPageComponent } from './pages/rooms-administration-page/rooms-administration-page.component';
+import { EvenimentsPageComponent } from './pages/eveniments-page/eveniments-page.component';
+import { PanelModule } from 'primeng/panel';
+import { CalendarModule } from 'primeng/calendar';
+import { InputSwitchModule } from 'primeng/inputswitch';
 
 @NgModule({
   declarations: [
@@ -114,6 +118,7 @@ import { RoomsAdministrationPageComponent } from './pages/rooms-administration-p
     AllDormsPageComponent,
     DormAdministratorsPageComponent,
     RoomsAdministrationPageComponent,
+    EvenimentsPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -166,6 +171,9 @@ import { RoomsAdministrationPageComponent } from './pages/rooms-administration-p
     PasswordModule,
     CheckboxModule,
     EditorModule,
+    PanelModule,
+    CalendarModule,
+    InputSwitchModule,
   ],
   providers: [
     provideHttpClient(withFetch()),

@@ -11,6 +11,7 @@ import { Role } from '../../enums/role';
 export class NavbarComponent {
   loginPagePath: string = '/login';
   laundryAppointmentsPath = '/laundry-appointments';
+  public isSideBarVisible = false;
 
   constructor(private router: Router, private userSevice: UserService) {}
 

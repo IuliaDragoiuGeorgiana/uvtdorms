@@ -90,7 +90,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { ProfilePageDisplayInactiveStudentComponent } from './pages/profile-page/profile-page-display-inactive-student/profile-page-display-inactive-student.component';
-
+import { SidebarModule } from 'primeng/sidebar';
 
 @NgModule({
   declarations: [
@@ -179,6 +179,7 @@ import { ProfilePageDisplayInactiveStudentComponent } from './pages/profile-page
     CalendarModule,
     InputSwitchModule,
     ConfirmPopupModule,
+    SidebarModule,
   ],
   providers: [
     provideHttpClient(withFetch()),

@@ -220,7 +220,7 @@
       </button>
     </div>
   </div>
-  <div class="profile-page-tabs-conatiner profile-page-inside-containers">
+  <div class="profile-page-tabs-conatiner profile-page-inside-containers profile-page-inside-containers-responsive">
     <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center">
       <mat-tab
         class="profile-page-tab"
@@ -350,7 +350,6 @@
               <td>
                 <div class="userLaundryAppointmentsCell">
                   <p-toast />
-                  <p-confirmDialog />
                   <p-button
                     (click)="confirmDeletion($event)"
                     icon="pi pi-times"
@@ -435,7 +434,7 @@
           </ng-template>
         </p-table>
       </mat-tab>
-      <mat-tab class="x">
+      <mat-tab class="x" *ngIf="isDormAdmin()">
         <ng-template mat-tab-label>
           <mat-icon>whatshot</mat-icon>
           My eveniments

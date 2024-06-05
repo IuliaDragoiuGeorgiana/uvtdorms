@@ -1,12 +1,14 @@
 @media (max-width: 600px) {
   .profile-page-main-container {
     flex-direction: column !important;
-    height: 190vh !important;
+    height: auto !important;
+    padding-bottom: 8vh !important;
+    padding-top: 8vh	!important;
+
   }
   .profile-page-inside-containers {
     width: 85% !important;
-    margin-top:10px ;
-    background-color: yellow !important;
+    margin-top:10px 
   }
 
   .profile-page-general-details-container {
@@ -28,6 +30,12 @@
     font-weight: 400 !important;
     height: 45% !important;
     width: 70% !important;
+  }
+
+
+  .profile-page-inside-containers-responsive{
+    height: auto !important;
+    margin-top: 5vh	!important;
   }
 }
 

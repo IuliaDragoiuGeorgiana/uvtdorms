@@ -1,9 +1,36 @@
+
+<p-sidebar 
+  [(visible)]="isSideBarVisible"
+  position="left"
+  class="sidebar">
+  <ng-template pTemplate="content">
+    <button
+      pButton
+      routerLink="/laundry-appointments"
+      routerLinkActive="active"
+      class="navbar-button-mobile"
+      *ngIf="isStudent()"
+    >
+      Appointments
+    </button>
+
+  </ng-template>
+</p-sidebar>
 <mat-toolbar class="navbar-container">
   <div class="left-wing">
     <img src="assets/logo.png" alt="uvt-logo" class="uvt-logo" />
     <h1 class="navbar-logo-text">Dorms</h1>
   </div>
   <div class="center">
+    <button
+      pButton
+      pRipple
+      icon="pi pi-bars"
+      class="p-button-rounded p-button-text navbar-button-mobile"
+      (click)="isSideBarVisible = !isSideBarVisible"
+    >
+
+    </button>
     <button
       routerLink="/laundry-appointments"
       routerLinkActive="active"

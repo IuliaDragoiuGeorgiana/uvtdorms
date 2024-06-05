@@ -74,3 +74,37 @@
 .dropdown-button{
   width: 10vw;
 }
+
+.sidebar
+{
+  display: none;
+}
+
+.navbar-button-mobile
+{
+  display: none;
+
+}
+
+@media (max-width: 600px) {
+    .navbar-button-mobile
+    {
+      display: block;
+    }
+
+    .navbar-button
+    {
+      display: none;
+    }
+
+    .sidebar
+    {
+      display: block;
+    }
+
+
+    :host ::ng-deep .p-sidebar-top
+    {
+      width: 80vw;
+    }
+}

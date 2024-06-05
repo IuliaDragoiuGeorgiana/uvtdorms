@@ -6,6 +6,7 @@ import com.uvtdorms.repository.dto.response.AvailableWashingMachineDto;
 import com.uvtdorms.repository.dto.response.DetailedDormAdministratorDto;
 import com.uvtdorms.repository.dto.response.DetailedRoomDto;
 import com.uvtdorms.repository.dto.response.DisplayDormAdministratorDetailsDto;
+import com.uvtdorms.repository.dto.response.DisplayInactiveStudentDetails;
 import com.uvtdorms.repository.dto.response.DisplayStudentDetailsDto;
 import com.uvtdorms.repository.dto.response.DormAdministratorDto;
 import com.uvtdorms.repository.dto.response.DormDto;
@@ -189,6 +190,7 @@ public class MapperConfig {
         modelMapper.addMappings(new PropertyMap<Ticket, TicketDto>() {
             @Override
             protected void configure() {
+                map(source.getIdString(), destination.getId());
                 map(source.getCreationDate(), destination.getCreationDate());
                 map(source.getStatusTicket(), destination.getStatusTicket());
                 map(source.getTipInterventie(), destination.getTipInterventie());
@@ -279,6 +281,15 @@ public class MapperConfig {
                 map(source.getCanPeopleAttend(), destination.getCanPeopleAttend());
                 map(source.getNumberOfAttendees(), destination.getNumberOfAttendees());
                 map(source.getStartDate(), destination.getStartDate());
+            }
+        });
+        
+        modelMapper.addMappings(new PropertyMap<User, DisplayInactiveStudentDetails>() {
+
+            @Override
+            protected void configure() {
+                map(source.getEmail(), destination.getEmail());
+                map(source.getPhoneNumber(), destination.getPhoneNumber());
             }
         });
 

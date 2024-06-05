@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.uvtdorms.repository.dto.TokenDto;
 import com.uvtdorms.repository.dto.request.UpdatePhoneNumberDto;
+import com.uvtdorms.repository.dto.response.DisplayInactiveStudentDetails;
 import com.uvtdorms.repository.dto.response.UserDetailsDto;
 import com.uvtdorms.services.UserService;
 
@@ -29,6 +30,13 @@ public class UserController {
         TokenDto userToken = (TokenDto) authentication.getPrincipal();
         UserDetailsDto userDetailsDto = userService.getUserDetails(userToken.getEmail());
         return ResponseEntity.ok(userDetailsDto);
+    }
+
+    @GetMapping("/get-inactive-student-details")
+    public ResponseEntity<DisplayInactiveStudentDetails> getInactiveStudentDetails(Authentication authentication) {
+        TokenDto userToken = (TokenDto) authentication.getPrincipal();
+        DisplayInactiveStudentDetails displayInactiveStudentDetails = userService.getInactiveStudentDetails(userToken.getEmail());
+        return ResponseEntity.ok(displayInactiveStudentDetails);
     }
 
     @PostMapping("/update-phone-number")

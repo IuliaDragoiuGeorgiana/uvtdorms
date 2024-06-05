@@ -233,8 +233,8 @@ export class ProfilePageComponent {
   getTicketStatusSeverity(status: string) {
     switch (status) {
       case 'OPEN':
-        return 'in progress';
-      case 'CLOSED':
+        return 'danger';
+      case 'RESOLVED':
         return 'done';
       default:
         return 'info';
@@ -254,6 +254,23 @@ export class ProfilePageComponent {
       (Number(date[4]) <= 9 ? '0' + date[4] : date[4])
     );
   }
+
+
+  public formatTicketDate(date: any): string {
+    return (
+      date[0] +
+      '/' +
+      date[1] +
+      '/' +
+      date[2] +
+      ' ' +
+      (Number(date[3]) <= 9 ? '0' + date[3] : date[3]) +
+      ':' +
+      (Number(date[4]) <= 9 ? '0' + date[4] : date[4])
+    );
+  }
+
+
 
   showRegisterRequestDialog() {
     this.dialog.open(NewRegisterRequestDialogComponent);

@@ -88,6 +88,9 @@ import { EvenimentsPageComponent } from './pages/eveniments-page/eveniments-page
 import { PanelModule } from 'primeng/panel';
 import { CalendarModule } from 'primeng/calendar';
 import { InputSwitchModule } from 'primeng/inputswitch';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
+import { ProfilePageDisplayInactiveStudentComponent } from './pages/profile-page/profile-page-display-inactive-student/profile-page-display-inactive-student.component';
+
 
 @NgModule({
   declarations: [
@@ -119,6 +122,7 @@ import { InputSwitchModule } from 'primeng/inputswitch';
     DormAdministratorsPageComponent,
     RoomsAdministrationPageComponent,
     EvenimentsPageComponent,
+    ProfilePageDisplayInactiveStudentComponent,
   ],
   imports: [
     BrowserModule,
@@ -174,6 +178,7 @@ import { InputSwitchModule } from 'primeng/inputswitch';
     PanelModule,
     CalendarModule,
     InputSwitchModule,
+    ConfirmPopupModule,
   ],
   providers: [
     provideHttpClient(withFetch()),

@@ -2,6 +2,7 @@ package com.uvtdorms.services;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -11,6 +12,7 @@ import com.uvtdorms.exception.AppException;
 import com.uvtdorms.repository.IStudentDetailsRepository;
 import com.uvtdorms.repository.ITicketRepository;
 import com.uvtdorms.repository.IUserRepository;
+import com.uvtdorms.repository.dto.request.ChangeStatusTicketDto;
 import com.uvtdorms.repository.dto.request.CreateTicketDto;
 import com.uvtdorms.repository.dto.response.StudentTicketsDto;
 import com.uvtdorms.repository.dto.response.TicketDto;
@@ -87,5 +89,27 @@ public class TicketService {
     return tickets.stream().map(ticket -> modelMapper.map(ticket, StudentTicketsDto.class))
         .collect(Collectors.toList());
 
+  }
+
+  public void changeTicketStatus(String email, ChangeStatusTicketDto ticketDto) {
+    User user = userRepository.getByEmail(email)
+        .orElseThrow(() -> new AppException("User not found", HttpStatus.NOT_FOUND));
+
+    DormAdministratorDetails dormAdministrator = user.getDormAdministratorDetails();
+
+    if (dormAdministrator == null) {
+      throw new AppException("User is not a dorm administrator", HttpStatus.FORBIDDEN);
+    }
+
+    Ticket ticket = ticketRepository.findById(UUID.fromString(ticketDto.getTicketId()))
+        .orElseThrow(() -> new AppException("Ticket not found", HttpStatus.NOT_FOUND));
+
+    if (ticket.getStatusTicket() == StatusTicket.OPEN) {
+      ticket.setStatusTicket(StatusTicket.RESOLVED);
+    } else if (ticket.getStatusTicket() == StatusTicket.RESOLVED) {
+      ticket.setStatusTicket(StatusTicket.OPEN);
+    }
+
+    ticketRepository.save(ticket);
   }
 }

@@ -1,6 +1,7 @@
 package com.uvtdorms.controller;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.uvtdorms.repository.dto.TokenDto;
+import com.uvtdorms.repository.dto.request.ChangeStatusTicketDto;
 import com.uvtdorms.repository.dto.request.CreateTicketDto;
 import com.uvtdorms.repository.dto.response.StudentTicketsDto;
 import com.uvtdorms.repository.dto.response.TicketDto;
@@ -43,4 +45,13 @@ public class TicketController {
         TokenDto tokenDto = (TokenDto) authentication.getPrincipal();
         return ResponseEntity.ok(ticketService.getStudentTickets(tokenDto.getEmail()));
     }
+
+   @PostMapping("/update-ticket-status")
+    public ResponseEntity<ChangeStatusTicketDto> changeTicketStatus( Authentication authentication, @RequestBody ChangeStatusTicketDto ticketDto) {
+   
+    String email = ((TokenDto) authentication.getPrincipal()).getEmail();
+    ticketService.changeTicketStatus(email, ticketDto);
+    return ResponseEntity.ok(ticketDto);
+}
+
 }

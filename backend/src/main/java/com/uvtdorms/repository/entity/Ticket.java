@@ -43,4 +43,9 @@ public class Ticket{
     @ManyToOne
     @JoinColumn(name = "student_id")
     private StudentDetails student;
+
+    public String getIdString()
+    {
+        return appointmentId.toString();
+    }
 }

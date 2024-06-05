@@ -5,6 +5,8 @@ import com.uvtdorms.repository.entity.*;
 import com.uvtdorms.repository.entity.enums.RegisterRequestStatus;
 import com.uvtdorms.repository.entity.enums.Role;
 import com.uvtdorms.repository.entity.enums.StatusMachine;
+import com.uvtdorms.repository.entity.enums.StatusTicket;
+
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -37,6 +39,7 @@ public class InitialDataLoader implements CommandLineRunner {
         private final IRegisterRequestRepository registerRequestRepository;
         private final ResourceLoader resourceLoader;
         private final IEvenimentRepository evenimentRepository;
+        private final ITicketRepository ticketRepository;
 
         private Dorm createDorm(String dormName, String address) {
                 Dorm dorm = Dorm.builder()
@@ -235,6 +238,22 @@ public class InitialDataLoader implements CommandLineRunner {
                 eveniment.getAttendees().add(user);
                 evenimentRepository.save(eveniment);
         }
+        
+        public Ticket createTicket(String title, String description, Dorm dorm, StudentDetails student) {
+                Ticket ticket = Ticket.builder()
+                                .title(title)
+                                .description(description)
+                                .statusTicket(StatusTicket.OPEN)
+                                .creationDate(LocalDateTime.now())
+                                .alreadyAnuncement(false)
+                                .dorm(dorm)
+                                .student(student)
+                                .build();
+                
+                ticketRepository.save(ticket);
+
+                return ticket;
+        }
 
         @Override
         @Transactional
@@ -311,6 +330,7 @@ public class InitialDataLoader implements CommandLineRunner {
                 createEveniment("Plant Swap Party: Grow Your Collection!",
                                 "<p>Calling all plant lovers! Join us for a fun and sustainable Plant Swap Party. Bring a healthy, unwanted plant from your collection and swap it for something new! It's a great way to expand your plant family, declutter your space, and meet other plant enthusiasts. We'll also have resources and tips on plant care available.</p><p>What to Bring:<br>- A healthy, unwanted plant (pots included)<br>- Your enthusiasm for all things green!</p>",
                                 dorm13, dorm13.getDormAdministratorDetails(), LocalDateTime.now().plusWeeks(3));
+                createTicket("Test ticket", "Detailed description.", dorm13, iuliaDragoiu);
         }
 
         private byte[] loadImage(String resourceName) throws IOException {

@@ -1,7 +1,39 @@
+@media (max-width: 600px) {
+  .profile-page-main-container {
+    flex-direction: column !important;
+    height: 190vh !important;
+  }
+  .profile-page-inside-containers {
+    width: 85% !important;
+    margin-top:10px ;
+    background-color: yellow !important;
+  }
+
+  .profile-page-general-details-container {
+    width: 85% !important;
+    height: 90vh !important;
+  }
+
+  .profile-page-settings-button-container{
+    flex-direction: column !important;
+    height: 10vh !important;
+    
+  }
+
+  .profile-page-settings-button
+  {
+    /* margin-bottom: 1vh; */
+    margin-top: 2vh;
+    font-size: 0.7rem !important;
+    font-weight: 400 !important;
+    height: 45% !important;
+    width: 70% !important;
+  }
+}
+
 .profile-page-main-container {
   width: 100%;
   height: 94vh;
-
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -162,7 +194,8 @@
   justify-content: center;
 }
 
-.userTicketCell {
+.userTicketsCell
+{
   display: flex;
   align-items: center;
   justify-content: center;

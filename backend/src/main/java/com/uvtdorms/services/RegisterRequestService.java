@@ -108,6 +108,9 @@ public class RegisterRequestService {
         
         StudentDetails student = userRepository.getByEmail(studentEmail)
                 .orElseThrow(() -> new AppException("User not found.", HttpStatus.NOT_FOUND)).getStudentDetails();
+        if(student.getStudentRegisterRequests().stream().anyMatch(request -> request.getStatus() == RegisterRequestStatus.RECEIVED)) {
+            throw new AppException("You already have a pending register request.", HttpStatus.BAD_REQUEST);
+        }
             
         Dorm dorm = dormRepository.getByDormName(newRegisterRequestDto.dormName());
         Room room = roomRepository.findByDormAndRoomNumber(dorm, newRegisterRequestDto.roomNumber())

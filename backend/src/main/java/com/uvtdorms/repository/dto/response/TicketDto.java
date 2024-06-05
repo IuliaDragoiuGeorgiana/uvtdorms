@@ -9,6 +9,7 @@ import lombok.Data;
 
 @Data
 public class TicketDto {
+    String id;
     LocalDateTime creationDate;
     StatusTicket statusTicket;
     TipInterventie tipInterventie;

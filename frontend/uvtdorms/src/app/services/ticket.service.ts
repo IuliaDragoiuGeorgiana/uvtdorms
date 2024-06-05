@@ -3,8 +3,9 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CreateTicketDto } from '../interfaces/create-ticket-dto';
 import { AuthService } from './auth.service';
-import { TicketDTO } from '../interfaces/ticket-dto';
+import { TicketDto } from '../interfaces/ticket-dto';
 import { StudentTicketsDto } from '../interfaces/student-tickets-dto';
+import { ChangeStatusTicketDto } from '../interfaces/change-status-ticket-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +15,7 @@ export class TicketService {
   private createTicketUrl = '/create';
   private getTicketsFromDormUrl = '/get-tickets-from-dorm';
   private getStudentTicketsUrl = '/get-student-tickets';
+  private changeStatusTicketUrl = '/update-ticket-status';
 
   constructor(private http: HttpClient, private auth: AuthService) {}
 
@@ -25,8 +27,8 @@ export class TicketService {
     );
   }
 
-  public getTicketsFromDorm(): Observable<TicketDTO[]> {
-    return this.http.get<TicketDTO[]>(
+  public getTicketsFromDorm(): Observable<TicketDto[]> {
+    return this.http.get<TicketDto[]>(
       this.ticketServiceUrl + this.getTicketsFromDormUrl,
       { headers: this.auth.getHeader() }
     );
@@ -35,6 +37,14 @@ export class TicketService {
   public getStudentTickets(): Observable<StudentTicketsDto[]> {
     return this.http.get<StudentTicketsDto[]>(
       this.ticketServiceUrl + this.getStudentTicketsUrl,
+      { headers: this.auth.getHeader() }
+    );
+  }
+
+  public changeStatusTicket(changeStatusTicket:ChangeStatusTicketDto): Observable<ChangeStatusTicketDto> {
+    return this.http.post<ChangeStatusTicketDto>(
+      this.ticketServiceUrl + this.changeStatusTicketUrl,
+       changeStatusTicket,
       { headers: this.auth.getHeader() }
     );
   }

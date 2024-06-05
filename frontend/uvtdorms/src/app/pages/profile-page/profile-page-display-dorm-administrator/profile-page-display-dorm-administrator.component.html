@@ -1,14 +1,21 @@
-<p-card header="Dorm Administrator" class="dorm-administrator-details-container">
-  <div class="detail-item">
-    <span class="label">Email: </span>
-    <span class="value">{{ displayDormAdministratorDetails?.email }}</span>
+<div class="dorm-administrator-details-container">
+  <div class="dorm-administrator-detail-header">
+    <div class="details-header">Dorm Administrator</div>
   </div>
-  <div class="detail-item">
-    <span class="label">Phone Number: </span>
-    <span class="value">{{ displayDormAdministratorDetails?.phoneNumber }}</span>
+  <div class="dorm-administrator-details-body">
+    <div class="detail-item">
+      <span class="label">Email: </span>
+      <span class="value">{{ displayDormAdministratorDetails?.email }}</span>
+    </div>
+    <div class="detail-item">
+      <span class="label">Phone Number: </span>
+      <span class="value">{{
+        displayDormAdministratorDetails?.phoneNumber
+      }}</span>
+    </div>
+    <div class="detail-item">
+      <span class="label">Dorm Name: </span>
+      <span class="value">{{ displayDormAdministratorDetails?.dormName }}</span>
+    </div>
   </div>
-  <div class="detail-item">
-    <span class="label">Dorm Name: </span>
-    <span class="value">{{ displayDormAdministratorDetails?.dormName }}</span>
-  </div>
-</p-card>   
+</div>

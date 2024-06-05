@@ -1,4 +1,6 @@
 <h2 mat-dialog-title>New Register Request</h2>
+<p-toast></p-toast>
+<app-loading-screen *ngIf="isLoadingScreenVisible"></app-loading-screen>
 <mat-dialog-content>
   <form [formGroup]="newRequestForm" class="dialog-new-request-form" (ngSubmit)="sendNewRegisterRequest()">
     <mat-form-field appearance="fill">

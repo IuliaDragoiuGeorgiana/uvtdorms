@@ -9,6 +9,7 @@ import com.uvtdorms.repository.dto.request.ChangePasswordDto;
 import com.uvtdorms.repository.dto.request.ChangeProfilePictureDto;
 import com.uvtdorms.repository.dto.request.CredentialsDto;
 import com.uvtdorms.repository.dto.request.UpdatePhoneNumberDto;
+import com.uvtdorms.repository.dto.response.DisplayInactiveStudentDetails;
 import com.uvtdorms.repository.dto.response.UserDetailsDto;
 
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import com.uvtdorms.repository.IUserRepository;
 import com.uvtdorms.repository.entity.User;
+import com.uvtdorms.repository.entity.enums.Role;
 import com.uvtdorms.services.interfaces.IUserService;
 
 @Service
@@ -86,5 +88,18 @@ public class UserService implements IUserService {
         user.setProfilePicture(decodedImage);
 
         userRepository.save(user);
+    }
+
+    public DisplayInactiveStudentDetails getInactiveStudentDetails(final String email) {
+        User user = userRepository.getByEmail(email)
+                .orElseThrow(() -> new AppException("User not found!", HttpStatus.NOT_FOUND));
+
+        if (user.getRole() != Role.INACTIV_STUDENT) {
+            throw new AppException("User is not an inactive student!", HttpStatus.BAD_REQUEST);
+        }
+
+        return modelMapper.map(user, DisplayInactiveStudentDetails.class);
+        
+            
     }
 }

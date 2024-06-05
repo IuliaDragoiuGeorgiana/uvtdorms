@@ -193,6 +193,12 @@
         *ngIf="isDormAdmin()"
       >
       </app-profile-page-display-dorm-administrator>
+
+      <app-profile-page-display-inactive-student
+        class="profile-page-other-details-item"
+        *ngIf="isInactivStudent()"
+      >
+      </app-profile-page-display-inactive-student>
     </div>
     <div
       class="profile-page-general-details-item profile-page-settings-button-container"
@@ -384,7 +390,6 @@
               <th>
                 <div class="userTicketsCell">Already Anuncement</div>
               </th>
-
               <th>
                 <div class="userTicketsCell">Staus</div>
               </th>
@@ -398,16 +403,19 @@
                 </div>
               </td>
               <td>
-                <div class="userTicketsCell" [innerHTML]="ticket.description"></div>
+                <div
+                  class="userTicketsCell"
+                  [innerHTML]="ticket.description"
+                ></div>
               </td>
               <td>
                 <div class="userTicketsCell">
-                  {{ ticket.creationDate }}
+                  {{ formatTicketDate(ticket.creationDate) }}
                 </div>
               </td>
               <td>
                 <div class="userTicketsCell">
-                  {{ ticket.interventionType }}
+                  {{ ticket.tipInterventie }}
                 </div>
               </td>
               <td>
@@ -415,14 +423,14 @@
                   {{ ticket.alreadyAnuncement }}
                 </div>
               </td>
-
-             
-              <div class="userLaundryAppointmentsCell">
-                <p-tag
-                  [value]="ticket.status"
-                  [severity]="getTicketStatusSeverity(ticket.status)"
-                ></p-tag>
-              </div>
+              <td>
+                <div class="userTicketsCell">
+                  <p-tag
+                    [value]="ticket.statusTicket"
+                    [severity]="getTicketStatusSeverity(ticket.statusTicket)"
+                  ></p-tag>
+                </div>
+              </td>
             </tr>
           </ng-template>
         </p-table>

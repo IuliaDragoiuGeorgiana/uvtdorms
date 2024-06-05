@@ -7,6 +7,7 @@ import { UserDetailsDto } from '../interfaces/user-details-dto';
 import { EditPhoneNumberDto } from '../interfaces/edit-phone-number-dto';
 import { ChangePasswordDto } from '../interfaces/change-password-dto';
 import { ChangeProfilePictureDto } from '../interfaces/change-profile-picture-dto';
+import { DisplayInactiveStudentDetails } from '../interfaces/display-inactive-student-details';
 
 @Injectable({
   providedIn: 'root',
@@ -19,6 +20,7 @@ export class UserService {
   private updatePhoneNumberUrl = '/update-phone-number';
   private updatePasswordUrl = '/update-password';
   private updateProfilePictureUrl = '/update-profile-picture';
+  private getInactiveStudentDetailsUrl = '/get-inactive-student-details';
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
@@ -38,6 +40,13 @@ export class UserService {
   getUserDetails(): Observable<UserDetailsDto> {
     return this.http.get<UserDetailsDto>(
       this.userServiceUrl + this.getUserDetailsUrl,
+      { headers: this.authService.getHeader() }
+    );
+  }
+
+  getInactiveStudentDetails(): Observable<DisplayInactiveStudentDetails> {
+    return this.http.get<DisplayInactiveStudentDetails>(
+      this.userServiceUrl + this.getInactiveStudentDetailsUrl,
       { headers: this.authService.getHeader() }
     );
   }

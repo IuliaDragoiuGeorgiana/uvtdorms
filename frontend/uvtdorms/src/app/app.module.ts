@@ -21,6 +21,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatGridListModule } from '@angular/material/grid-list';
 import {
+  HttpClient,
   HttpClientModule,
   provideHttpClient,
   withFetch,
@@ -91,6 +92,8 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { ProfilePageDisplayInactiveStudentComponent } from './pages/profile-page/profile-page-display-inactive-student/profile-page-display-inactive-student.component';
 import { SidebarModule } from 'primeng/sidebar';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 @NgModule({
   declarations: [
@@ -180,6 +183,16 @@ import { SidebarModule } from 'primeng/sidebar';
     InputSwitchModule,
     ConfirmPopupModule,
     SidebarModule,
+
+    // ngx-translate and the loader module
+    HttpClientModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient],
+      },
+    }),
   ],
   providers: [
     provideHttpClient(withFetch()),
@@ -189,3 +202,7 @@ import { SidebarModule } from 'primeng/sidebar';
   bootstrap: [AppComponent],
 })
 export class AppModule {}
+
+export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
+  return new TranslateHttpLoader(http);
+}

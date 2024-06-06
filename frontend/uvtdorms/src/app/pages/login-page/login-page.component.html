@@ -6,7 +6,7 @@
   <div class="login-page-login-container">
     <div class="left-container">
       <div class="left-container-header">
-        <h1 class="left-container-header-content">Login</h1>
+        <h1 class="left-container-header-content">{{ 'aunthentication.login.header' | translate }}</h1>
       </div>
 
       <div class="left-container-content">
@@ -17,11 +17,11 @@
         >
           <div class="form-inputs">
             <mat-form-field class="form-container-input" appearance="fill">
-              <mat-label>Email</mat-label>
+              <mat-label>{{ 'aunthentication.login.emailLabel' | translate }}</mat-label>
               <input
                 matInput
                 formControlName="email"
-                placeholder="Enter your email"
+                placeholder="{{ 'aunthentication.login.emailPlaceholder' | translate }}"
               />
               <mat-error
                 *ngIf="
@@ -30,28 +30,28 @@
                 "
               >
                 <span *ngIf="loginEmail?.errors?.['required']"
-                  >Email is required</span
+                  >{{ 'aunthentication.login.emailRequiredError' | translate }}</span
                 >
                 <span *ngIf="loginEmail?.errors?.['email']"
-                  >Please enter a valid email address</span
+                  >{{ 'aunthentication.login.emailInvalidError' | translate }}</span
                 >
               </mat-error>
             </mat-form-field>
 
             <mat-form-field class="form-container-input" appearance="fill">
-              <mat-label>Password</mat-label>
+              <mat-label>{{ "aunthentication.login.passwordLabel" | translate }}</mat-label>
               <input
                 matInput
                 formControlName="password"
                 [type]="hide ? 'password' : 'text'"
-                placeholder="Enter your password"
+                placeholder="{{ 'aunthentication.login.passwordPlaceHolder' | translate }}"
               />
               <mat-error
                 *ngIf="
                   password?.invalid && (password?.dirty || password?.touched)
                 "
               >
-                Password is required
+                {{ "aunthentication.login.passWordRequiredError" | translate }}
               </mat-error>
               <button
                 type="button"
@@ -72,11 +72,11 @@
               color="primary"
               type="submit"
             >
-              Login
+              {{ "aunthentication.login.loginButton" | translate }}
             </button>
 
             <p-button
-              label="Forgot password?"
+              label=" {{ 'aunthentication.login.forgotPassword' | translate }}"
               [link]="true"
               (click)="redirectToForgotPassword()">
             </p-button>
@@ -87,7 +87,7 @@
 
     <div class="right-container">
       <div class="right-container-header">
-        <h1 class="right-container-header-content">Sign up</h1>
+        <h1 class="right-container-header-content">{{"authentication.register.header"|translate}}</h1>
       </div>
       <div class="right-container-content">
         <form
@@ -100,11 +100,11 @@
               class="form-container-input register-form-container-input"
               appearance="fill"
             >
-              <mat-label>Email</mat-label>
+              <mat-label>{{"authentication.register.emailLabel"|translate}}</mat-label>
               <input
                 matInput
                 formControlName="email"
-                placeholder="Enter your email"
+                placeholder="{{'authentication.register.emailPlaceholder'|translate}}"
               />
               <mat-error
                 *ngIf="
@@ -113,10 +113,10 @@
                 "
               >
                 <span *ngIf="registerEmail?.errors?.['required']"
-                  >Email is required</span
+                  >{{"authentication.register.emailRequiredError"|translate}}</span
                 >
                 <span *ngIf="registerEmail?.errors?.['email']"
-                  >Please enter a valid email address</span
+                  >{{"authentication.register.emailInvalidError"|translate}}</span
                 >
               </mat-error>
             </mat-form-field>
@@ -125,11 +125,11 @@
               class="form-container-input register-form-container-input"
               appearance="fill"
             >
-              <mat-label>First name</mat-label>
+              <mat-label>{{"authentication.register.firstNameLabel"|translate}}</mat-label>
               <input
                 matInput
                 formControlName="firstName"
-                placeholder="Enter your first name"
+                placeholder="{{'authentication.register.firstNamePlaceholder'|translate}}"
               />
               <mat-error
                 *ngIf="
@@ -137,7 +137,7 @@
                 "
               >
                 <span *ngIf="firstName?.errors?.['required']"
-                  >First name is required</span
+                  >{{"authentication.register.firstNameRequiredError"|translate}}</span
                 >
               </mat-error>
             </mat-form-field>
@@ -146,11 +146,11 @@
               class="form-container-input register-form-container-input"
               appearance="fill"
             >
-              <mat-label>Last name</mat-label>
+              <mat-label>{{"authentication.register.lastNameLabel"|translate}}</mat-label>
               <input
                 matInput
                 formControlName="lastName"
-                placeholder="Enter your last name"
+                placeholder="{{'authentication.register.lastNamePlaceholder'|translate}}"
               />
               <mat-error
                 *ngIf="
@@ -158,7 +158,7 @@
                 "
               >
                 <span *ngIf="lastName?.errors?.['required']"
-                  >Last name is required</span
+                  >{{"authentication.register.lastNameRequiredError"|translate}}</span
                 >
               </mat-error>
             </mat-form-field>
@@ -168,7 +168,7 @@
                 class="form-container-input form-container-combined-input register-form-container-input"
                 appearance="fill"
               >
-                <mat-label>Dorm name</mat-label>
+                <mat-label>{{"authentication.register.dormNameLabel"|translate}}</mat-label>
                 <mat-select
                   (selectionChange)="onDormSelected()"
                   formControlName="dormName"
@@ -185,12 +185,12 @@
                 class="form-container-input form-container-combined-input register-form-container-input"
                 appearance="fill"
               >
-                <mat-label>Room number</mat-label>
+                <mat-label>{{"authentication.register.roomLabel"|translate}}</mat-label>
                 <input
                   matInput
                   type="number"
                   formControlName="roomNumber"
-                  placeholder="Enter room number"
+                  placeholder="{{'authentication.register.roomPlaceholder'|translate}}"
                 />
                 <mat-error
                   *ngIf="
@@ -199,10 +199,10 @@
                   "
                 >
                   <span *ngIf="roomNumber?.errors?.['required']"
-                    >Room number is required</span
+                    >{{"authentication.register.roomRequiredError"|translate}}</span
                   >
                   <span *ngIf="roomNumber?.errors?.['invalidRoomNumber']"
-                    >Invalid room number</span
+                    >{{"authentication.register.roomInvalidError"|translate}}</span
                   >
                 </mat-error>
               </mat-form-field>
@@ -212,11 +212,11 @@
               class="form-container-input register-form-container-input"
               appearance="fill"
             >
-              <mat-label>Matriculation number</mat-label>
+              <mat-label>{{"authentication.register.matriculationNumberLabel"|translate}}</mat-label>
               <input
                 matInput
                 formControlName="matriculationNumber"
-                placeholder="Enter your matriculation number"
+                placeholder="{{'authentication.register.matriculationNumberPlaceholder'|translate}}"
               />
               <mat-error
                 *ngIf="
@@ -225,10 +225,10 @@
                 "
               >
                 <span *ngIf="matriculationNumber?.errors?.['required']"
-                  >Matriculation number is required</span
+                  >{{"authentication.register.matriculationNumberRequiredError"|translate}}</span
                 >
                 <span *ngIf="matriculationNumber?.errors?.['pattern']"
-                  >Matriculation number is invalid</span
+                  >{{"authentication.register.matriculationNumberInvalidError"|translate}}</span
                 >
               </mat-error>
             </mat-form-field>
@@ -237,11 +237,11 @@
               class="form-container-input register-form-container-input"
               appearance="fill"
             >
-              <mat-label>Phone number</mat-label>
+              <mat-label>{{"authentication.register.phoneNumberLabel"|translate}}</mat-label>
               <input
                 matInput
                 formControlName="phoneNumber"
-                placeholder="Enter your phone number"
+                placeholder="{{'authentication.register.phoneNumberPlaceholder'|translate}}"
               />
               <mat-error
                 *ngIf="
@@ -250,13 +250,13 @@
                 "
               >
                 <span *ngIf="phoneNumber?.errors?.['required']"
-                  >Phone number is required</span
+                  >{{"authentication.register.phoneNumberRequiredError"|translate}}</span
                 >
                 <span *ngIf="phoneNumber?.errors?.['pattern']"
-                  >Phone number is invalid</span
+                  >{{"authentication.register.phoneNumberInvalidError"|translate}}</span
                 >
                 <span *ngIg="isPhoneNumberTaken"
-                  >Phone number is already taken</span
+                  >{{"authentication.register.phoneNumberTaken"|translate}}</span
                 >
               </mat-error>
             </mat-form-field>
@@ -268,7 +268,7 @@
               color="primary"
               type="submit"
             >
-              Sign up
+              {{"authentication.register.registerButton"|translate}}
             </button>
           </div>
         </form>
@@ -282,11 +282,11 @@
       <div class="login-panel-slider-content">
         <div class="login-panel-slider-content-text">
           <h1 class="login-panel-slider-text1">
-            {{ showLogin ? "Welcome to Login!" : "Welcome to UVTDorms" }}
+            {{ showLogin ? ("authentication.slider.welcomeLogin"|translate) : ("authentication.slider.welcomeRegister"|translate)}}
           </h1>
           <h1 class="login-panel-slider-text2">
             {{
-              showLogin ? "Don 't have an account?" : "Already have an account?"
+              showLogin ? ("authentication.slider.registerSuggestion"|translate) : ("authentication.slider.loginSuggestion"|translate)
             }}
           </h1>
         </div>
@@ -298,7 +298,7 @@
             color="primary"
             type="submit"
           >
-            {{ showLogin ? "Sign up" : "Login" }}
+            {{ showLogin ? ("authentication.register.registerButton"|translate) : ("aunthentication.login.loginButton"|translate) }}
           </button>
         </div>
       </div>

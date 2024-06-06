@@ -25,6 +25,24 @@ body {
   /* margin: 0; */
 }
 
+.flag
+{
+  width: 24px;
+  height: 12px;
+  mask-repeat: no-repeat;
+  background-size: cover;
+  border: none;
+  cursor: pointer;
+}
+
+.flag-ro {
+  background-image: url(../src/assets/flags/ro.svg);
+}
+
+.flag-en {
+  background-image: url(../src/assets/flags/us.svg);
+}
+
 :root {
   --uvt-blue: rgb(46, 113, 184);
   --uvt-yellow: rgb(228, 172, 34);

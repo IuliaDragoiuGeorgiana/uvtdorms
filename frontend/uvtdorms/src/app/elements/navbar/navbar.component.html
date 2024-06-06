@@ -106,6 +106,14 @@
     </button>
   </div>
   <div class="right-wing">
+    <button
+      class="flag"
+      [ngClass]="{'flag-ro': isRoSelected, 'flag-en': isEnSelected}"
+      (click)="changeLanguage()"
+    >
+    <span class="flag-ro"></span>
+    <!-- Change language -->
+    </button>
     <button mat-icon-button [matMenuTriggerFor]="menu" *ngIf="role() != null">
       <mat-icon>person</mat-icon>
     </button>

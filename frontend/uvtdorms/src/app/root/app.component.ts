@@ -3,6 +3,7 @@ import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
 import { convertStringRoleToEnum } from '../enums/role';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
@@ -15,8 +16,12 @@ export class AppComponent {
   constructor(
     private authService: AuthService,
     private userService: UserService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private translate: TranslateService
+  ) {
+    translate.setDefaultLang('ro');
+    translate.use('ro');
+  }
 
   ngOnInit() {
     let initialPath =

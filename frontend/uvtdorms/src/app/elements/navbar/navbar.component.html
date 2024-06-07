@@ -1,21 +1,110 @@
+<p-sidebar [(visible)]="isSideBarVisible" position="left" class="sidebar">
+  <ng-template pTemplate="header">
+    <div class="sidebar-header">
+      <img src="assets/logo.png" alt="uvt-logo" class="uvt-logo" />
+      <h1 class="sidebar-logo-text">Dorms</h1>
+    </div>
+  </ng-template>
 
-<p-sidebar 
-  [(visible)]="isSideBarVisible"
-  position="left"
-  class="sidebar">
   <ng-template pTemplate="content">
-    <button
-      pButton
-      routerLink="/laundry-appointments"
-      routerLinkActive="active"
-      class="navbar-button-mobile"
-      *ngIf="isStudent()"
-    >
-      Appointments
-    </button>
+    <div class="sidebar-content">
+      <button
+        pButton
+        routerLink="/laundry-appointments"
+        routerLinkActive="active"
+        class="navbar-button-mobile"
+        icon="pi pi-calendar"
+        *ngIf="isStudent()"
+      >
+        Appointments
+      </button>
 
+      <button
+        pButton
+        routerLink="/tickets"
+        routerLinkActive="active"
+        class="navbar-button-mobile"
+        icon=" pi pi-exclamation-triangle"
+        *ngIf="isStudent()"
+      >
+        Tickets
+      </button>
+      <button
+        pButton
+        routerLink="/eveniments"
+        routerLinkActive="active"
+        class="navbar-button-mobile"
+        *ngIf="isStudent() || isDormAdmistrator()"
+      >
+        <mat-icon>event</mat-icon>
+        Eveniments
+      </button>
+
+      <button
+        pButton
+        routerLink="/rooms-administration"
+        routerLinkActive="active"
+        class="navbar-button-mobile"
+        *ngIf="isDormAdmistrator()"
+      >
+        <mat-icon> hotel</mat-icon>
+        Rooms
+      </button>
+      <button
+        pButton
+        routerLink="/dorm-machines-administration"
+        routerLinkActive="active"
+        class="navbar-button-mobile"
+        *ngIf="isDormAdmistrator()"
+      >
+        <mat-icon> local_laundry_service</mat-icon>
+
+        Machines
+      </button>
+      <button
+        pButton
+        routerLink="/students-administration"
+        routerLinkActive="active"
+        class="navbar-button-mobile"
+        icon=" pi pi-users"
+        *ngIf="isDormAdmistrator()"
+      >
+        Students
+      </button>
+      <button
+        pButton
+        routerLink="/tickets-administration"
+        routerLinkActive="active"
+        class="navbar-button-mobile"
+        *ngIf="isDormAdmistrator()"
+        icon="pi pi-exclamation-triangle"
+      >
+        Tickets
+      </button>
+      <button
+        pButton
+        routerLink="/dorms-administration"
+        routerLinkActive="active"
+        class="navbar-button-mobile"
+        *ngIf="isAppAdministrator()"
+      >
+        <mat-icon> business</mat-icon>
+        Dorms
+      </button>
+      <button
+        pButton
+        routerLink="/dorm-administrators"
+        routerLinkActive="active"
+        class="navbar-button-mobile"
+        *ngIf="isAppAdministrator()"
+      >
+        <mat-icon> group_add </mat-icon>
+        Dorm administrators
+      </button>
+    </div>
   </ng-template>
 </p-sidebar>
+
 <mat-toolbar class="navbar-container">
   <div class="left-wing">
     <img src="assets/logo.png" alt="uvt-logo" class="uvt-logo" />
@@ -28,9 +117,7 @@
       icon="pi pi-bars"
       class="p-button-rounded p-button-text navbar-button-mobile"
       (click)="isSideBarVisible = !isSideBarVisible"
-    >
-
-    </button>
+    ></button>
     <button
       routerLink="/laundry-appointments"
       routerLinkActive="active"

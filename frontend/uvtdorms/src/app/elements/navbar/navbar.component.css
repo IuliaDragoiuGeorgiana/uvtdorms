@@ -17,7 +17,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: flex-end;
-  padding: 0px 2vw
+  padding: 0px 2vw;
 }
 
 .center {
@@ -69,42 +69,73 @@
 
 .navbar-button.active {
   text-decoration: underline;
- 
 }
-.dropdown-button{
+.dropdown-button {
   width: 10vw;
 }
 
-.sidebar
-{
+.sidebar {
   display: none;
 }
 
-.navbar-button-mobile
-{
+.navbar-button-mobile {
   display: none;
+}
 
+.sidebar-header {
+  display: none;
 }
 
 @media (max-width: 600px) {
-    .navbar-button-mobile
-    {
-      display: block;
-    }
+  .navbar-button-mobile {
+    display: block;
+    margin-top: 3vh;
+    width: 60%;
+  }
 
-    .navbar-button
-    {
-      display: none;
-    }
+  .navbar-button {
+    display: none;
+    background-color: red !important;
+  }
 
-    .sidebar
-    {
-      display: block;
-    }
+  .sidebar {
+    display: block;
+  }
 
+  :host ::ng-deep .p-sidebar-top {
+    width: 80vw;
+  }
 
-    :host ::ng-deep .p-sidebar-top
-    {
-      width: 80vw;
-    }
+  .sidebar-header {
+    width: 100%;
+    height: 80px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding-left: 1.5vw;
+  }
+
+  .uvt-logo {
+    height: 100%;
+  }
+
+  .sidebar-logo-text {
+    color: var(--uvt-blue);
+    font-size: 1.8rem;
+    margin-top: 3vh;
+  }
+
+  .sidebar-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    height: 80%;
+    width: 100%;
+  }
+
+  .dropdown-button {
+    width: 100%;
+  }
 }

@@ -1,43 +1,43 @@
 <app-loading-screen *ngIf="isLoadingScreenVisible"></app-loading-screen>
-<h2 mat-dialog-title class="register-request-details-popup-title">Register request details</h2>
+<h2 mat-dialog-title class="register-request-details-popup-title">{{"popup.registerRequestDetails.title"|translate}}</h2>
 <mat-dialog-content class="mat-typography">
   <div class="register-request-details-popup-main-container">
     <div class="register-request-details-names">
       <div class="register-request-details-names-container">
         <p class="register-request-details-names-container-content">
-          First name:
+         {{"popup.registerRequestDetails.firstName"|translate}}:
         </p>
       </div>
       <div class="register-request-details-names-container">
         <p class="register-request-details-names-container-content">
-          Last name:
+         {{"popup.registerRequestDetails.lastName"|translate}}:
         </p>
       </div>
       <div class="register-request-details-names-container">
-        <p class="register-request-details-names-container-content">Email:</p>
+        <p class="register-request-details-names-container-content">{{"popup.registerRequestDetails.email"|translate}}:</p>
       </div>
       <div class="register-request-details-names-container">
         <p class="register-request-details-names-container-content">
-          Dorm name:
-        </p>
-      </div>
-      <div class="register-request-details-names-container">
-        <p class="register-request-details-names-container-content">
-          Room number:
+          {{"popup.registerRequestDetails.dorm"|translate}}:
         </p>
       </div>
       <div class="register-request-details-names-container">
         <p class="register-request-details-names-container-content">
-          Matriculation number:
+         {{"popup.registerRequestDetails.room"|translate}}:
         </p>
       </div>
       <div class="register-request-details-names-container">
         <p class="register-request-details-names-container-content">
-          Phone number:
+         {{"popup.registerRequestDetails.matriculationNumber"|translate}}:
         </p>
       </div>
       <div class="register-request-details-names-container">
-        <p class="register-request-details-names-container-content">Date:</p>
+        <p class="register-request-details-names-container-content">
+          {{"popup.registerRequestDetails.phoneNumber"|translate}}:
+        </p>
+      </div>
+      <div class="register-request-details-names-container">
+        <p class="register-request-details-names-container-content">{{"popup.registerRequestDetails.date"|translate}}:</p>
       </div>
     </div>
     <div class="register-request-details-values">
@@ -87,7 +87,7 @@
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <div class="register-request-popup-actions">
-    <button class="register-request-popup-actions-decline" mat-button (click)="decline()">Decline</button>
-    <button class="register-request-popup-actions-accept" mat-button (click)="accept()">Accept</button>
+    <button class="register-request-popup-actions-decline" mat-button (click)="decline()">{{"popup.registerRequestDetails.RejectButton"|translate}}</button>
+    <button class="register-request-popup-actions-accept" mat-button (click)="accept()">{{"popup.registerRequestDetails.AcceptButton"|translate}}</button>
   </div>
 </mat-dialog-actions>

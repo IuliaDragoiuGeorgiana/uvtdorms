@@ -11,6 +11,7 @@ import { PasswordResetService } from '../../services/password-reset.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService } from 'primeng/api';
 import { ResetPasswordDto } from '../../interfaces/reset-password-dto';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-change-forgotten-password-page',
@@ -38,7 +39,8 @@ export class ChangeForgottenPasswordPageComponent {
     private passwordResetService: PasswordResetService,
     private route: ActivatedRoute,
     private router: Router,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private translate: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -55,8 +57,8 @@ export class ChangeForgottenPasswordPageComponent {
       error: () => {
         this.isValidationOngoing = false;
         this.confirmationService.confirm({
-          message: 'The token is invalid. Please try again.',
-          header: 'Invalid token',
+          message: this.translate.instant('changeForgottenPassword.Message2Token'),
+          header: this.translate.instant('changeForgottenPassword.Message1TokenHeader'),
           icon: 'pi pi-exclamation-triangle',
           acceptIcon: 'none',
           rejectIcon: 'none',
@@ -151,8 +153,8 @@ export class ChangeForgottenPasswordPageComponent {
       next: () => {
         this.isResetPasswordLoading = false;
         this.confirmationService.confirm({
-          message: 'Your password has been successfully reset.',
-          header: 'Password reset',
+          message: this.translate.instant('changeForgottenPassword.Message3ConfirmPassword'),
+          header:this.translate.instant('changeForgottenPassword.Message4ConfirmPasswordHeader') ,
           icon: 'pi pi-check',
           acceptIcon: 'none',
           rejectIcon: 'none',
@@ -167,8 +169,8 @@ export class ChangeForgottenPasswordPageComponent {
       error: () => {
         this.isResetPasswordLoading = false;
         this.confirmationService.confirm({
-          message: 'An error occurred. Please try again.',
-          header: 'Error',
+          message: this.translate.instant('changeForgottenPassword.Message5ErrorPassword'),
+          header: this.translate.instant('changeForgottenPassword.Message6ErrorPasswordHeader'),
           icon: 'pi pi-exclamation-triangle',
           acceptIcon: 'none',
           rejectIcon: 'none',

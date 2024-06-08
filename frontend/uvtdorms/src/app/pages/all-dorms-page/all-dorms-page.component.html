@@ -27,11 +27,11 @@
     </ng-template>
 </p-confirmDialog>
 <p-toast></p-toast>
-<p-dialog header="Add new dorm" [modal]="true" [(visible)]="isAddNewDormDialogVisible" [style]="{ width: '25rem' }">
+<p-dialog header='{{"allDorms.AddDormTitle"|translate}}' [modal]="true" [(visible)]="isAddNewDormDialogVisible" [style]="{ width: '25rem' }">
     <form class="add-new-dorm-body" [formGroup]="addNewDormForm">
         <p-floatLabel class="add-new-dorm-form-element">
             <input class="add-new-dorm-form-input-element" pInputText id="name" formControlName="name" [ngClass]="{'ng-dirty': addNewFormNameRequiredError, 'ng-invalid': addNewFormNameRequiredError}" />
-            <label for="name">Dorm name</label>
+            <label for="name">{{"allDorms.AddDormdormName"|translate}}</label>
         </p-floatLabel>
         <p-floatLabel class="add-new-dorm-form-element">
             <input 
@@ -40,20 +40,20 @@
                 id="address"
                 formControlName="address"
                 [ngClass]="{'ng-dirty': addNewFormAddressRequiredError, 'ng-invalid': addNewFormAddressRequiredError}" />
-            <label for="address">Dorm address</label>
+            <label for="address">{{"allDorms.AddDormdormAddress"|translate}}</label>
         </p-floatLabel>
         <p-dropdown 
             class="add-new-dorm-form-element"
             [overlayOptions]="getOverlayOptions()"
             [options]="availableAdministrators.concat(defaultAvailableAdministrators)"
             formControlName="administratorEmail"
-            placeholder="Select the dorm administrator"
+            placeholder='{{"allDorms.AddDormSelectDormAdministrator"|translate}}'
             optionLabel="name"
             optionValue="email" />
     </form>
     <div class="add-new-dorm-buttons">
-        <p-button label="Cancel" severity="secondary" (click)="isAddNewDormDialogVisible = false" />
-        <p-button label="Save" severity="info" (click)="submitAddNewDormForm()" />
+        <p-button label="{{'allDorms.AddDormCancelButton'|translate}}" severity="secondary" (click)="isAddNewDormDialogVisible = false" />
+        <p-button label="{{'allDorms.AddDormSaveButton'|translate}}" severity="info" (click)="submitAddNewDormForm()" />
     </div>
 </p-dialog>
 <div class="all-dorms-page-main-container">
@@ -71,7 +71,7 @@
         >
             <ng-template pTemplate="caption">
                 <div class="all-dorms-table-caption">
-                    Dorms
+                 {{"allDorms.Title"|translate}}
                     <div class="flex">
                         <p-iconField iconPosition="left" class="ml-auto">
                             <p-inputIcon>
@@ -90,9 +90,9 @@
             </ng-template>
             <ng-template pTemplate="header">
                 <tr>
-                    <th style="width:30%">Dorm name</th>
-                    <th style="width:30%">Dorm address</th>
-                    <th style="width:30%">Dorm administrator</th>
+                    <th style="width:30%">{{"allDorms.DormName"|translate}}</th>
+                    <th style="width:30%">{{"allDorms.DormAddress"|translate}}</th>
+                    <th style="width:30%">{{"allDorms.DormAdministrator"|translate}}</th>
                     <th style="width:10%"></th>
                 </tr>
             </ng-template>
@@ -110,7 +110,7 @@
                                 <p-dropdown
                                     [overlayOptions]="getOverlayOptions()"
                                     [options]="getAvailableAdministratorsForEditingDorm(dorm)" 
-                                    placeholder="Select the dorm administrator"
+                                    placeholder='{{"allDorms.AddDormSelectDormAdministrator"|translate}}'
                                     optionLabel="name"
                                     optionValue="email"
                                     [(ngModel)]="editDormNewAdministratorEmail"

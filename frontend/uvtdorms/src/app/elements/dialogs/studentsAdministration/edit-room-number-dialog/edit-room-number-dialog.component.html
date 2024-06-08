@@ -1,15 +1,15 @@
-<h2 class="edit-room-number-dialog-title">Edit room</h2>
+<h2 class="edit-room-number-dialog-title">{{"dialog.edit-room-numberTitle"|translate}}</h2>
 <mat-dialog-content class="mat-typography">
   <div class="edit-room-number-dialog-main-container">
     <form [formGroup]="editRoomNumberForm"
     (ngSubmit)="onEditRoomNumber()">
       <mat-form-field appearance="fill">
-        <mat-label>Room number</mat-label>
+        <mat-label>{{"dialog.edit-room-numberRoom"|translate}}</mat-label>
         <input
           matInput
           type="number"
           formControlName="roomNumber"
-          placeholder="Enter room number"
+          placeholder="{{'dialog.edit-room-numberRoomPlaceholder'|translate}}"
         />
         <mat-error
           *ngIf="
@@ -17,10 +17,10 @@
           "
         >
           <span *ngIf="roomNumber?.errors?.['required']"
-            >Room number is required</span
+            >{{"dialog.edit-room-numberError1"|translate}}<br></span
           >
           <span *ngIf="roomNumber?.errors?.['invalidRoomNumber']"
-            >Invalid room number</span 
+            >{{"dialog.edit-room-numberError2"|translate}}</span 
           >
         </mat-error>
       </mat-form-field>
@@ -29,6 +29,6 @@
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button (click)="onEditRoomNumber()" class="edit-room-submit-button">
-    Save
+    {{"dialog.edit-room-numberSaveButton"|translate}}
   </button>
 </mat-dialog-actions>

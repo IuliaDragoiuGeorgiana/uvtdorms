@@ -13,13 +13,13 @@
                 <button 
                     pButton 
                     severity="danger"
-                    label="Delete" 
+                    label="{{'dormAdministrators.AllDorms.DeleteDormAdministratorButton'|translate}}" 
                     (click)="cd.accept()" 
                     class="w-8rem">
                 </button>
                 <button 
                     pButton 
-                    label="Cancel" 
+                    label="{{'dormAdministrators.AddDormAdministrator.CancelButton'|translate}}" 
                     (click)="cd.reject()" 
                     class="p-button-outlined w-8rem ">
                 </button>
@@ -28,7 +28,7 @@
     </ng-template>
 </p-confirmDialog>
 <p-toast></p-toast>
-<p-dialog header="Add new dorm" [modal]="true" [(visible)]="isAddNewDormAdministratorDialogVisible" [style]="{ width: '25rem' }">
+<p-dialog header="{{'dormAdministrators.AddDormAdministrator.Title'|translate}}"[modal]="true" [(visible)]="isAddNewDormAdministratorDialogVisible" [style]="{ width: '25rem' }">
     <form class="add-new-dorm-body" [formGroup]="addNewDormAdministratorForm">
         <p-floatLabel class="add-new-dorm-form-element">
             <input 
@@ -37,7 +37,7 @@
                 id="firstName"
                 formControlName="firstName"
                 [ngClass]="{'ng-dirty': hasFirstNameError, 'ng-invalid': hasFirstNameError}" />
-            <label for="firstName">First name</label>
+            <label for="firstName">{{"dormAdministrators.AddDormAdministrator.FirstName"|translate}}</label>
         </p-floatLabel>
         <p-floatLabel class="add-new-dorm-form-element">
             <input 
@@ -46,7 +46,7 @@
                 id="lastName"
                 formControlName="lastName"
                 [ngClass]="{'ng-dirty': hasLastNameError, 'ng-invalid': hasLastNameError}" />
-            <label for="lastName">Last name</label>
+            <label for="lastName">{{"dormAdministrators.AddDormAdministrator.LastName"|translate}}</label>
         </p-floatLabel>
         <p-floatLabel class="add-new-dorm-form-element">
             <input 
@@ -55,7 +55,7 @@
                 id="phoneNumber"
                 formControlName="phoneNumber"
                 [ngClass]="{'ng-dirty': hasPhoneNumberError, 'ng-invalid': hasPhoneNumberError}" />
-            <label for="phoneNumber">Phone number</label>
+            <label for="phoneNumber">{{"dormAdministrators.AddDormAdministrator.PhoneNumber"|translate}}</label>
         </p-floatLabel>
         <p-floatLabel class="add-new-dorm-form-element">
             <input 
@@ -65,20 +65,20 @@
                 formControlName="email"
                 type="email"
                 [ngClass]="{'ng-dirty': hasEmailError, 'ng-invalid': hasEmailError}" />
-            <label for="email">Email address</label>
+            <label for="email">{{"dormAdministrators.AddDormAdministrator.Email"|translate}}</label>
         </p-floatLabel>
         <p-dropdown
             [overlayOptions]="getOverlayOptions()"
             class="add-new-dorm-form-element"
             [options]="availableDorms.concat(defaultAvailableDorm)"
             formControlName="dormId"
-            placeholder="Select the associated dorm"
+            placeholder="{{'dormAdministrators.AddDormAdministrator.SelectDormPlaceholder'|translate}}"
             optionLabel="dormName"
             optionValue="id" />
     </form>
     <div class="add-new-dorm-buttons">
-        <p-button label="Cancel" severity="secondary" (click)="isAddNewDormAdministratorDialogVisible = false" />
-        <p-button label="Save" severity="info" (click)="submitNewDormAdministratorForm()" />
+        <p-button label="{{'dormAdministrators.AddDormAdministrator.CancelButton'|translate}}" severity="secondary" (click)="isAddNewDormAdministratorDialogVisible = false" />
+        <p-button label="{{'dormAdministrators.AddDormAdministrator.SaveButton'|translate}}" severity="info" (click)="submitNewDormAdministratorForm()" />
     </div>
 </p-dialog>
 <div class="all-dorms-page-main-container">
@@ -96,7 +96,7 @@
         >
             <ng-template pTemplate="caption">
                 <div class="all-dorms-table-caption">
-                    Dorm administrators
+                   {{"dormAdministrators.AllDormsTitle"|translate}}
                     <div class="flex">
                         <p-iconField iconPosition="left" class="ml-auto">
                             <p-inputIcon>
@@ -115,10 +115,10 @@
             </ng-template>
             <ng-template pTemplate="header">
                 <tr>
-                    <th style="width:22%">Name</th>
-                    <th style="width:22%">Email adress</th>
-                    <th style="width:22%">Phone number</th>
-                    <th style="width:22%">Dorm</th>
+                    <th style="width:22%">{{"dormAdministrators.AllDorms.Name"|translate}}</th>
+                    <th style="width:22%">{{"dormAdministrators.AllDorms.Email"|translate}}</th>
+                    <th style="width:22%">{{"dormAdministrators.AllDorms.PhoneNumber"|translate}}</th>
+                    <th style="width:22%">{{"dormAdministrators.AllDorms.Dorm"|translate}}</th>
                     <th style="width:12%"></th>
                 </tr>
             </ng-template>
@@ -138,7 +138,7 @@
                             <ng-template pTemplate="input">
                                 <p-dropdown
                                     [options]="getAvailableDormsForEditingAdministrator(dormAdministrator)" 
-                                    placeholder="Select the dorm administrator"
+                                    placeholder="{{'dormAdministrators.AllDorms.SelectDorm'|translate}}"
                                     optionLabel="dormName"
                                     optionValue="id"
                                     [overlayOptions]="getOverlayOptions()"

@@ -11,6 +11,7 @@ import { DormService } from '../../../services/dorm.service';
 import { NewRegisterRequestDto } from '../../../interfaces/new-register-request-dto';
 import { RegisterRequestService } from '../../../services/register-request.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-new-register-request-dialog',
@@ -34,7 +35,8 @@ export class NewRegisterRequestDialogComponent {
     private dormService: DormService,
     private registerRequestService: RegisterRequestService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private translate: TranslateService
   ) {}
 
   ngOnInit() {
@@ -65,21 +67,10 @@ export class NewRegisterRequestDialogComponent {
     return this.newRequestForm.get('roomNumber');
   }
 
-  public makeNewRequest() {
-    if (!this.newRequestForm.valid) {
+  sendNewRegisterRequest() {
+    if (this.newRequestForm.invalid) {
       return;
     }
-
-    this.confirmationService.confirm({
-      message: 'Are you sure you want to create a new register request?',
-      accept: () => {
-        this.sendNewRegisterRequest();
-      },
-    });
-  }
-
-  sendNewRegisterRequest() {
-    
     let newRegisterRequestDto: NewRegisterRequestDto = {
       dormName: this.newRequestForm.value.dormName!,
       roomNumber: this.newRequestForm.value.roomNumber!,
@@ -92,8 +83,9 @@ export class NewRegisterRequestDialogComponent {
           this.displayConfirmMessage();
           window.location.reload();
         },
-        error:(error)=> {
+        error: (error) => {
           console.error(error);
+          this.isLoadingScreenVisible = false;
           this.displayErrorMessage(error);
         },
       });
@@ -102,11 +94,13 @@ export class NewRegisterRequestDialogComponent {
   private displayErrorMessage(error: any): void {
     let errorMsg: string = error.error.message;
     if (errorMsg === 'You already have a pending register request.') {
-      errorMsg = 'You already created a register request.';
+      errorMsg = this.translate.instant(
+        'dialog.newRegisterRequest.errorAlreadyExists'
+      );
     }
     this.messageService.add({
       severity: 'error',
-      summary: 'Something went wrong',
+      summary: this.translate.instant('dialog.newRegisterRequest.errorDialog'),
       detail: errorMsg,
       sticky: true,
     });
@@ -116,9 +110,8 @@ export class NewRegisterRequestDialogComponent {
     this.messageService.add({
       severity: 'success',
       summary: 'Confirmed',
-      detail: 'Register request created!',
+      detail: this.translate.instant('dialog.newRegisterRequest.successDialog'),
       life: 3000,
     });
   }
-
 }

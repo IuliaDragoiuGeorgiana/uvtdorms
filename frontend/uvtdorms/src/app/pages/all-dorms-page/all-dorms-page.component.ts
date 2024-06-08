@@ -12,6 +12,7 @@ import {
   OverlayListenerOptions,
   OverlayOptions,
 } from 'primeng/api';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-all-dorms-page',
@@ -39,7 +40,8 @@ export class AllDormsPageComponent {
     private dormService: DormService,
     private dormAdministratorsService: DormAdministratorDetailsService,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private translate: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -101,7 +103,7 @@ export class AllDormsPageComponent {
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
-          detail: 'Dorm added successfully',
+          detail: this.translate.instant('allDorms.DormAddedSuccess'),
         });
         this.updateDormsList();
       },
@@ -152,8 +154,8 @@ export class AllDormsPageComponent {
 
   public deleteDorm(dorm: DormDto): void {
     this.confirmationService.confirm({
-      header: 'Are you sure?',
-      message: 'You will permanently delete this dorm.',
+      header: this.translate.instant('allDorms.DeleteDorm'),
+      message: this.translate.instant('allDorms.DeleteDormMessage'),
       accept: () => {
         let dormId: DormId = { id: dorm.id };
         this.dormService.deleteDorm(dormId).subscribe({
@@ -162,16 +164,16 @@ export class AllDormsPageComponent {
             this.updateAvailableDormAdministratorsList();
             this.messageService.add({
               severity: 'info',
-              summary: 'Confirmation',
-              detail: 'You have deleted the dorm',
+              summary: this.translate.instant('allDorms.DeleteDormSuccess'),
+              detail:this.translate.instant('allDorms.DeleteDormSuccessMessage'),
               life: 3000,
             });
           },
           error: (error) => {
             this.messageService.add({
               severity: 'error',
-              summary: 'Error',
-              detail: 'Failed to delete the dorm: ' + error.error.message,
+              summary: this.translate.instant('allDorms.DeleteDormError'),
+              detail: this.translate.instant('allDorms.DeleteDormErrorMessage') + error.error.message,
             });
             console.error(error);
           },

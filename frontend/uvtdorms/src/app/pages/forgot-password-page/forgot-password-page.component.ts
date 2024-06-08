@@ -4,6 +4,7 @@ import { PasswordResetService } from '../../services/password-reset.service';
 import { EmailDto } from '../../interfaces/email-dto';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-forgot-password-page',
@@ -20,6 +21,7 @@ export class ForgotPasswordPageComponent {
     private passwordResetService: PasswordResetService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
+    private translate: TranslateService,
     private router: Router
   ) {}
 
@@ -35,8 +37,8 @@ export class ForgotPasswordPageComponent {
     this.passwordResetService.forgotPassword(emailDto).subscribe({
       next: () => {
         this.confirmationService.confirm({
-          header: 'Success',
-          message: 'Password reset email sent. Please check your email.',
+          header: this.translate.instant('forgotPassword.submitConfirm.success.messageheader'),
+          message:this.translate.instant('forgotPassword.submitConfirm.success.message') ,
           acceptLabel: 'Ok',
           rejectVisible: false,
           accept: () => {
@@ -50,8 +52,8 @@ export class ForgotPasswordPageComponent {
         this.isLoadingScreenVisible = false;
         this.messageService.add({
           severity: 'error',
-          summary: 'Error',
-          detail: err.error.message ? err.error.message : 'An error occurred',
+          summary: this.translate.instant('forgotPassword.submitConfirm.error.header'),
+          detail: err.error.message ? err.error.message : this.translate.instant('forgotPassword.submitConfirm.error.message'),
           life: 5000,
         });
       },

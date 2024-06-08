@@ -39,5 +39,18 @@
 	"authentication.slider.loginSuggestion": "Already have an account?",
 	"authentication.slider.registerSuggestion": "Don't have an account?",
 	"authentication.slider.welcomeLogin": "Welcome back!",
-	"authentication.slider.welcomeRegister": "Welcome!"
+	"authentication.slider.welcomeRegister": "Welcome!",
+
+
+	"profile.displayStudentDetails.EmailLabel": "Email",	
+	"profile.displayStudentDetails.PhoneNumberLabel": "Phone number",
+	"profile.displayStudentDetails.RoomLabel": "Room",
+	"profile.editStudentDetails.MatriculationNumberLabel": "Matriculation number",
+	"profile.profile.changePasswordButton": "Change password",
+	"profile.profile.changePhoneNumberButton": "Change phone number"
+
+
+	
+
+
 }

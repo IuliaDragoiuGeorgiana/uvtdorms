@@ -16,7 +16,7 @@
         icon="pi pi-calendar"
         *ngIf="isStudent()"
       >
-        Appointments
+      {{"navbar.appointments" | translate}}
       </button>
 
       <button
@@ -27,7 +27,7 @@
         icon=" pi pi-exclamation-triangle"
         *ngIf="isStudent()"
       >
-        Tickets
+        {{ "navbar.tickets" | translate }}
       </button>
       <button
         pButton
@@ -37,7 +37,7 @@
         *ngIf="isStudent() || isDormAdmistrator()"
       >
         <mat-icon>event</mat-icon>
-        Eveniments
+       {{ "navbar.events" | translate }}
       </button>
 
       <button
@@ -48,7 +48,7 @@
         *ngIf="isDormAdmistrator()"
       >
         <mat-icon> hotel</mat-icon>
-        Rooms
+       {{ "navbar.rooms" | translate }}
       </button>
       <button
         pButton
@@ -58,8 +58,7 @@
         *ngIf="isDormAdmistrator()"
       >
         <mat-icon> local_laundry_service</mat-icon>
-
-        Machines
+{{ "navbar.machines" | translate  }}
       </button>
       <button
         pButton
@@ -69,7 +68,7 @@
         icon=" pi pi-users"
         *ngIf="isDormAdmistrator()"
       >
-        Students
+       {{ "navbar.students" | translate }}
       </button>
       <button
         pButton
@@ -79,7 +78,7 @@
         *ngIf="isDormAdmistrator()"
         icon="pi pi-exclamation-triangle"
       >
-        Tickets
+        {{ "navbar.tickets" | translate }}
       </button>
       <button
         pButton
@@ -89,7 +88,7 @@
         *ngIf="isAppAdministrator()"
       >
         <mat-icon> business</mat-icon>
-        Dorms
+        {{ "navbar.dorms" | translate }}
       </button>
       <button
         pButton
@@ -99,7 +98,7 @@
         *ngIf="isAppAdministrator()"
       >
         <mat-icon> group_add </mat-icon>
-        Dorm administrators
+       {{ "navbar.dormsAdministrators" | translate }}
       </button>
     </div>
   </ng-template>
@@ -108,7 +107,7 @@
 <mat-toolbar class="navbar-container">
   <div class="left-wing">
     <img src="assets/logo.png" alt="uvt-logo" class="uvt-logo" />
-    <h1 class="navbar-logo-text">Dorms</h1>
+    <h1 class="navbar-logo-text">{{"navbar.dorms"|translate}}</h1>
   </div>
   <div class="center">
     <button
@@ -124,7 +123,7 @@
       class="navbar-button"
       *ngIf="isStudent()"
     >
-      Appointments
+    {{"navbar.appointments" | translate}}
     </button>
 
     <button
@@ -133,7 +132,7 @@
       class="navbar-button"
       *ngIf="isStudent()"
     >
-      Tickets
+     {{ "navbar.tickets" | translate }}
     </button>
     <button
       routerLink="/eveniments"
@@ -141,7 +140,7 @@
       class="navbar-button"
       *ngIf="isStudent() || isDormAdmistrator()"
     >
-      Eveniments
+     {{ "navbar.events" | translate }}
     </button>
     <button
       routerLink="/rooms-administration"
@@ -149,7 +148,7 @@
       class="navbar-button"
       *ngIf="isDormAdmistrator()"
     >
-      Rooms
+    {{ "navbar.rooms" | translate }}
     </button>
     <button
       routerLink="/dorm-machines-administration"
@@ -157,7 +156,7 @@
       class="navbar-button"
       *ngIf="isDormAdmistrator()"
     >
-      Machines
+    {{ "navbar.machines" | translate  }}
     </button>
     <button
       routerLink="/students-administration"
@@ -165,7 +164,7 @@
       class="navbar-button"
       *ngIf="isDormAdmistrator()"
     >
-      Students
+      {{ "navbar.students" | translate }}
     </button>
     <button
       routerLink="/tickets-administration"
@@ -173,7 +172,7 @@
       class="navbar-button"
       *ngIf="isDormAdmistrator()"
     >
-      Tickets
+     {{ "navbar.tickets" | translate }}
     </button>
     <button
       routerLink="/dorms-administration"
@@ -181,7 +180,7 @@
       class="navbar-button"
       *ngIf="isAppAdministrator()"
     >
-      Dorms
+      {{ "navbar.dorms" | translate }}
     </button>
     <button
       routerLink="/dorm-administrators"
@@ -189,7 +188,7 @@
       class="navbar-button"
       *ngIf="isAppAdministrator()"
     >
-      Dorm administrators
+      {{ "navbar.dormsAdministrator" | translate }}
     </button>
   </div>
   <div class="right-wing">
@@ -207,11 +206,11 @@
     <mat-menu #menu="matMenu">
       <button mat-menu-item class="dropdown-button" routerLink="/profile">
         <mat-icon>dashboard</mat-icon>
-        <span>Profile</span>
+        <span>{{"navbar.profile"|translate}}</span>
       </button>
       <button mat-menu-item class="dropdown-button" (click)="logout()">
         <mat-icon>exit_to_app</mat-icon>
-        <span>Log out</span>
+        <span>{{"navbar.logout"|translate}}</span>
       </button>
     </mat-menu>
   </div>

@@ -3,13 +3,7 @@ import { UserService } from '../../services/user.service';
 import { UserDetailsDto } from '../../interfaces/user-details-dto';
 import { ListedRegisterRequestDto } from '../../interfaces/listed-register-request-dto';
 import { RegisterRequestService } from '../../services/register-request.service';
-import {
-  AbstractControl,
-  FormControl,
-  FormGroup,
-  ValidatorFn,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { RoomService } from '../../services/room.service';
 import { DormService } from '../../services/dorm.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -114,14 +108,11 @@ export class ProfilePageComponent {
     private userService: UserService,
     private registerRequestService: RegisterRequestService,
     private ticketService: TicketService,
-    private roomService: RoomService,
-    private dormService: DormService,
     private laundryAppointmentService: AppointmentService,
     private dialog: MatDialog,
     private confirmService: ConfirmationService,
     private messageService: MessageService,
-    private evenimentService: EvenimentService,
-    private router: Router
+    private evenimentService: EvenimentService
   ) {}
 
   ngOnInit() {
@@ -131,16 +122,20 @@ export class ProfilePageComponent {
 
         if (this.isStudent() || this.isInactivStudent()) {
           this.getStudentRelatedData();
-        }
-
-        if (this.isDormAdmin()) {
+        } else if (this.isDormAdmin()) {
           this.getDormAdministratorRelatedData();
+        } else if (this.isApplicationAdministrator()) {
+          this.getApplicationAdministratorRelatedData();
         }
       },
       error(err) {
         console.error(err);
       },
     });
+  }
+
+  private getApplicationAdministratorRelatedData() {
+    this.isLoadingScreenVisible = false;
   }
 
   private getDormAdministratorRelatedData() {
@@ -255,7 +250,6 @@ export class ProfilePageComponent {
     );
   }
 
-
   public formatTicketDate(date: any): string {
     return (
       date[0] +
@@ -269,8 +263,6 @@ export class ProfilePageComponent {
       (Number(date[4]) <= 9 ? '0' + date[4] : date[4])
     );
   }
-
-
 
   showRegisterRequestDialog() {
     this.dialog.open(NewRegisterRequestDialogComponent);
@@ -290,6 +282,10 @@ export class ProfilePageComponent {
 
   isInactivStudent(): boolean {
     return this.role() === Role.INACTIV_STUDENT;
+  }
+
+  isApplicationAdministrator(): boolean {
+    return this.role() === Role.APPLICATION_ADMINISTRATOR;
   }
 
   openEditPhoneNumberDialog() {

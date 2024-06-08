@@ -13,6 +13,7 @@ import {
 import { AddNewDormAdministratorDto } from '../../interfaces/add-new-dorm-administrator-dto';
 import { UpdateDormAdministratorDto } from '../../interfaces/update-dorm-administrator-dto';
 import { EmailDto } from '../../interfaces/email-dto';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-dorm-administrators-page',
@@ -68,7 +69,8 @@ export class DormAdministratorsPageComponent {
     private dormAdministratorDetailsService: DormAdministratorDetailsService,
     private dormService: DormService,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private translate:TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -127,8 +129,8 @@ export class DormAdministratorsPageComponent {
         next: () => {
           this.messageService.add({
             severity: 'success',
-            summary: 'Success',
-            detail: 'Dorm administrator added',
+            summary: this.translate.instant('dormAdministrators.AddDormAdministrator.MessageSuccessHeader'),
+            detail: this.translate.instant('dormAdministrators.AddDormAdministrator.MessageSuccess'),
           });
           this.isAddNewDormAdministratorDialogVisible = false;
           this.addNewDormAdministratorForm.reset();
@@ -140,9 +142,9 @@ export class DormAdministratorsPageComponent {
           this.isAddNewDormAdministratorDialogVisible = true;
           this.messageService.add({
             severity: 'error',
-            summary: 'Error',
+            summary: this.translate.instant('dormAdministrators.AddDormAdministrator.MessageErrorHeader'),
             detail:
-              'Failed to add dorm administrator: ' + error?.error?.message,
+              this.translate.instant('dormAdministrators.AddDormAdministrator.MessageError') + error?.error?.message,
           });
           this.loading = false;
         },
@@ -187,8 +189,8 @@ export class DormAdministratorsPageComponent {
           dormAdministratorDto.dormId = this.editDormAdministratorNewDormId;
           this.messageService.add({
             severity: 'success',
-            summary: 'Success',
-            detail: 'Dorm administrator updated',
+            summary: this.translate.instant('dormAdministrators.AllDorms.EditDormAdministratorMessageSuccesHeader'),
+            detail: this.translate.instant('dormAdministrators.AllDorms.EditDormAdministratorMessageSucces'),
           });
           this.updateDormAdministratorsList();
           this.loading = false;
@@ -197,9 +199,9 @@ export class DormAdministratorsPageComponent {
           console.error(error);
           this.messageService.add({
             severity: 'error',
-            summary: 'Error',
+            summary: this.translate.instant('dormAdministrators.AllDorms.EditDormAdministratorMessageErrorHeader'),
             detail:
-              'Failed to update dorm administrator: ' + error?.error?.message,
+              this.translate.instant('dormAdministrators.AllDorms.EditDormAdministratorMessageError') + error?.error?.message,
           });
           this.loading = false;
         },
@@ -210,7 +212,7 @@ export class DormAdministratorsPageComponent {
     dormAdministrator: DetailedDormAdministratorDto
   ): void {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete this dorm administrator?',
+      message: this.translate.instant('dormAdministrators.AllDorms.DeleteDormAdministratorMessage'),
       accept: () => {
         let emailDto: EmailDto = { email: dormAdministrator.email };
         this.dormAdministratorDetailsService
@@ -219,8 +221,8 @@ export class DormAdministratorsPageComponent {
             next: () => {
               this.messageService.add({
                 severity: 'success',
-                summary: 'Success',
-                detail: 'Dorm administrator deleted',
+                summary: this.translate.instant('dormAdministrators.AllDorms.DeleteDormAdministratorMessageSuccessHeader'),
+                detail: this.translate.instant('dormAdministrators.AllDorms.DeleteDormAdministratorMessageSuccess'),
               });
               this.updateDormAdministratorsList();
             },
@@ -228,9 +230,9 @@ export class DormAdministratorsPageComponent {
               console.error(error);
               this.messageService.add({
                 severity: 'error',
-                summary: 'Error',
+                summary: this.translate.instant('dormAdministrators.AllDorms.DeleteDormAdministratorMessageErrorHeader'),
                 detail:
-                  'Failed to delete dorm administrator: ' + error.error.message,
+                  this.translate.instant('dormAdministrators.AllDorms.DeleteDormAdministratorMessageError') + error.error.message,
               });
             },
           });

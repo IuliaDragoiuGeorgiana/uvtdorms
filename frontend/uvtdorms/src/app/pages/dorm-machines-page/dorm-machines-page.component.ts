@@ -15,6 +15,7 @@ import {
   StatusMachine,
   convertStringStatusMachineToEnum,
 } from '../../enums/status-machine';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-dorm-machines-page',
@@ -36,13 +37,34 @@ export class DormMachinesPageComponent {
     statusMachine: StatusMachine.FUNCTIONAL,
   };
 
+  constructor(
+    private dormAdministratorDetailsService: DormAdministratorDetailsService,
+    private washingMachineService: WashingMachineService,
+    private dryerService: DryerService,
+    private laundryAppointmentService: AppointmentService,
+    private translate: TranslateService
+  ) {
+    this.dormAdministratorDetailsService.getAdministratedDormId().subscribe({
+      next: (dormIdDto) => {
+        this.dormId = dormIdDto.id;
+        this.getWashingMachines();
+        this.getDryers();
+      },
+      error(err) {
+        console.error(err);
+      },
+    });
+  }
+
   public machineType = MachineType;
   public selectedMachineType: MachineType | null = null;
 
   private initialAvailableWashingMachines: AvailableWashingMachineDto[] = [
     {
       id: '',
-      name: 'No associated washing machine',
+      name: this.translate.instant(
+        'dormMachine.initialAvailableWashingMachine.name'
+      ),
     },
   ];
   private availableWashingMachines: AvailableWashingMachineDto[] = [
@@ -52,7 +74,7 @@ export class DormMachinesPageComponent {
   private initialAvailableDryers: AvailableDryerDto[] = [
     {
       id: '',
-      name: 'No associated dryer',
+      name: this.translate.instant('dormMachine.initialAvailableDryer.name'),
     },
   ];
   private availableDryers: AvailableDryerDto[] = [
@@ -71,37 +93,35 @@ export class DormMachinesPageComponent {
 
   public listedMachinesType: MachineType = MachineType.WASHING_MACHINE;
   public listableMachineTypes = [
-    { type: MachineType.WASHING_MACHINE, name: 'Washing machines' },
-    { type: MachineType.DRYER, name: 'Dryers' },
+    {
+      type: MachineType.WASHING_MACHINE,
+      name: this.translate.instant(
+        'dormMachine.listableMachine.WashingMachine'
+      ),
+    },
+    {
+      type: MachineType.DRYER,
+      name: this.translate.instant('dormMachine.listableMachine.Dryer'),
+    },
   ];
 
   public isEditDialogVisible: boolean = false;
   public machineStatusOptions = [
-    { label: 'Functional', value: StatusMachine.FUNCTIONAL },
-    { label: 'Broken', value: StatusMachine.BROKEN },
+    {
+      label: this.translate.instant(
+        'dormMachine.machineStatus.label.functional'
+      ),
+      value: StatusMachine.FUNCTIONAL,
+    },
+    {
+      label: this.translate.instant('dormMachine.machineStatus.label.broken'),
+      value: StatusMachine.BROKEN,
+    },
   ];
   public newMachineStatus: StatusMachine = StatusMachine.FUNCTIONAL;
   private editedMachine: WashingMachine | Dryer | null = null;
   public newAssociatedMachine: string = '';
   public newMachineName: string = '';
-
-  constructor(
-    private dormAdministratorDetailsService: DormAdministratorDetailsService,
-    private washingMachineService: WashingMachineService,
-    private dryerService: DryerService,
-    private laundryAppointmentService: AppointmentService
-  ) {
-    this.dormAdministratorDetailsService.getAdministratedDormId().subscribe({
-      next: (dormIdDto) => {
-        this.dormId = dormIdDto.id;
-        this.getWashingMachines();
-        this.getDryers();
-      },
-      error(err) {
-        console.error(err);
-      },
-    });
-  }
 
   private getWashingMachines(): void {
     this.washingMachineService
@@ -179,7 +199,7 @@ export class DormMachinesPageComponent {
 
   private getWashingMachineStatus(washingMachine: WashingMachine): string {
     if (!this.isWashingMachineFunctional(washingMachine.statusMachine)) {
-      return 'Not available';
+      return this.translate.instant('dormMachine.wmStatus.notAvailable');
     }
 
     let associatedDryer = this.dryers?.find(
@@ -187,19 +207,19 @@ export class DormMachinesPageComponent {
     );
 
     if (associatedDryer === undefined) {
-      return 'No associated dryer';
+      return this.translate.instant('dormMachine.wmStatus.noAssociatedDryer');
     }
 
     if (!associatedDryer?.isAvailable) {
-      return 'Dryer not available';
+      return this.translate.instant('dormMachine.wmStatus.dryerNotAvailable');
     }
 
-    return 'Available';
+    return this.translate.instant('dormMachine.wmStatus.available');
   }
 
   private getDryerStatus(dryer: Dryer): string {
     if (!dryer.isAvailable) {
-      return 'Not available';
+      return this.translate.instant('dormMachine.dStatus.notAvailable');
     }
 
     let associatedWashingMachine = this.washingMachines.find(
@@ -207,14 +227,18 @@ export class DormMachinesPageComponent {
     );
 
     if (associatedWashingMachine === undefined) {
-      return 'No associated washing machine';
+      return this.translate.instant(
+        'dormMachine.dStatus.noAssociatedWashingMachine'
+      );
     }
 
     if (!associatedWashingMachine?.isAvailable) {
-      return 'Washing machine not available';
+      return this.translate.instant(
+        'dormMachine.dStatus.washingMachineNotAvailable'
+      );
     }
 
-    return 'Available';
+    return this.translate.instant('dormMachine.dStatus.available');
   }
 
   public getStatus(machine: any): string {
@@ -288,14 +312,20 @@ export class DormMachinesPageComponent {
     let associatedDryer = this.dryers?.find(
       (dryer) => dryer.id === washingMachine.associatedDryerId
     );
-    return associatedDryer?.name ?? 'No associated dryer';
+    return (
+      associatedDryer?.name ??
+      this.translate.instant('dormMachine.wmStatus.noAssociatedDryer')
+    );
   }
 
   public getAssociatedWashingMachineName(dryer: Dryer): string {
     let associatedWashingMachine = this.washingMachines.find(
       (washingMachine) => washingMachine.associatedDryerId === dryer.id
     );
-    return associatedWashingMachine?.name ?? 'No associated washing machine';
+    return (
+      associatedWashingMachine?.name ??
+      this.translate.instant('dormMachine.dStatus.noAssociatedWashingMachine')
+    );
   }
 
   private getWeeklyAppointmentsForWashingMachine(

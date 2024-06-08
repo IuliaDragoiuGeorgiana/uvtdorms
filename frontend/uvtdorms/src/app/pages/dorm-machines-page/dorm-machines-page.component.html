@@ -23,13 +23,13 @@
         <tr>
           <th style="width: 5rem"></th>
           <th pSortableColumn="name">
-            Name <p-sortIcon field="name"></p-sortIcon>
+            {{"dormMachines.AllMachine.NameLabel"|translate}}<p-sortIcon field="name"></p-sortIcon>
           </th>
           <th>
-            {{isDryerLabelingSelected() ? 'Associated Washing Machine' : ''}}
-            {{isWashingMachineLabelingSelected() ? 'Associated Dryer' : ''}}
+            {{isDryerLabelingSelected() ? ('dormMachines.AllMachine.AsociatedWashingMachine'|translate) : ''}}
+            {{isWashingMachineLabelingSelected() ? ('dormMachines.AllMachine.AsociatedDryer'|translate) : ''}}
           </th>
-          <th>Status</th>
+          <th>{{"dormMachines.AllMachine.StatusLabel"|translate}}</th>
           <th></th>
         </tr>
       </ng-template>
@@ -77,10 +77,10 @@
                 <ng-template pTemplate="header">
                   <tr>
                     <th pSortableColumn="intervalBeginDate">
-                      Hour <p-sortIcon field="intervalBeginDate"></p-sortIcon>
+                     {{"dormMachines.AllMachine.DetailsAppointmentHour"|translate}} <p-sortIcon field="intervalBeginDate"></p-sortIcon>
                     </th>
                     <th pSortableColumn="studentEmail">
-                      Student <p-sortIcon field="studentEmail"></p-sortIcon>
+                      {{"dormMachines.AllMachine.DetailsAppointmentStudent"|translate}} <p-sortIcon field="studentEmail"></p-sortIcon>
                     </th>
                   </tr>
                 </ng-template>
@@ -93,7 +93,7 @@
                 <ng-template pTemplate="emptymessage">
                   <tr>
                     <td colspan="6">
-                      There are no appointments for this machine yet.
+                      {{"dormMachines.AllMachine.DetailsAppointment.NoAppointments"|translate}}
                     </td>
                   </tr>
                 </ng-template>
@@ -107,25 +107,25 @@
   <p-dialog
     [(visible)]="addSomething"
     [style]="{ width: '60vw' }"
-    header="Machine Details"
+    header="{{'dormMachine.AddMachine.SelectTypeStepper'|translate}}"
     [modal]="true"
     styleClass="p-fluid">
     <p-stepper [linear]="true">
-      <p-stepperPanel header="Select machine type">
+      <p-stepperPanel header="{{'dormMachine.AddMachine.SelectTypeStepper'|translate}}">
         <ng-template
           pTemplate="content"
           let-nextCallback="nextCallback"
           let-index="index">
           <div class="select-machine-type-header">
             <h1 class="select-machine-type-header-h">
-              What type of machine do you want to add?
+             {{"dormMachine.AddMachine.SelectTypeHeader"|translate}}
             </h1>
           </div>
           <div class="select-machine-type-buttons">
             <div class="select-machine-type-buttons-left">
               <p-button
                 class="select-machine-type-button"
-                label="Washing machine"
+                label="{{'dormMachine.AddMachine.SelectTypeWashingMachine'|translate}}"
                 severity="info"
                 [raised]="true"
                 (onClick)="
@@ -136,7 +136,7 @@
             <div class="select-machine-type-buttons-right">
               <p-button
                 class="select-machine-type-button"
-                label="Dryer"
+                label="{{'dormMachine.AddMachine.SelectTypeDryer'|translate}}"
                 severity="info"
                 [raised]="true"
                 (onClick)="
@@ -145,7 +145,7 @@
             </div></div></ng-template>
       </p-stepperPanel>
 
-      <p-stepperPanel header="Set machine details">
+      <p-stepperPanel header="{{'dormMachine.AddMachine.SelectMachineDetails'|translate}}">
         <ng-template
           pTemplate="content"
           let-prevCallback="prevCallback"
@@ -164,8 +164,8 @@
                   [ngClass]="{'ng-invalid ng-dirty': newMachineForm.get('name')?.invalid && newMachineForm.get('name')?.touched}"
                   />
                 <label for="machine-name">
-                  {{isDryerSelected() ? 'Dryer name' :''}}
-                  {{isWashingMachineSelected() ? 'Washing Machine name' :''}}
+                  {{isDryerSelected() ? ('dormMachine.AddMachine.SelectMachineDetailsDryerName'|translate) :''}}
+                  {{isWashingMachineSelected() ? ('dormMachine.AddMachine.SelectMachineDetailsWashingMachineName'|translate) :''}}
                 </label>
               </p-floatLabel>
 
@@ -174,9 +174,8 @@
                 formControlName="associatedDryerOrWashingMachineId"
                 optionLabel="name"
                 optionValue="id"
-                placeholder="Select a Dryer"
-                class="set-machine-details-body-form-item"
-                emptyMessage="There are no available machines">
+                placeholder="{{'dormMachine.AddMachine.SelectDryerPlaceholder'|translate}}"
+                class="set-machine-details-body-form-item">
               </p-dropdown>
             </form>
           </div>
@@ -184,7 +183,7 @@
           <div class="set-machine-details-buttons-form">
             <div class="set-machine-details-buttons-form-left">
               <p-button
-                label="Back"
+                label="{{'dormMachine.AddMachine.BackButton'|translate}}"
                 icon="pi pi-arrow-left"
                 severity="warning"
                 [raised]="true"
@@ -194,7 +193,7 @@
 
             <div class="set-machine-details-buttons-form-right">
               <p-button
-                label="Next"
+                label="{{'dormMachine.AddMachine.NextButton'|translate}}"
                 icon="pi pi-arrow-right"
                 iconPos="right"
                 [raised]="true"
@@ -206,24 +205,24 @@
         </ng-template>
       </p-stepperPanel>
 
-      <p-stepperPanel header="Confirm">
+      <p-stepperPanel header="{{'dormMachine.AddMachine.ConfirmStepper'|translate}}">
         <ng-template
           pTemplate="content"
           let-prevCallback="prevCallback"
           let-index="index">
 
           <div class="set-machine-confirm-body-header">
-            <h1>Are you sure you want to add the following machine?</h1>
+            <h1>{{"dormMachine.AddMachine.ConfirmHeader"|translate}}</h1>
           </div>
 
           <div class="set-machine-confirm-body">
             <div class="set-machine-confirm-body-left">
-              <p>Machine type:</p>
-              <p>Machine name:</p>
-              <p>Associated machine:</p>
+              <p>{{"dormMachine.AddMachine.ConfirmDetailsMachineType"|translate}}:</p>
+              <p>{{"dormMachine.AddMachine.ConfirmDetailsMachineName"|translate}}:</p>
+              <p>{{"dormMachine.AddMachine.ConfirmDetailsAssociattedMachine"|translate}}:</p>
             </div>
             <div class="set-machine-confirm-body-right">
-              <p>{{isDryerSelected() ? 'Dryer' : 'Washing machine'}}</p>
+              <p>{{isDryerSelected() ? ('dormMacine.AddMachine.ConfirmBodyRightDryer'|translate) : ('dormMachine.AddMachine.ConfirmBodyRightWashingMachine'|translate)}}</p>
               <p>{{newMachineForm.get('name')?.value}}</p>
               <p>{{getAssociatedMachineName()}}</p>
             </div>
@@ -232,7 +231,7 @@
           <div class="set-machine-confirm-buttons">
             <div class="set-machine-confirm-buttons-left">
               <p-button
-                label="Back"
+                label="{{'dormMachine.AddMachine.BackButton'|translate}}"
                 icon="pi pi-arrow-left"
                 [raised]="true"
                 severity="warning"
@@ -257,24 +256,24 @@
     </p-stepper>
   </p-dialog>
   <p-dialog 
-    [header]="isWashingMachineLabelingSelected() ? 'Edit Washing machine' :
-              isDryerLabelingSelected() ? 'Edit Dryer' : ''"
+    [header]="isWashingMachineLabelingSelected() ? ('dormMachine.EditMachine.EditWashinMachineHeader'|translate) :
+              isDryerLabelingSelected() ? ('dormMachine.EditMachine.EditDryerHeader'|translate) : ''"
     [modal]="true"
     [(visible)]="isEditDialogVisible"
     [style]="{ width: '25rem' }">
     <div class="edit-machine-body">
       <div class="edit-machine-name edit-machine-item-container">
           <label for="name" class="edit-machine-name-label">
-            {{isWashingMachineLabelingSelected() ? 'Washing Machine Name' : ''}}
-            {{isDryerLabelingSelected() ? 'Dryer Name' : ''}}
+            {{isWashingMachineLabelingSelected() ? ('dormMachine.EditMachine.EditWashingMachineName'|translate) : ''}}
+            {{isDryerLabelingSelected() ? ('dormMachine.EditMachine.EditDryerName'|translate) : ''}}
           </label>
           <input pInputText [(ngModel)]="newMachineName" id="name" class="edit-machine-name-input edit-machine-item" autocomplete="off" />
       </div>
 
       <div class="edit-associated-machine edit-machine-item-container">
         <label for="associated-machine" class="edit-associated-machine-label">
-          {{isWashingMachineLabelingSelected() ? 'Associated Dryer' : ''}}
-          {{isDryerLabelingSelected() ? 'Associated Washing Machine' : ''}}
+          {{isWashingMachineLabelingSelected() ? ('dormMachine.EditMachine.EditWashingMachineAssociattedDryer'|translate) : ''}}
+          {{isDryerLabelingSelected() ? ('dormMachine.EditMachine.EditDryerAssociattedWashingMachine'|translate) : ''}}
         </label>
         <p-dropdown
           [options]="getAvailableMachinesForEditing()"
@@ -283,18 +282,18 @@
           optionValue="id"
           class="edit-machine-item"
           [placeholder]="
-            isDryerLabelingSelected() ? 'Select Associated Washing Machine' :
-            isWashingMachineLabelingSelected() ? 'Select Associated Dryer' : ''
+            isDryerLabelingSelected() ? ('dormMachine.EditMachine.SelectAssociattedWashingMachine'|translate) :
+            isWashingMachineLabelingSelected() ? ('dormMachine.EditMachine.SelectAssociattedDryer'|translate) : ''
           "
-          emptyMessage="There are no available machines"
+          emptyMessage="{{'dormMachine.EditMachine.NoAvailableMachine'|translate}}"
           id="associated-machine">
         </p-dropdown>
       </div>
 
       <div class="edit-machine-status edit-machine-item-container">
         <label for="machine-status" class="edit-machine-status-label">
-          {{isWashingMachineLabelingSelected() ? 'Washing Machine Status' : ''}}
-          {{isDryerLabelingSelected() ? 'Dryer Status' : ''}}
+          {{isWashingMachineLabelingSelected() ? ('dormMachine.EditMachine.WashingMachineStatus'|translate) : ''}}
+          {{isDryerLabelingSelected() ? ('dormMachine.EditMachine.DryerStatus'|translate) : ''}}
         </label>
         <p-dropdown
           [options]="machineStatusOptions"
@@ -307,8 +306,8 @@
       </div>
     </div>
     <div class="edit-machine-buttons">
-        <p-button label="Cancel" severity="secondary" (click)="isEditDialogVisible = false" />
-        <p-button label="Save" (click)="saveMachine()" />
+        <p-button label="{{'dormMachine.EditMachine.CancelButton'|translate}}" severity="secondary" (click)="isEditDialogVisible = false" />
+        <p-button label="{{'dormMachine.EditMachine.SaveButton'|translate}}" (click)="saveMachine()" />
     </div>
 </p-dialog>
 </div>

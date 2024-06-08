@@ -19,7 +19,7 @@
                             pButton
                             (click)="updateAttend(eveniment)"
                             type="button"
-                            label="Attend"
+                            label="{{'eveniments.Attending' | translate}}"
                             severity="info"
                             class="attend-button"
                         >
@@ -29,18 +29,18 @@
                             pButton
                             (click)="updateAttend(eveniment)"
                             type="button"
-                            label="Cancel attend"
+                            label="{{'eveniments.CancelAttendance'|translate}}"
                             severity="warning"
                             class="attend-button"
                         >
                         </button>
 
                         <span class="panel-footer-attendees" *ngIf="eveniment.canPeopleAttend">
-                            {{ eveniment.numberOfAttendees }} attending
+                            {{ eveniment.numberOfAttendees }} {{"eveniments.NumberofAttendees" | translate}}
                         </span>
 
                         <span class="panel-footer-date">
-                            Starting at {{ formatDate(eveniment.startDate) }}
+                            {{"eveniments.StartingAt"|translate}} {{ formatDate(eveniment.startDate) }}
                         </span>
                     </div>
                 </ng-template>

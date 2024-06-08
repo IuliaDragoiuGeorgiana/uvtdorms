@@ -1,10 +1,9 @@
-<h2 mat-dialog-title>New Register Request</h2>
-<p-toast></p-toast>
+<h2 mat-dialog-title>{{"dialog.newRegisterRequest"|translate}}</h2>
 <app-loading-screen *ngIf="isLoadingScreenVisible"></app-loading-screen>
 <mat-dialog-content>
   <form [formGroup]="newRequestForm" class="dialog-new-request-form" (ngSubmit)="sendNewRegisterRequest()">
     <mat-form-field appearance="fill">
-      <mat-label>Dorm name</mat-label>
+      <mat-label>{{"dialog.newRegisterRequest.dorm"|translate}}</mat-label>
       <mat-select
         (selectionChange)="onDormSelected()"
         formControlName="dormName"
@@ -16,7 +15,7 @@
     </mat-form-field>
 
     <mat-form-field appearance="fill">
-      <mat-label>Room number</mat-label>
+      <mat-label>{{"dialog.newRegisterRequest.room"|translate}}</mat-label>
       <input
         matInput
         type="number"
@@ -29,13 +28,13 @@
         "
       >
         <span *ngIf="roomNumber?.errors?.['required']"
-          >Room number is required</span
+          >{{"dialog.newRegisterRequest.error1"|translate}}</span
         >
         <span *ngIf="roomNumber?.errors?.['invalidRoomNumber']"
-          >Invalid room number</span
+          >{{"dialog.newRegisterRequest.error2"|translate}}</span
         >
       </mat-error>
     </mat-form-field>
-    <button class="button-submit-new-request" mat-button>Submit</button>
+    <button class="button-submit-new-request" mat-button>{{"dialog.newRegisterRequest.saveButton"|translate}}</button>
   </form>
 </mat-dialog-content>

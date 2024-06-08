@@ -1,14 +1,14 @@
-<h2 class="edit-phone-number-dialog-title">Edit phone number</h2>
+<h2 class="edit-phone-number-dialog-title">{{"dialog.changePhoneNumber.title"|translate}}</h2>
 <mat-dialog-content class="mat-typography">
   <div class="edit-phone-number-dialog-main-container">
     <form [formGroup]="editPhoneNumberForm" (ngSubmit)="onEditPhoneNumber()">
       <mat-form-field appearance="fill">
-        <mat-label>Phone number</mat-label>
+        <mat-label>{{"dialog.changePhoneNumber.titlelabel"|translate}}</mat-label>
         <input
           matInput
           type="tel"
           formControlName="phoneNumber"
-          placeholder="Enter phone number"
+          placeholder="{{'dialog.changePhoneNumber.placeholder'|translate}}"
           pattern="[0-9]*"
         />
         <mat-error
@@ -17,13 +17,13 @@
           "
         >
           <span *ngIf="phoneNumber?.errors?.['required']">
-            Phone number is required
+            {{"dialog.changePhoneNumber.condition"|translate}}
           </span>
           <span *ngIf="phoneNumber?.errors?.['pattern']">
-            Invalid phone number
+          {{"dialog.changePhoneNumber.matchError"|translate}}
           </span>
           <span *ngIf="phoneNumber?.errors?.['phoneNumberExists']">
-            Phone number already exists
+            {{"dialog.changePhoneNumber.phoneNumberTaken"|translate}}
           </span>
         </mat-error>
       </mat-form-field>
@@ -36,6 +36,6 @@
     (click)="onEditPhoneNumber()"
     class="edit-phone-submit-button"
   >
-    Save
+  {{"dialog.changePhoneNumber.saveButton"|translate}}
   </button>
 </mat-dialog-actions>

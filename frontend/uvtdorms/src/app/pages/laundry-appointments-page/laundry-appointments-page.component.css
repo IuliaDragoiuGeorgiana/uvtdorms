@@ -1,283 +1,285 @@
-.laundry-appointments-main-container
-{
-    width: 100%;
-    height: 94vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.laundry-appointments-main-container {
+  width: 100%;
+  height: 94vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.laundry-appointments-form-container
-{
-    width: 65%;
-    height: 80%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.2);
+.laundry-appointments-form-container {
+  width: 65%;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.2);
 }
 
 .laundry-appointments-form-header,
-.laundry-appointments-form-footer
-{
-    width: 100%;
-    height: 12%;
+.laundry-appointments-form-footer {
+  width: 100%;
+  height: 12%;
 }
 
-.laundry-appointments-form-header
-{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 0 2vw;
+.laundry-appointments-form-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 2vw;
 }
 
-.laundry-appiontments-form-header-content
-{
-    margin: 0 !important;
-    color: var(--uvt-blue);
-    font-weight: 500;
-    font-size: 3vh;
+.laundry-appiontments-form-header-content {
+  margin: 0 !important;
+  color: var(--uvt-blue);
+  font-weight: 500;
+  font-size: 3vh;
 }
 
-.laundry-appointments-form-footer
-{
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.laundry-appointments-form-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.laundry-appointments-form-submit-button
-{
-    color:white!important;
-    background-color: var(--uvt-blue)!important;
-    font-weight: 500;
+.laundry-appointments-form-submit-button {
+  color: white !important;
+  background-color: var(--uvt-blue) !important;
+  font-weight: 500;
 }
-.laundry-appointments-form-submit-button:hover{
-    box-shadow: 0px 3px 5px 2px rgba(0, 0, 0, 0.2);
+.laundry-appointments-form-submit-button:hover {
+  box-shadow: 0px 3px 5px 2px rgba(0, 0, 0, 0.2);
 }
 
-.laundry-appointments-form-content
-{
-    width: 100%;
-    height: 76%;
-    background-color: rgb(240, 240, 240);
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+.laundry-appointments-form-content {
+  width: 100%;
+  height: 76%;
+  background-color: rgb(240, 240, 240);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .laundry-appointments-form-content-left,
-.laundry-appointments-form-content-right
-{
-    width: 50%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
+.laundry-appointments-form-content-right {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
-.laundry-appointments-form-content-left
-{
-    align-items: center;
-    justify-content: flex-start;
-    padding: 2vw;
+.laundry-appointments-form-content-left {
+  align-items: center;
+  justify-content: flex-start;
+  padding: 2vw;
 }
 
-.laundry-appointments-form-content-left-days-header
-{
-    color: var(--uvt-blue);
-    font-weight: 500;
+.laundry-appointments-form-content-left-days-header {
+  color: var(--uvt-blue);
+  font-weight: 500;
 }
 
-.laundry-appointments-form-content-left-days
-{
-    width: 80%;
+.laundry-appointments-form-content-left-days {
+  width: 80%;
 }
 
-.laundry-appointments-form-content-right
-{
-    align-items: center;
-    justify-content: center;
+.laundry-appointments-form-content-right {
+  align-items: center;
+  justify-content: center;
 }
 
-.laundry-appointments-form-content-intervals-container
-{
+.laundry-appointments-form-content-intervals-container {
+  width: 90%;
+  height: 90%;
+  box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.laundry-appointments-form-content-intervals-header {
+  width: 100%;
+  height: 15%;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.laundry-appointments-form-content-intervals-header-content {
+  margin: 0;
+  color: var(--uvt-blue);
+  font-weight: 500;
+}
+
+.laundry-appointments-form-content-intervals-container-content {
+  width: 100%;
+  height: 85%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1vw;
+  padding: 1vw;
+}
+
+.laundry-appointments-form-content-interval {
+  width: 100%;
+  height: 100%;
+  box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.laundry-appointments-form-content-interval-text {
+  margin: 0;
+}
+
+.laundry-appointments-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.laundry-appointments-form-grid {
+  width: 100%;
+  height: 100%;
+}
+
+.laundry-appointments-form-submit-button {
+  width: 20vw;
+}
+
+.laundry-appointments-select-machine,
+.laundry-appointments-select-dryer {
+  width: 50%;
+  margin-top: 8vh;
+}
+
+.laundry-appointments-datepicker {
+  height: 90%;
+  width: 70%;
+}
+
+.laundry-appointments-chips {
+  width: 50%;
+}
+
+.selected-machine {
+  background-color: rgb(228, 172, 34);
+}
+
+.selected-dryer {
+  background-color: rgb(214, 157, 12);
+}
+
+.available-interval {
+  background-color: var(--uvt-blue);
+  color: white;
+}
+
+.available-interval:hover {
+  background-color: rgb(77, 146, 219) !important;
+}
+
+.selected-interval {
+  background-color: rgb(144, 190, 240) !important;
+}
+
+.unavailable-interval {
+  background-color: rgb(80, 106, 133);
+  color: white;
+  cursor: auto;
+}
+
+.confirmation-popup-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  border-radius: 20px;
+  background-color: white;
+  box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.2);
+  width: 20vw;
+}
+
+.confirmation-popup-body-header {
+  border-radius: 50%;
+  background-color: var(--uvt-blue);
+  color: white;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  height: 6rem;
+  width: 6rem;
+  margin-top: -4rem;
+}
+
+.confirmation-popup-body-header i {
+  font-size: 3rem;
+}
+
+.confirmation-popup-body-message-header {
+  font-size: 1.5rem;
+  color: var(--uvt-blue);
+  font-weight: 500;
+  display: block;
+  margin-bottom: 2vh;
+  margin-top: 4vh;
+}
+
+.confirmation-popup-body-message {
+  margin-bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.confirmation-popup-body-buttons {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 4vh;
+}
+
+@media (max-width: 600px) {
+  .laundry-appointments-main-container {
+    height: 100vh;
+  }
+
+  .laundry-appointments-form-container {
     width: 90%;
     height: 90%;
-    box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.1);
-    display: flex;
+  }
+
+  .laundry-appointments-form-content {
     flex-direction: column;
-    align-items: center;
-}
+  }
 
-.laundry-appointments-form-content-intervals-header
-{
-    width: 100%;
-    height: 15%;
-    background-color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+  .laundry-appointments-form-submit-button {
+    width: 60%;
+  }
 
-.laundry-appointments-form-content-intervals-header-content
-{
-    margin: 0;
-    color: var(--uvt-blue);
-    font-weight: 500;
-}
+  .laundry-appointments-form-content-left {
+    height: 50%;
+  }
 
-.laundry-appointments-form-content-intervals-container-content
-{
-    width: 100%;
-    height: 85%;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1vw;
-    padding: 1vw;
-}
+  .laundry-appointments-form-content-left,
+  .laundry-appointments-form-content-right {
+    width: 90%;
+  }
 
-.laundry-appointments-form-content-interval
-{
-    width: 100%;
-    height: 100%;
-    box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.1);
-    background-color: white;
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-}
+  .confirmation-popup-body {
+    width: 80vw;
+  }
 
-.laundry-appointments-form-content-interval-text
-{
-    margin: 0;
-}
-
-.laundry-appointments-form
-{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.laundry-appointments-form-grid
-{
-    width: 100%;
-    height: 100%;
-}
-
-.laundry-appointments-form-submit-button
-{
-    width: 20vw;
-}
-
-.laundry-appointments-select-machine, .laundry-appointments-select-dryer
-{
-    width: 50%;
-    margin-top: 8vh;
-}
-
-.laundry-appointments-datepicker
-{
-    height: 90%;
-    width: 70%;
-}
-
-.laundry-appointments-chips
-{
-    width: 50%;
-}
-
-.selected-machine
-{
-    background-color: rgb(228, 172, 34);
-}
-
-.selected-dryer
-{
-    background-color: rgb(214, 157, 12);
-}
-
-.available-interval
-{
-    background-color: var(--uvt-blue);
-    color: white;
-}
-
-.available-interval:hover
-{
-    background-color: rgb(77, 146, 219) !important;
-}
-
-.selected-interval
-{
-    background-color: rgb(144, 190, 240) !important;
-}
-
-.unavailable-interval
-{
-    background-color: rgb(80, 106, 133);
-    color: white;
-    cursor: auto;
-}
-
-.confirmation-popup-body
-{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 10px;
-    border-radius: 20px;
-    background-color: white;
-    box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.2);
-    width: 20vw;
-}
-
-.confirmation-popup-body-header
-{
-    border-radius: 50%;
-    background-color: var(--uvt-blue);
-    color: white;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    height: 6rem;
-    width: 6rem;
-    margin-top: -4rem;
-}
-
-.confirmation-popup-body-header i
-{
-    font-size: 3rem;
-}
-
-.confirmation-popup-body-message-header
-{
-    font-size: 1.5rem;
-    color: var(--uvt-blue);
-    font-weight: 500;
-    display: block;
-    margin-bottom: 2vh;
+  .laundry-appointments-select-machine,
+  .laundry-appointments-select-dryer {
+    width: 80%;
     margin-top: 4vh;
-}
-
-.confirmation-popup-body-message
-{
-    margin-bottom: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-}
-
-.confirmation-popup-body-buttons
-{
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-    margin-top: 4vh;
+  }
 }

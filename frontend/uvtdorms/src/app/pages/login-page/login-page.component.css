@@ -27,7 +27,8 @@
 }
 
 .left-container-header,
-.login-panel-slider-header,.right-container-header {
+.login-panel-slider-header,
+.right-container-header {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -89,40 +90,34 @@
   justify-content: flex-start;
 }
 
-.register-form-container
-{
+.register-form-container {
   width: 85% !important;
 }
 
-.register-form-container-input
-{
+.register-form-container-input {
   margin-bottom: 1vh !important;
 }
 
-.register-form-inputs
-{
-    height: 90%;
-    padding-bottom: 0;
+.register-form-inputs {
+  height: 90%;
+  padding-bottom: 0;
 }
 
-.register-form-combined-inputs
-{
-    width: 80%;
-    height: 15%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+.register-form-combined-inputs {
+  width: 80%;
+  height: 15%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.form-container-combined-input
-{
-    width: 45% !important;
+.form-container-combined-input {
+  width: 45% !important;
 }
 
-.register-form-actions
-{
-    height: 10%;
+.register-form-actions {
+  height: 10%;
 }
 
 .form-container-input {
@@ -197,38 +192,66 @@
   color: white !important;
 }
 
-.showLogin
-{
-    left: 50%;
+.showLogin {
+  left: 50%;
 }
 
-.showRegister
-{
-    left: 0;
+.showRegister {
+  left: 0;
 }
 
 .button-sign-up {
   background-color: white !important;
   width: 30%;
   color: var(--uvt-blue) !important;
-  
 }
 
 .button-sign-up:hover {
   box-shadow: 0px 3px 5px 2px rgba(0, 0, 0, 0.2);
 }
 
-.loading-overlay
-{
-    position: absolute;
-    top: 0;
-    left: 0;
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+@media (max-width: 600px) {
+  .login-page-login-container {
+    width: 90%;
+    height: 90%;
+  }
+
+  .left-container,
+  .right-container {
     width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(10px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 100;    
+  }
+
+  .login-panel-slider {
+    display: none;
+  }
+
+  .button-login
+  {
+    width: 60%;
+  }
+
+  .form-container,
+  .register-form-container
+  {
+    width: 90%;
+  }
+
+  .mobile-hide
+  {
+    display: none;
+  }
 }

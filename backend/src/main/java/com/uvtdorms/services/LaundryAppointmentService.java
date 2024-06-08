@@ -241,6 +241,14 @@ public class LaundryAppointmentService {
                 cq.where(studentPredicate);
 
                 List<LaundryAppointment> appointments = entityManager.createQuery(cq).getResultList();
+
+                for (LaundryAppointment appointmentEntity : appointments) {
+                        if(appointmentEntity.getIntervalBeginDate().isBefore(LocalDateTime.now())){
+                                appointmentEntity.setStatusLaundry(StatusLaundry.COMPLETED);
+                                laundryAppointmentRepository.save(appointmentEntity);
+                        }
+                }
+
                 return appointments.stream().map(
                                 appointmentEntity -> modelMapper.map(appointmentEntity,
                                                 StudentLaundryAppointmentsDto.class))

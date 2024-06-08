@@ -40,6 +40,10 @@ export class RoomsAdministrationPageComponent {
     return control.touched && control.invalid;
   }
 
+  get isMobileScreen(): boolean {
+    return window.innerWidth <= 600;
+  }
+
   constructor(
     private router: Router,
     private userSerivce: UserService,

@@ -19,3 +19,11 @@
     background-color: rgb(204, 62, 62);
     color: white !important;
 }
+
+@media (max-width: 600px)
+{
+  .remove-student-from-dorm-dialog-content
+  {
+    width: 100%;
+  }
+}

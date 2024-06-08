@@ -1,127 +1,131 @@
-.all-dorms-page-main-container
-{
-    width: 100vw;
-    height: 94vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.all-dorms-page-main-container {
+  width: 100vw;
+  height: 94vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.all-dorms-table-container
-{
-    width: 85%;
-    /* height: 85%; */
-    /* height: 35%; */
-    box-shadow: 0px 0px 10px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 20px;
-    overflow: hidden;
+.all-dorms-table-container {
+  width: 85%;
+  box-shadow: 0px 0px 10px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  overflow: hidden;
 }
 
-.all-dorms-table-caption
-{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+.all-dorms-table-caption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.add-new-dorm-buttons
-{
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
+.add-new-dorm-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
 }
 
-.add-new-dorm-body
-{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    padding: 1vh 0;
-    margin-bottom: 2vh;
+.add-new-dorm-body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 1vh 0;
+  margin-bottom: 2vh;
 }
 
-.add-new-dorm-form-element
-{
-    width: 80%;
-    margin: 1vh 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.add-new-dorm-form-element {
+  width: 80%;
+  margin: 1vh 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.add-new-dorm-form-input-element
-{
+.add-new-dorm-form-input-element {
+  width: 100%;
+}
+
+@layer primeng {
+  :host ::ng-deep .p-dropdown,
+  :host ::ng-deep .p-float-label {
     width: 100%;
+  }
+
+  :host ::ng-deep p-paginator {
+    margin-top: 2vh;
+  }
 }
 
-@layer primeng
-{
-    :host ::ng-deep .p-dropdown,
-    :host ::ng-deep .p-float-label
+.confirm-dialog-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px 10px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  width: 15vw;
+  height: 30vh;
+}
+
+.confirm-dialog-icon-container {
+  border-radius: 50%;
+  background-color: var(--uvt-blue);
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  height: 6rem;
+  width: 6rem;
+  transform: translateY(-50%);
+}
+
+.confirm-dialog-icon {
+  font-size: 3rem;
+  color: white;
+}
+
+.confirm-dialog-header-message {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-top: 0rem;
+  margin-bottom: 1rem;
+}
+
+.confirm-dialog-message {
+  margin: 0;
+  width: 70%;
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
+.confirm-dialog-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  margin-top: 2rem;
+  margin-bottom: 2vh;
+  width: 110%;
+}
+
+@media (max-width: 600px) {
+    .all-dorms-table-container
     {
-        width: 100%;
+        width: 90%;
     }
 
-    :host ::ng-deep p-paginator
+    .all-dorms-table-caption
     {
-        margin-top: 2vh;
+        flex-direction: column;
     }
-}
 
-.confirm-dialog-header
-{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px 10px rgba(0, 0, 0, 0.1);
-    background-color: white;
-    width: 15vw;
-    height: 30vh;
-}
+    .all-dorms-table-caption *
+    {
+        margin: 1vh 0;
+    }
 
-.confirm-dialog-icon-container
-{
-    border-radius: 50%;
-    background-color: var(--uvt-blue);
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    height: 6rem;
-    width: 6rem;
-    transform: translateY(-50%);
-}
-
-.confirm-dialog-icon
-{
-    font-size: 3rem;
-    color: white;
-}
-
-.confirm-dialog-header-message
-{
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-top: 0rem;
-    margin-bottom: 1rem;
-}
-
-.confirm-dialog-message
-{
-    margin: 0;
-    width: 70%;
-    display: flex;
-    align-items: center;
-    text-align: center;
-}
-
-.confirm-dialog-buttons
-{
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-    margin-top: 2rem;
-    margin-bottom: 2vh;
-    width: 110%;
+    .confirm-dialog-header
+    {
+        width: 70vw;
+    }
 }

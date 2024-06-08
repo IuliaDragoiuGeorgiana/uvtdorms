@@ -292,9 +292,9 @@
 	"forgotPassword.submitConfirm.success.messageheader": "Succes",
 	"forgotPassword.submitConfirm.success.message": "Un email a fost trimis cu instrucțiuni pentru a-ți reseta parola.",
 	"forgotPassword.submitConfirm.error.header": "A apărut o problemă",
-	"forgotPassword.submitConfirm.error.message": "Ceva nu a mers bine. Încearcă din nou mai târziu."
+	"forgotPassword.submitConfirm.error.message": "Ceva nu a mers bine. Încearcă din nou mai târziu.",
 
-
+	"ticketsAdministrationPage.caption":"Tichete"
 
 
 

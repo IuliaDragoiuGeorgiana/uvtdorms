@@ -46,3 +46,11 @@ font-weight: 400;
     background-color: var(--uvt-gray);
     padding: 0 1vw;
 }
+
+@media (max-width: 600px)
+{
+  .register-request-details-popup-main-container
+  {
+    width: 90vw;
+  }
+}

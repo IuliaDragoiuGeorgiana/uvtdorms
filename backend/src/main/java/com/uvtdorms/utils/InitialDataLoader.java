@@ -305,13 +305,16 @@ public class InitialDataLoader implements CommandLineRunner {
                 createLaundryAppointment(LocalDateTime.now().plusDays(1).withHour(8).withMinute(0).withSecond(0),
                                 taylorSwift,
                                 dorm13Machine1);
+                createLaundryAppointment(LocalDateTime.now().minusDays(1).withHour(8).withMinute(0).withSecond(0),
+                                taylorSwift,
+                                dorm13Machine1);
                 createLaundryAppointment(LocalDateTime.now().plusDays(1).withHour(10).withMinute(0).withSecond(0),
                                 iuliaDragoiu,
                                 dorm13Machine1);
                 createLaundryAppointment(LocalDateTime.now().withHour(10).withMinute(0).withSecond(0), emmaWatson,
                                 dorm13Machine1);
 
-                createApplicationAdministrator("Adam", "Sandler", "adam.sandler@e-uvt.ro", "0789189456", "hello",
+                createApplicationAdministrator("Adam", "Sandler", "j", "0789189456", "hello",
                                 "user-profile.jpg");
 
                 createDorm("C9", "Street2");

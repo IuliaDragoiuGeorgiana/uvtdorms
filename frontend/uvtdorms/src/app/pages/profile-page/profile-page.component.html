@@ -32,7 +32,7 @@
   header=""
   [(visible)]="isCreateEvenimentDialogVisible"
   modal="true"
-  [style]="{ width: '50vw', height: '90vh' }">
+  [style]="{ width: isMobileScreen ? '100vw' : '60vw', height: '90vh', '@media (max-width: 600px)': '100vw !important' }">
   <div class="new-eveniment-header">
     <h1>{{"profile.eventsCreate"|translate}}</h1>
   </div>

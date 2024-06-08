@@ -4,7 +4,7 @@
 </div>
 <div class="login-page-main-container">
   <div class="login-page-login-container">
-    <div class="left-container">
+    <div class="left-container" [ngClass]="{ 'mobile-hide': !showLogin}">
       <div class="left-container-header">
         <h1 class="left-container-header-content">{{ 'aunthentication.login.header' | translate }}</h1>
       </div>
@@ -83,9 +83,16 @@
           </div>
         </form>
       </div>
+      <button
+        pButton
+        icon="pi pi-chevron-right"
+        class="p-button-text p-button-rounded p-button-plain"
+        (click)="showLogin = !showLogin"
+      >
+      </button>
     </div>
 
-    <div class="right-container">
+    <div class="right-container" [ngClass]="{ 'mobile-hide': showLogin}">
       <div class="right-container-header">
         <h1 class="right-container-header-content">{{"authentication.register.header"|translate}}</h1>
       </div>
@@ -273,6 +280,13 @@
           </div>
         </form>
       </div>
+      <button
+        pButton
+        icon="pi pi-chevron-left"
+        class="p-button-text p-button-rounded p-button-plain"
+        (click)="showLogin = !showLogin"
+      >
+      </button>
     </div>
     <div
       class="login-panel-slider"

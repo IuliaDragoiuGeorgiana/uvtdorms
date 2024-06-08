@@ -73,6 +73,10 @@ export class ProfilePageComponent {
     return control.touched && control.invalid;
   }
 
+  get isMobileScreen(): boolean {
+    return window.innerWidth <= 600;
+  }
+
   public isEditEvenimentDialogVisible: boolean = false;
   public editEvenimentForm: FormGroup = new FormGroup({
     title: new FormControl('', [
@@ -215,9 +219,9 @@ export class ProfilePageComponent {
   getLaundryStatusSeverity(status: string) {
     switch (status) {
       case 'SCHEDULED':
-        return 'in progress';
+        return 'info';
       case 'COMPLETED':
-        return 'done';
+        return 'success';
       case 'CANCELED':
         return 'danger';
       default:

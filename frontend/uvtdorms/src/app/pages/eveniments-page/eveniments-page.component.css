@@ -88,3 +88,24 @@
 .attend-button {
   width: 20%;
 }
+
+@media (max-width: 600px) {
+  .eveniments-list-container {
+    width: 90%;
+  }
+
+  .panel-footer
+  {
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+  }
+
+  .panel-footer *{
+    margin-top: 1vh !important;
+  }
+  
+  .attend-button {
+    width: 70% !important;
+  }
+}

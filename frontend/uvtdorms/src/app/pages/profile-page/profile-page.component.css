@@ -34,8 +34,31 @@
 
 
   .profile-page-inside-containers-responsive{
-    height: auto !important;
+    height: 80vh !important;
     margin-top: 5vh	!important;
+  }
+
+  .profile-page-other-details-container
+  {
+    height: 25% !important;
+  }
+
+  @layer primeng {
+    :host ::ng-deep .p-dialog-draggable
+    {
+      width: 90vw !important;
+    }
+  }
+
+  .panel-footer
+  {
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+  }
+
+  .panel-footer *{
+    margin-top: 1vh !important;
   }
 }
 

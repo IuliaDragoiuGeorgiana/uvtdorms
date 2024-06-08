@@ -110,3 +110,23 @@
 {
     width: 100%;
 }
+
+@media (max-width: 600px){
+    .rooms-table-caption
+    {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .rooms-table-caption *
+    {
+        margin: 1vh 0;
+    }
+
+    .confirm-dialog-header
+    {
+        width: 60vw;
+    }
+}

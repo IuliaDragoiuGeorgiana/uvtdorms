@@ -2,29 +2,9 @@
 <p-toast></p-toast>
 <p-confirmDialog #cd>
   <ng-template pTemplate="headless" let-message>
-      <div class="confirm-dialog-header">
-          <div class="confirm-dialog-icon-container">
-              <i class="pi pi-question confirm-dialog-icon text-5xl"></i>
-          </div>
-          <span class="confirm-dialog-header-message">
-              {{ message.header }}
-          </span>
-          <p class="confirm-dialog-message mb-0">{{ message.message }}</p>
-          <div class="confirm-dialog-buttons flex align-items-center gap-2 mt-4">
-              <button 
-                  pButton 
-                  severity="danger"
-                  label="{{'profile.deleteButton'|translate}}" 
-                  (click)="cd.accept()" 
-                  class="w-8rem">
-              </button>
-              <button 
-                  pButton 
-                  label="{{'profile.cancelButton'|translate}}" 
-                  (click)="cd.reject()" 
-                  class="p-button-outlined w-8rem ">
-              </button>
-          </div>
+    <div class="confirm-dialog-header">
+      <div class="confirm-dialog-icon-container">
+        <i class="pi pi-question confirm-dialog-icon text-5xl"></i>
       </div>
       <span class="confirm-dialog-header-message">
         {{ message.header }}
@@ -190,20 +170,24 @@
     />
   </form>
   <div class="new-eveniment-dialog-buttons">
-      <button
-        pButton
-        class="new-eveniment-dialog-button"
-        label="{{'profile.cancelButton'|translate}}"
-        severity="secondary"
-        (click)="isEditEvenimentDialogVisible = false; editEvenimentForm.reset(); editEvenimentDto = undefined">
-      </button>
-      <button
-        pButton
-        class="new-eveniment-dialog-button"
-        label="{{'profile.saveButton'|translate}}"
-        severity="info"
-        (click)="updateEditedEveniment()">
-      </button>
+    <button
+      pButton
+      class="new-eveniment-dialog-button"
+      label="Cancel"
+      severity="secondary"
+      (click)="
+        isEditEvenimentDialogVisible = false;
+        editEvenimentForm.reset();
+        editEvenimentDto = undefined
+      "
+    ></button>
+    <button
+      pButton
+      class="new-eveniment-dialog-button"
+      label="Save"
+      severity="info"
+      (click)="updateEditedEveniment()"
+    ></button>
   </div>
 </p-dialog>
 <div class="profile-page-main-container">
@@ -300,7 +284,7 @@
           [paginator]="true"
           [rows]="10"
           [showCurrentPageReport]="true"
-          currentPageReportTemplate="{{'profile.showPaginator'|translate}}"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} requests"
         >
           <ng-template pTemplate="header">
             <tr>
@@ -384,9 +368,8 @@
           [paginator]="true"
           [rows]="10"
           [showCurrentPageReport]="true"
-          currentPageReportTemplate="{{'profile.showPaginator'|translate}}"
-          >
-        
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} requests"
+        >
           <ng-template pTemplate="header">
             <tr>
               <th>
@@ -468,8 +451,7 @@
           [paginator]="true"
           [rows]="10"
           [showCurrentPageReport]="true"
-          currentPageReportTemplate="{{'profile.showPaginator'|translate}}"
-          
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} requests"
         >
           <ng-template pTemplate="header">
             <tr>
@@ -536,7 +518,7 @@
               <td>
                 <div class="userTicketsCell">
                   <p-tag
-                    [value]="getLabelTicketStatus(ticket.statusTicket)"
+                    [value]="ticket.statusTicket"
                     [severity]="getTicketStatusSeverity(ticket.statusTicket)"
                   ></p-tag>
                 </div>

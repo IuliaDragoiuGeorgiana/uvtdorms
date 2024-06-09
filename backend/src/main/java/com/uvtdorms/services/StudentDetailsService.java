@@ -11,6 +11,7 @@ import com.uvtdorms.repository.dto.request.RegisterStudentDto;
 import com.uvtdorms.repository.dto.response.DisplayStudentDetailsDto;
 import com.uvtdorms.repository.dto.response.DormIdDto;
 import com.uvtdorms.repository.dto.response.EmailDto;
+import com.uvtdorms.repository.dto.response.StatisticsCountDto;
 import com.uvtdorms.repository.dto.response.StudentDetailsDto;
 import com.uvtdorms.repository.entity.Dorm;
 import com.uvtdorms.repository.entity.RegisterRequest;
@@ -165,6 +166,13 @@ public class StudentDetailsService implements IStudentDetailsService {
                 StudentDetails student = studentDetailsRepository.findByUserEmail(email)
                                 .orElseThrow(() -> new AppException("Student not found", HttpStatus.NOT_FOUND));
                 return modelMapper.map(student, DisplayStudentDetailsDto.class);
+        }
+
+        public StatisticsCountDto getStudentCount(){
+               
+                StatisticsCountDto numberOfStudents = new StatisticsCountDto();
+                numberOfStudents.setCount(studentDetailsRepository.findAll().size());
+                return numberOfStudents;
         }
 
 }

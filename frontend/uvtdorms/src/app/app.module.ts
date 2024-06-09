@@ -94,7 +94,8 @@ import { ProfilePageDisplayInactiveStudentComponent } from './pages/profile-page
 import { SidebarModule } from 'primeng/sidebar';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-
+import { ProfilePageDisplayApplicationAdministratorDetailsComponent } from './pages/profile-page/profile-page-display-application-administrator-details/profile-page-display-application-administrator-details.component';
+import { ChartModule } from 'primeng/chart';
 @NgModule({
   declarations: [
     AppComponent,
@@ -126,6 +127,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
     RoomsAdministrationPageComponent,
     EvenimentsPageComponent,
     ProfilePageDisplayInactiveStudentComponent,
+    ProfilePageDisplayApplicationAdministratorDetailsComponent,
   ],
   imports: [
     BrowserModule,
@@ -183,6 +185,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
     InputSwitchModule,
     ConfirmPopupModule,
     SidebarModule,
+    ChartModule,
 
     // ngx-translate and the loader module
     HttpClientModule,

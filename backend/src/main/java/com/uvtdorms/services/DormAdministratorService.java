@@ -6,6 +6,7 @@ import com.uvtdorms.repository.dto.response.DetailedDormAdministratorDto;
 import com.uvtdorms.repository.dto.response.DisplayDormAdministratorDetailsDto;
 import com.uvtdorms.repository.dto.response.DormAdministratorDto;
 import com.uvtdorms.repository.dto.response.DormIdDto;
+import com.uvtdorms.repository.dto.response.StatisticsCountDto;
 
 import java.util.List;
 import java.util.UUID;
@@ -171,5 +172,12 @@ public class DormAdministratorService {
 
                 dormAdministratorDetailsRepository.delete(dormAdministratorDetails);
                 userRepository.delete(user);
+        }
+
+        public StatisticsCountDto getDormAdministratorCount() {
+
+                StatisticsCountDto numberOfDormAdministrtor = new StatisticsCountDto();
+                numberOfDormAdministrtor.setCount(dormAdministratorDetailsRepository.findAll().size());
+                return numberOfDormAdministrtor;
         }
 }

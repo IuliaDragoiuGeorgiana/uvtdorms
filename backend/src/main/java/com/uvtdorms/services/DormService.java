@@ -16,6 +16,7 @@ import com.uvtdorms.repository.dto.request.UpdateDormAdministratorDto;
 import com.uvtdorms.repository.dto.response.AvailableDormDto;
 import com.uvtdorms.repository.dto.response.DormDto;
 import com.uvtdorms.repository.dto.response.DormsNamesDto;
+import com.uvtdorms.repository.dto.response.StatisticsCountDto;
 import com.uvtdorms.repository.entity.Dorm;
 import com.uvtdorms.repository.entity.DormAdministratorDetails;
 import com.uvtdorms.repository.entity.User;
@@ -118,5 +119,11 @@ public class DormService {
         List<Dorm> dorms = dormRepository.getByDormAdministratorDetails(null);
 
         return dorms.stream().map(dorm -> mapper.map(dorm, AvailableDormDto.class)).toList();
+    }
+
+    public StatisticsCountDto getDormsCount() {
+       StatisticsCountDto numberOfDormsDto = new StatisticsCountDto();
+         numberOfDormsDto.setCount(dormRepository.findAll().size());
+            return numberOfDormsDto;
     }
 }

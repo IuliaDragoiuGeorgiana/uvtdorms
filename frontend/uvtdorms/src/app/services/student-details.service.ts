@@ -8,6 +8,7 @@ import { EditRoomDto } from '../interfaces/edit-room-dto';
 import { RemoveStudentDialogData } from '../interfaces/remove-student-dialog-data';
 import { User } from '../interfaces/user';
 import { DisplayStudentsDetailsDto } from '../interfaces/display-students-details-dto';
+import { StatisticsCountDto } from '../interfaces/statistics-count-dto';
 @Injectable({
   providedIn: 'root',
 })
@@ -19,6 +20,7 @@ export class StudentDetailsService {
   private updateRoomNumberUrl = '/update-room-number';
   private removeStudentFromDormUrl = '/delete-student-from-dorm';
   private getStudentDetailsUrl = '/get-student-details';
+  private getNumberOfStudentsUrl = '/get-number-of-students';
 
   constructor(private http: HttpClient, private auth: AuthService) {}
 
@@ -54,6 +56,13 @@ export class StudentDetailsService {
   getStudentDetails(): Observable<DisplayStudentsDetailsDto> {
     return this.http.get<DisplayStudentsDetailsDto>(
       this.studentsDetailsServiceUrl + this.getStudentDetailsUrl,
+      { headers: this.auth.getHeader() }
+    );
+  }
+
+  getNumberOfStudents(): Observable<StatisticsCountDto> {
+    return this.http.get<StatisticsCountDto>(
+      this.studentsDetailsServiceUrl + this.getNumberOfStudentsUrl,
       { headers: this.auth.getHeader() }
     );
   }

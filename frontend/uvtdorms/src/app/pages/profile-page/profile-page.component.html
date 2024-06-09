@@ -2,151 +2,192 @@
 <p-toast></p-toast>
 <p-confirmDialog #cd>
   <ng-template pTemplate="headless" let-message>
-      <div class="confirm-dialog-header">
-          <div class="confirm-dialog-icon-container">
-              <i class="pi pi-question confirm-dialog-icon text-5xl"></i>
-          </div>
-          <span class="confirm-dialog-header-message">
-              {{ message.header }}
-          </span>
-          <p class="confirm-dialog-message mb-0">{{ message.message }}</p>
-          <div class="confirm-dialog-buttons flex align-items-center gap-2 mt-4">
-              <button 
-                  pButton 
-                  severity="danger"
-                  label="Delete" 
-                  (click)="cd.accept()" 
-                  class="w-8rem">
-              </button>
-              <button 
-                  pButton 
-                  label="Cancel" 
-                  (click)="cd.reject()" 
-                  class="p-button-outlined w-8rem ">
-              </button>
-          </div>
+    <div class="confirm-dialog-header">
+      <div class="confirm-dialog-icon-container">
+        <i class="pi pi-question confirm-dialog-icon text-5xl"></i>
       </div>
+      <span class="confirm-dialog-header-message">
+        {{ message.header }}
+      </span>
+      <p class="confirm-dialog-message mb-0">{{ message.message }}</p>
+      <div class="confirm-dialog-buttons flex align-items-center gap-2 mt-4">
+        <button
+          pButton
+          severity="danger"
+          label="Delete"
+          (click)="cd.accept()"
+          class="w-8rem"
+        ></button>
+        <button
+          pButton
+          label="Cancel"
+          (click)="cd.reject()"
+          class="p-button-outlined w-8rem"
+        ></button>
+      </div>
+    </div>
   </ng-template>
 </p-confirmDialog>
-<p-dialog 
+<p-dialog
   header=""
   [(visible)]="isCreateEvenimentDialogVisible"
   modal="true"
-  [style]="{ width: isMobileScreen ? '100vw' : '60vw', height: '90vh', '@media (max-width: 600px)': '100vw !important' }">
+  [style]="{
+    width: isMobileScreen ? '100vw' : '60vw',
+    height: '90vh',
+    '@media (max-width: 600px)': '100vw !important'
+  }"
+>
   <div class="new-eveniment-header">
-    <h1>{{"profile.eventsCreate"|translate}}</h1>
+    <h1>{{ "profile.eventsCreate" | translate }}</h1>
   </div>
   <form class="new-eveniment-form" [formGroup]="newEvenimentForm">
     <p-floatLabel class="new-eveniment-form-label">
-      <input 
+      <input
         formControlName="title"
         id="title"
         type="text"
-        [ngClass]="{'ng-dirty': hasNewEvenimentTitleError, 'ng-invalid': hasNewEvenimentTitleError}"
-        pInputText/>
-      <label for="title">{{"profile.eventsTitleLabel"|translate}}</label>
+        [ngClass]="{
+          'ng-dirty': hasNewEvenimentTitleError,
+          'ng-invalid': hasNewEvenimentTitleError
+        }"
+        pInputText
+      />
+      <label for="title">{{ "profile.eventsTitleLabel" | translate }}</label>
     </p-floatLabel>
-    <label class="new-eveniment-form-editor-label">{{"profile.eventsDescriptionLabel"|translate}}</label>
-    <p-editor formControlName="description" class="new-eveniment-form-editor" [style]="{ height: '200px' }">
+    <label class="new-eveniment-form-editor-label">{{
+      "profile.eventsDescriptionLabel" | translate
+    }}</label>
+    <p-editor
+      formControlName="description"
+      class="new-eveniment-form-editor"
+      [style]="{ height: '200px' }"
+    >
       <ng-template pTemplate="header">
-          <span class="ql-formats">
-              <button type="button" class="ql-bold" aria-label="Bold"></button>
-              <button type="button" class="ql-italic" aria-label="Italic"></button>
-              <button type="button" class="ql-underline" aria-label="Underline"></button>
-          </span>
+        <span class="ql-formats">
+          <button type="button" class="ql-bold" aria-label="Bold"></button>
+          <button type="button" class="ql-italic" aria-label="Italic"></button>
+          <button
+            type="button"
+            class="ql-underline"
+            aria-label="Underline"
+          ></button>
+        </span>
       </ng-template>
-  </p-editor>
-  <div class="new-eveniment-input-switch-container">
-    <p>{{"profileCanPeopleAttend"|translate}}</p>
-    <p-inputSwitch formControlName="canPeopleAttend"/>
-  </div>
-  <label class="new-eveniment-form-calendar-label">{{"profile.eventsDateLabel"|translate}}</label>
-  <p-calendar 
-  formControlName="startDate"
-    class="new-eveniment-form-calendar"
-    inputId="calendar-24h" 
-    [showTime]="true" 
-    [minDate]="minDate" 
-    [hourFormat]="'24'" />
+    </p-editor>
+    <div class="new-eveniment-input-switch-container">
+      <p>{{ "profileCanPeopleAttend" | translate }}</p>
+      <p-inputSwitch formControlName="canPeopleAttend" />
+    </div>
+    <label class="new-eveniment-form-calendar-label">{{
+      "profile.eventsDateLabel" | translate
+    }}</label>
+    <p-calendar
+      formControlName="startDate"
+      class="new-eveniment-form-calendar"
+      inputId="calendar-24h"
+      [showTime]="true"
+      [minDate]="minDate"
+      [hourFormat]="'24'"
+    />
   </form>
   <div class="new-eveniment-dialog-buttons">
-      <button
-        pButton
-        class="new-eveniment-dialog-button"
-        label="{{ 'profile.cancelButton' | translate }}"
-        severity="secondary"
-        (click)="isCreateEvenimentDialogVisible = false; newEvenimentForm.reset()">
-      </button>
-      <button
-        pButton
-        class="new-eveniment-dialog-button"
-        label="{{ 'profile.saveButton' | translate }}"
-        severity="info"
-        (click)="createEveniment()">
-      </button>
+    <button
+      pButton
+      class="new-eveniment-dialog-button"
+      label="{{ 'profile.cancelButton' | translate }}"
+      severity="secondary"
+      (click)="isCreateEvenimentDialogVisible = false; newEvenimentForm.reset()"
+    ></button>
+    <button
+      pButton
+      class="new-eveniment-dialog-button"
+      label="{{ 'profile.saveButton' | translate }}"
+      severity="info"
+      (click)="createEveniment()"
+    ></button>
   </div>
 </p-dialog>
 
-<p-dialog 
+<p-dialog
   header=""
   [(visible)]="isEditEvenimentDialogVisible"
   modal="true"
-  [style]="{ width: '50vw', height: '90vh' }">
+  [style]="{ width: '50vw', height: '90vh' }"
+>
   <div class="new-eveniment-header">
-    <h1>{{"profile.eventsEdit"|translate}}</h1>
+    <h1>{{ "profile.eventsEdit" | translate }}</h1>
   </div>
   <form class="new-eveniment-form" [formGroup]="editEvenimentForm">
     <p-floatLabel class="new-eveniment-form-label">
-      <input 
+      <input
         formControlName="title"
         id="title"
         type="text"
-        [ngClass]="{'ng-dirty': hasEditEvenimentTitleError, 'ng-invalid': hasEditEvenimentTitleError}"
-        pInputText/>
-      <label for="title">{{"profile.eventsTitleLabel"|translate}}</label>
+        [ngClass]="{
+          'ng-dirty': hasEditEvenimentTitleError,
+          'ng-invalid': hasEditEvenimentTitleError
+        }"
+        pInputText
+      />
+      <label for="title">{{ "profile.eventsTitleLabel" | translate }}</label>
     </p-floatLabel>
-    <label class="new-eveniment-form-editor-label">{{"profile.eventsDescriptionLabel"|translate}}</label>
+    <label class="new-eveniment-form-editor-label">{{
+      "profile.eventsDescriptionLabel" | translate
+    }}</label>
     <p-editor
-    #editor
+      #editor
       formControlName="description"
       class="new-eveniment-form-editor"
-      [style]="{ height: '200px' }">
+      [style]="{ height: '200px' }"
+    >
       <ng-template pTemplate="header">
-          <span class="ql-formats">
-              <button type="button" class="ql-bold" aria-label="Bold"></button>
-              <button type="button" class="ql-italic" aria-label="Italic"></button>
-              <button type="button" class="ql-underline" aria-label="Underline"></button>
-          </span>
-        </ng-template>
-  </p-editor>
-  <div class="new-eveniment-input-switch-container">
-    <p>{{"profileCanPeopleAttend"|translate}}</p>
-    <p-inputSwitch formControlName="canPeopleAttend"/>
-  </div>
-  <label class="new-eveniment-form-calendar-label">{{"profile.eventsDateLabel"|translate}}</label>
-  <p-calendar 
-  formControlName="startDate"
-    class="new-eveniment-form-calendar"
-    inputId="calendar-24h" 
-    [showTime]="true" 
-    [minDate]="minDate" 
-    [hourFormat]="'24'" />
+        <span class="ql-formats">
+          <button type="button" class="ql-bold" aria-label="Bold"></button>
+          <button type="button" class="ql-italic" aria-label="Italic"></button>
+          <button
+            type="button"
+            class="ql-underline"
+            aria-label="Underline"
+          ></button>
+        </span>
+      </ng-template>
+    </p-editor>
+    <div class="new-eveniment-input-switch-container">
+      <p>{{ "profileCanPeopleAttend" | translate }}</p>
+      <p-inputSwitch formControlName="canPeopleAttend" />
+    </div>
+    <label class="new-eveniment-form-calendar-label">{{
+      "profile.eventsDateLabel" | translate
+    }}</label>
+    <p-calendar
+      formControlName="startDate"
+      class="new-eveniment-form-calendar"
+      inputId="calendar-24h"
+      [showTime]="true"
+      [minDate]="minDate"
+      [hourFormat]="'24'"
+    />
   </form>
   <div class="new-eveniment-dialog-buttons">
-      <button
-        pButton
-        class="new-eveniment-dialog-button"
-        label="Cancel"
-        severity="secondary"
-        (click)="isEditEvenimentDialogVisible = false; editEvenimentForm.reset(); editEvenimentDto = undefined">
-      </button>
-      <button
-        pButton
-        class="new-eveniment-dialog-button"
-        label="Save"
-        severity="info"
-        (click)="updateEditedEveniment()">
-      </button>
+    <button
+      pButton
+      class="new-eveniment-dialog-button"
+      label="Cancel"
+      severity="secondary"
+      (click)="
+        isEditEvenimentDialogVisible = false;
+        editEvenimentForm.reset();
+        editEvenimentDto = undefined
+      "
+    ></button>
+    <button
+      pButton
+      class="new-eveniment-dialog-button"
+      label="Save"
+      severity="info"
+      (click)="updateEditedEveniment()"
+    ></button>
   </div>
 </p-dialog>
 <div class="profile-page-main-container">
@@ -199,6 +240,12 @@
         *ngIf="isInactivStudent()"
       >
       </app-profile-page-display-inactive-student>
+
+      <app-profile-page-display-application-administrator-details
+        class="profile-page-other-details-item"
+        *ngIf="isApplicationAdministrator()"
+      >
+      </app-profile-page-display-application-administrator-details>
     </div>
     <div
       class="profile-page-general-details-item profile-page-settings-button-container"
@@ -208,7 +255,7 @@
         class="profile-page-settings-button"
         (click)="openEditPhoneNumberDialog()"
       >
-       {{"profile.profile.changePhoneNumberButton"|translate}}
+        {{ "profile.profile.changePhoneNumberButton" | translate }}
       </button>
       <div class="profile-page-settings-button-container-divider"></div>
       <button
@@ -216,18 +263,20 @@
         mat-button
         (click)="openChangePasswordDialog()"
       >
-      {{"profile.profile.changePasswordButton"|translate}}
+        {{ "profile.profile.changePasswordButton" | translate }}
       </button>
     </div>
   </div>
-  <div class="profile-page-tabs-conatiner profile-page-inside-containers profile-page-inside-containers-responsive">
+  <div
+    class="profile-page-tabs-conatiner profile-page-inside-containers profile-page-inside-containers-responsive"
+  >
     <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center">
       <mat-tab
         class="profile-page-tab"
         *ngIf="isStudent() || isInactivStudent()"
         ><ng-template mat-tab-label>
           <mat-icon class="example-tab-icon">hourglass_empty</mat-icon>
-          {{"profile.registerRequestTitleLabel" | translate}}
+          {{ "profile.registerRequestTitleLabel" | translate }}
         </ng-template>
         <p-table
           [value]="registerRequests"
@@ -241,13 +290,29 @@
             <tr>
               <th>
                 <div class="userRegisterRequestsCell">
-                 {{"profile.registerRequestCreationDateLabel" | translate}}
+                  {{ "profile.registerRequestCreationDateLabel" | translate }}
                 </div>
               </th>
-              <th><div class="userRegisterRequestsCell">{{"profile.registerRequestDorm"|translate}}</div></th>
-              <th><div class="userRegisterRequestsCell">{{"profile.registerRequestRoom"|translate}}</div></th>
-              <th><div class="userRegisterRequestsCell">{{"profile.registerRequestContact"| translate}}</div></th>
-              <th><div class="userRegisterRequestsCell">{{"profile.registerRequestStatus"|translate}}</div></th>
+              <th>
+                <div class="userRegisterRequestsCell">
+                  {{ "profile.registerRequestDorm" | translate }}
+                </div>
+              </th>
+              <th>
+                <div class="userRegisterRequestsCell">
+                  {{ "profile.registerRequestRoom" | translate }}
+                </div>
+              </th>
+              <th>
+                <div class="userRegisterRequestsCell">
+                  {{ "profile.registerRequestContact" | translate }}
+                </div>
+              </th>
+              <th>
+                <div class="userRegisterRequestsCell">
+                  {{ "profile.registerRequestStatus" | translate }}
+                </div>
+              </th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-request>
@@ -295,7 +360,7 @@
       <mat-tab *ngIf="isStudent()">
         <ng-template mat-tab-label>
           <mat-icon class="example-tab-icon">calendar_today </mat-icon>
-          {{ "profile.laundryAppointmentTitleLabel" | translate}}
+          {{ "profile.laundryAppointmentTitleLabel" | translate }}
         </ng-template>
         <p-table
           [value]="studentLaundryAppointments"
@@ -312,13 +377,25 @@
                   {{ "profile.laundryAppointmentWashingMachine" | translate }}
                 </div>
               </th>
-              <th><div class="userLaundryAppointmentsCell">{{"profile.laundryAppointmentDryer"|translate}}</div></th>
               <th>
-                <div class="userLaundryAppointmentsCell">{{"profile.laundryAppointmentDate" | translate}}</div>
+                <div class="userLaundryAppointmentsCell">
+                  {{ "profile.laundryAppointmentDryer" | translate }}
+                </div>
               </th>
-              <th><div class="userLaundryAppointmentsCell">{{"profile.laundryAppointmentStatus" | translate}}</div></th>
               <th>
-                <div class="userLaundryAppointmentsCell">{{"profile.laundryAppointmentAnuleaza" | translate}}</div>
+                <div class="userLaundryAppointmentsCell">
+                  {{ "profile.laundryAppointmentDate" | translate }}
+                </div>
+              </th>
+              <th>
+                <div class="userLaundryAppointmentsCell">
+                  {{ "profile.laundryAppointmentStatus" | translate }}
+                </div>
+              </th>
+              <th>
+                <div class="userLaundryAppointmentsCell">
+                  {{ "profile.laundryAppointmentAnuleaza" | translate }}
+                </div>
               </th>
             </tr>
           </ng-template>
@@ -366,7 +443,7 @@
       <mat-tab *ngIf="isStudent()">
         <ng-template mat-tab-label>
           <mat-icon> report_problem</mat-icon>
-       {{"profile.ticketsTitleLabel" | translate}}
+          {{ "profile.ticketsTitleLabel" | translate }}
         </ng-template>
         <p-table
           [value]="studentTickets"
@@ -379,18 +456,34 @@
           <ng-template pTemplate="header">
             <tr>
               <th>
-                <div class="userTicketsCell">{{"profile.ticketsTitleTicket"|translate}}</div>
-              </th>
-              <th><div class="userTicketsCell">{{"profile.ticketsDescription"|translate}}</div></th>
-              <th>
-                <div class="userTicketsCell">{{"profile.ticketsCreationDateLabel"|translate}}</div>
-              </th>
-              <th><div class="userTicketsCell">{{"profile.ticketsIntervationType"|translate}}</div></th>
-              <th>
-                <div class="userTicketsCell">{{"profile.ticketsAlreadyAnuncement"| translate}}</div>
+                <div class="userTicketsCell">
+                  {{ "profile.ticketsTitleTicket" | translate }}
+                </div>
               </th>
               <th>
-                <div class="userTicketsCell">{{"profile.ticketsStatus"| translate}}</div>
+                <div class="userTicketsCell">
+                  {{ "profile.ticketsDescription" | translate }}
+                </div>
+              </th>
+              <th>
+                <div class="userTicketsCell">
+                  {{ "profile.ticketsCreationDateLabel" | translate }}
+                </div>
+              </th>
+              <th>
+                <div class="userTicketsCell">
+                  {{ "profile.ticketsIntervationType" | translate }}
+                </div>
+              </th>
+              <th>
+                <div class="userTicketsCell">
+                  {{ "profile.ticketsAlreadyAnuncement" | translate }}
+                </div>
+              </th>
+              <th>
+                <div class="userTicketsCell">
+                  {{ "profile.ticketsStatus" | translate }}
+                </div>
               </th>
             </tr>
           </ng-template>
@@ -437,7 +530,7 @@
       <mat-tab class="x" *ngIf="isDormAdmin()">
         <ng-template mat-tab-label>
           <mat-icon>whatshot</mat-icon>
-       {{"profile.myevenets"|translate}}
+          {{ "profile.myevenets" | translate }}
         </ng-template>
         <div class="administrator-eveniments-tab-header">
           <button
@@ -447,58 +540,74 @@
             icon="pi pi-plus"
             severity="success"
             (click)="isCreateEvenimentDialogVisible = true"
-          >
-          </button>
+          ></button>
         </div>
         <div class="eveniments-list-container">
           <div class="eveniments-list">
-              <p-panel *ngFor="let eveniment of eveniments" class="eveniment" [toggleable]="true">
-                  <ng-template pTemplate="header">
-                      <div class="panel-header">
-                          <span class="panel-header-title">
-                              {{ eveniment.title }}
-                          </span>
-                          <span class="panel-header-adminName">
-                              {{ eveniment.dormAdministratorName }}
-                          </span>
-                      </div>
-                  </ng-template>
-                  <ng-template pTemplate="icons" class="panel-icons">
-                    <button
-                      icon="pi pi-pencil"
-                      (click)="openEditEvenimentDialog(eveniment)"
-                      pButton
-                      pRipple
-                      type="text"
-                      class="p-button-rounded p-button-text p-button-info mr-2"
-                    >
-                    </button>
-                  </ng-template>
-                  <ng-template pTemplate="footer">
-                      <div class="panel-footer">
-                          <button
-                              pButton
-                              type="button"
-                              label="Delete"
-                              severity="danger"
-                              class="attend-button"
-                              (click)="deleteEveniment(eveniment)"
-                          >
-                          </button>
-  
-                          <span class="panel-footer-attendees" *ngIf="eveniment.canPeopleAttend" >
-                              {{ eveniment.numberOfAttendees }} {{"profile.myeventsAttending"|translate}}
-                          </span>
-  
-                          <span class="panel-footer-date">
-                              {{"profile.myeventsStartingAt"|translate}} {{ formatDate(eveniment.startDate) }}
-                          </span>
-                      </div>
-                  </ng-template>
-                  <div class="panel-body" [innerHTML]="eveniment.description"></div>
-              </p-panel>
+            <p-panel
+              *ngFor="let eveniment of eveniments"
+              class="eveniment"
+              [toggleable]="true"
+            >
+              <ng-template pTemplate="header">
+                <div class="panel-header">
+                  <span class="panel-header-title">
+                    {{ eveniment.title }}
+                  </span>
+                  <span class="panel-header-adminName">
+                    {{ eveniment.dormAdministratorName }}
+                  </span>
+                </div>
+              </ng-template>
+              <ng-template pTemplate="icons" class="panel-icons">
+                <button
+                  icon="pi pi-pencil"
+                  (click)="openEditEvenimentDialog(eveniment)"
+                  pButton
+                  pRipple
+                  type="text"
+                  class="p-button-rounded p-button-text p-button-info mr-2"
+                ></button>
+              </ng-template>
+              <ng-template pTemplate="footer">
+                <div class="panel-footer">
+                  <button
+                    pButton
+                    type="button"
+                    label="Delete"
+                    severity="danger"
+                    class="attend-button"
+                    (click)="deleteEveniment(eveniment)"
+                  ></button>
+
+                  <span
+                    class="panel-footer-attendees"
+                    *ngIf="eveniment.canPeopleAttend"
+                  >
+                    {{ eveniment.numberOfAttendees }}
+                    {{ "profile.myeventsAttending" | translate }}
+                  </span>
+
+                  <span class="panel-footer-date">
+                    {{ "profile.myeventsStartingAt" | translate }}
+                    {{ formatDate(eveniment.startDate) }}
+                  </span>
+                </div>
+              </ng-template>
+              <div class="panel-body" [innerHTML]="eveniment.description"></div>
+            </p-panel>
           </div>
-      </div>
+        </div>
+      </mat-tab>
+
+      <mat-tab *ngIf="isApplicationAdministrator()">
+        <ng-template mat-tab-label>
+          <mat-icon>assessment</mat-icon>
+          Prezentare generală
+        </ng-template>
+        <div class="overview-chart">
+          <p-chart width="{{isMobileScreen ? '300' : ' 600'}}" height="{{isMobileScreen ? '300' : ' 600'}}" *ngIf="isOverviewChartVisible" type="pie" [data]="data" [options]="options" />
+        </div>
       </mat-tab>
     </mat-tab-group>
   </div>

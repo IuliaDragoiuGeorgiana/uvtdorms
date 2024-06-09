@@ -314,7 +314,7 @@ public class InitialDataLoader implements CommandLineRunner {
                 createLaundryAppointment(LocalDateTime.now().withHour(10).withMinute(0).withSecond(0), emmaWatson,
                                 dorm13Machine1);
 
-                createApplicationAdministrator("Adam", "Sandler", "j", "0789189456", "hello",
+                createApplicationAdministrator("Adam", "Sandler", "adam.sandler@yahoo.com", "0789189456", "hello",
                                 "user-profile.jpg");
 
                 createDorm("C9", "Street2");

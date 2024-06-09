@@ -8,6 +8,7 @@ import com.uvtdorms.repository.dto.response.DisplayDormAdministratorDetailsDto;
 import com.uvtdorms.repository.dto.response.DormAdministratorDto;
 import com.uvtdorms.repository.dto.response.DormIdDto;
 import com.uvtdorms.repository.dto.response.EmailDto;
+import com.uvtdorms.repository.dto.response.StatisticsCountDto;
 import com.uvtdorms.services.DormAdministratorService;
 import lombok.RequiredArgsConstructor;
 
@@ -75,5 +76,11 @@ public class DormAdministratorController {
         dormAdministratorService.deleteDormAdministrator(email.getEmail());
 
         return ResponseEntity.ok().build();
+    }
+
+
+    @GetMapping("/get-number-of-dorm-administrators")
+    public ResponseEntity<StatisticsCountDto> getDormAdministratorCount() {
+        return ResponseEntity.ok(dormAdministratorService.getDormAdministratorCount());
     }
 }

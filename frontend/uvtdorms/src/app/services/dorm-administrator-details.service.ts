@@ -9,6 +9,7 @@ import { AddNewDormAdministratorDto } from '../interfaces/add-new-dorm-administr
 import { UpdateDormAdministratorDto } from '../interfaces/update-dorm-administrator-dto';
 import { EmailDto } from '../interfaces/email-dto';
 import { DetailedDormAdministratorDto } from '../interfaces/detailed-dorm-administrator-dto';
+import { StatisticsCountDto } from '../interfaces/statistics-count-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -25,6 +26,7 @@ export class DormAdministratorDetailsService {
   private updateDormAdministratorAssociatedDormUrl =
     '/update-dorm-administrator-associated-dorm';
   private deleteDormAdministratorUrl = '/delete-dorm-administrator';
+  private getNumberOfDormAdministratorsUrl = '/get-number-of-dorm-administrators';
 
   constructor(private http: HttpClient, private auth: AuthService) {}
 
@@ -84,6 +86,14 @@ export class DormAdministratorDetailsService {
     return this.http.post<void>(
       this.dormAdministratorDetailsServiceUrl + this.deleteDormAdministratorUrl,
       emailDto,
+      { headers: this.auth.getHeader() }
+    );
+  }
+
+  getNumberOfDormAdministrators(): Observable<StatisticsCountDto> {
+    return this.http.get<StatisticsCountDto>(
+      this.dormAdministratorDetailsServiceUrl +
+        this.getNumberOfDormAdministratorsUrl,
       { headers: this.auth.getHeader() }
     );
   }

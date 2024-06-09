@@ -24,6 +24,10 @@ import { CreateEvenimentDto } from '../../interfaces/create-eveniment-dto';
 import { IdDto } from '../../interfaces/id-dto';
 import { Editor } from 'primeng/editor';
 import { UpdateEvenimentDto } from '../../interfaces/update-eveniment-dto';
+import { get } from 'http';
+import { DormAdministratorDetailsService } from '../../services/dorm-administrator-details.service';
+import { StatisticsCountDto } from '../../interfaces/statistics-count-dto';
+import { StudentDetailsService } from '../../services/student-details.service';
 
 @Component({
   selector: 'app-profile-page',
@@ -36,6 +40,7 @@ export class ProfilePageComponent {
   public isRegisterRequestDialogVisible: boolean = false;
   public studentLaundryAppointments: StudentLaundryAppointmentsDto[] = [];
   public studentTickets: StudentTicketsDto[] = [];
+  public statistics: StatisticsCountDto | undefined = undefined;
 
   public eveniments: EvenimentDto[] = [];
 
@@ -55,6 +60,35 @@ export class ProfilePageComponent {
     startDate: new FormControl<Date>(new Date(), [Validators.required]),
     canPeopleAttend: new FormControl<boolean>(false),
   });
+
+  public data = {
+    labels: [
+      'Number of Dorm Administrators',
+      'Number of Dorms',
+      'Number of Students',
+    ],
+    datasets: [
+      {
+        data: [0, 0, 0]
+      },
+    ],
+  };
+
+  public options: any = {
+    plugins: {
+        legend: {
+            labels: {
+                usePointStyle: true,
+                color: 'rgba(0, 0, 0, 1)'
+            }
+        }
+    },
+    responsive: true,
+    maintainAspectRatio: false
+  };
+
+  public isOverviewChartVisible: boolean = false;
+
   public minDate = new Date();
   public isLoadingScreenVisible: boolean = true;
 
@@ -110,6 +144,9 @@ export class ProfilePageComponent {
 
   constructor(
     private userService: UserService,
+    private studentDetails: StudentDetailsService,
+    private dormService: DormService,
+    private dormAdministratorService: DormAdministratorDetailsService,
     private registerRequestService: RegisterRequestService,
     private ticketService: TicketService,
     private laundryAppointmentService: AppointmentService,
@@ -130,6 +167,8 @@ export class ProfilePageComponent {
           this.getDormAdministratorRelatedData();
         } else if (this.isApplicationAdministrator()) {
           this.getApplicationAdministratorRelatedData();
+        } else {
+          console.log('x');
         }
       },
       error(err) {
@@ -139,7 +178,54 @@ export class ProfilePageComponent {
   }
 
   private getApplicationAdministratorRelatedData() {
-    this.isLoadingScreenVisible = false;
+    console.log('hello world');
+    let l1 = false;
+    let l2 = false;
+    let l3 = false;
+    this.dormAdministratorService.getNumberOfDormAdministrators().subscribe({
+      next: (statistics) => {
+        this.data.datasets[0].data[0] = statistics.count;
+        l1 = true;
+        if (l1 && l2 && l3) {
+          console.log(this.data);
+          this.isOverviewChartVisible = true;
+          this.isLoadingScreenVisible = false;
+        }
+      },
+      error(err) {
+        console.error(err);
+      },
+    });
+
+    this.dormService.getNumberOfDorms().subscribe({
+      next: (statistics) => {
+        this.data.datasets[0].data[1] = statistics.count;
+        l2 = true;
+        if (l1 && l2 && l3) {
+          console.log(this.data);
+          this.isOverviewChartVisible = true;
+          this.isLoadingScreenVisible = false;
+        }
+      },
+      error(err) {
+        console.error(err);
+      },
+    });
+
+    this.studentDetails.getNumberOfStudents().subscribe({
+      next: (statistics) => {
+        this.data.datasets[0].data[2] = statistics.count;
+        l3 = true;
+        if (l1 && l2 && l3) {
+          console.log(this.data);
+          this.isOverviewChartVisible = true;
+          this.isLoadingScreenVisible = false;
+        }
+      },
+      error(err) {
+        console.error(err);
+      },
+    });
   }
 
   private getDormAdministratorRelatedData() {

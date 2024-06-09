@@ -5,6 +5,7 @@ import com.uvtdorms.repository.dto.request.EditRoomDto;
 import com.uvtdorms.repository.dto.response.DisplayStudentDetailsDto;
 import com.uvtdorms.repository.dto.response.DormIdDto;
 import com.uvtdorms.repository.dto.response.EmailDto;
+import com.uvtdorms.repository.dto.response.StatisticsCountDto;
 import com.uvtdorms.repository.dto.response.StudentDetailsDto;
 import com.uvtdorms.repository.entity.Dorm;
 import com.uvtdorms.services.DormAdministratorService;
@@ -64,5 +65,10 @@ public class StudentDetailsController {
         DisplayStudentDetailsDto studentDetails = studentDetailsService.getStudentDetails(token.getEmail());
 
         return ResponseEntity.ok(studentDetails);
+    }
+
+    @GetMapping("/get-number-of-students")
+    public ResponseEntity<StatisticsCountDto>getStudentCount(){
+        return ResponseEntity.ok(studentDetailsService.getStudentCount());
     }
 }

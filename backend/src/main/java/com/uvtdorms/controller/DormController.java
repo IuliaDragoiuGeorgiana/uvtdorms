@@ -14,6 +14,7 @@ import com.uvtdorms.repository.dto.response.AvailableDormDto;
 import com.uvtdorms.repository.dto.response.DormDto;
 import com.uvtdorms.repository.dto.response.DormIdDto;
 import com.uvtdorms.repository.dto.response.DormsNamesDto;
+import com.uvtdorms.repository.dto.response.StatisticsCountDto;
 import com.uvtdorms.services.DormService;
 
 import lombok.RequiredArgsConstructor;
@@ -57,4 +58,11 @@ public class DormController {
     public ResponseEntity<List<AvailableDormDto>> getAvailableDorms() {
         return ResponseEntity.ok(dormService.getAvailableDorms());
     }
+
+    @GetMapping("/get-number-of-dorms")
+    public ResponseEntity<StatisticsCountDto>getDormsCount() {
+        return ResponseEntity.ok(dormService.getDormsCount());
+    }
+
+   
 }

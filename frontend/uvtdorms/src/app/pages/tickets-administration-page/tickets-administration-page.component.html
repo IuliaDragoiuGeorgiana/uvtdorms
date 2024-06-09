@@ -6,17 +6,17 @@
       [tableStyle]="{ 'min-width': '60rem' }"
     >
       <ng-template pTemplate="caption">
-        {{"ticketsAdministrationPage.caption"|translate}}
+        {{"ticketsAdministrationPage.table.caption"|translate}}
       </ng-template>
       <ng-template pTemplate="header">
         <tr>
           <th style="width: 5rem"></th>
           <th pSortableColumn="creationDate">
-            Creation Date <p-sortIcon field="creationDate"></p-sortIcon>
+            {{"ticketsAdministrationPage.table.header.creationDate"|translate}} <p-sortIcon field="creationDate"></p-sortIcon>
           </th>
-          <th>Title</th>
+          <th>{{"ticketsAdministrationPage.table.header.title"|translate}}</th>
           <th pSortableColumn="status">
-            Status <p-sortIcon field="status"></p-sortIcon>
+            {{"ticketsAdministrationPage.table.header.status"|translate}} <p-sortIcon field="status"></p-sortIcon>
           </th>
         </tr>
       </ng-template>
@@ -54,31 +54,26 @@
               <p-table [value]="[ticket]" dataKey="title">
                 <ng-template pTemplate="header">
                   <tr>
-                    <th>Tip Interventie</th>
-                    <th>Description</th>
+                    <th>{{"ticketsAdministrationPage.table.expanded.header.interventionType"|translate}}</th>
+                    <th>{{"ticketsAdministrationPage.table.expanded.header.description"|translate}}</th>
                     <th pSortableColumn="alreadyAnuncement">
-                      Already Anuncement
+                      {{"ticketsAdministrationPage.table.expanded.header.alreadyAnnounced"|translate}}
                       <p-sortIcon field="alreadyAnuncement"></p-sortIcon>
                     </th>
                     <th pSortableColumn="studentEmail">
-                      Student Email
+                      {{"ticketsAdministrationPage.table.expanded.header.studentEmail"|translate}}
                       <p-sortIcon field="studentEmail"></p-sortIcon>
                     </th>
-                    <th>Room Number</th>
+                    <th>{{"ticketsAdministrationPage.table.expanded.header.roomNumber"|translate}}</th>
                   </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-ticket>
                   <tr>
                     <td>{{ ticket.tipInterventie }}</td>
                     <td [innerHTML]="ticket.description"></td>
-                    <td>{{ ticket.alreadyAnuncement }}</td>
+                    <td>{{ ticket.alreadyAnuncement ? ("ticketsAdministrationPage.table.expanded.header.alreadyAnnounced.yes"|translate) : ("ticketsAdministrationPage.table.expanded.header.alreadyAnnounced.no"|translate) }}</td>
                     <td>{{ ticket.studentEmail }}</td>
                     <td>{{ ticket.roomNumber }}</td>
-                  </tr>
-                </ng-template>
-                <ng-template pTemplate="emptymessage">
-                  <tr>
-                    <td colspan="5">No additional details for this ticket.</td>
                   </tr>
                 </ng-template>
               </p-table>

@@ -13,13 +13,13 @@
                 <button 
                     pButton 
                     severity="danger"
-                    label="Delete" 
+                    label="{{'roomsAdministrationPage.deleteRoom.dialog.buttons.delete'|translate}}" 
                     (click)="cd.accept()" 
                     class="w-8rem">
                 </button>
                 <button 
                     pButton 
-                    label="Cancel" 
+                    label="{{'roomsAdministrationPage.deleteRoom.dialog.buttons.cancel'|translate}}" 
                     (click)="cd.reject()" 
                     class="p-button-outlined w-8rem ">
                 </button>
@@ -28,7 +28,11 @@
     </ng-template>
 </p-confirmDialog>
 <p-toast></p-toast>
-<p-dialog header="Add new room" [modal]="true" [(visible)]="isAddNewRoomDialogVisible" [style]="{ width: '25rem' }">
+<p-dialog
+    header="{{'roomsAdministrationPage.addNewRoomDialog.header'|translate}}"
+    [modal]="true"
+    [(visible)]="isAddNewRoomDialogVisible"
+    [style]="{ width: '25rem' }">
     <form class="add-new-dorm-body" [formGroup]="addNewRoomForm">
         <p-floatLabel class="add-new-dorm-form-element">
             <input 
@@ -37,12 +41,12 @@
                 id="roomNumber"
                 formControlName="roomNumber"
                 [ngClass]="{'ng-dirty': hasRoomNumberError, 'ng-invalid': hasRoomNumberError}" />
-            <label for="roomNumber">Room number</label>
+            <label for="roomNumber">{{'roomsAdministrationPage.addNewRoomDialog.roomNumber.label'|translate}}</label>
         </p-floatLabel>
     </form>
     <div class="add-new-dorm-buttons">
-        <p-button label="Cancel" severity="secondary" (click)="isAddNewRoomDialogVisible = false" />
-        <p-button label="Save" severity="info" (click)="submitAddNewRoomForm()" />
+        <p-button label="{{'roomsAdministrationPage.addNewRoomDialog.buttons.cancel'|translate}}" severity="secondary" (click)="isAddNewRoomDialogVisible = false" />
+        <p-button label="{{'roomsAdministrationPage.addNewRoomDialog.buttons.save'|translate}}" severity="info" (click)="submitAddNewRoomForm()" />
     </div>
 </p-dialog>
 <div class="main-container">
@@ -59,7 +63,7 @@
         >
             <ng-template pTemplate="caption">
                 <div class="rooms-table-caption">
-                    Rooms
+                    {{"roomsAdministrationPage.table.caption"|translate}}
                     <div>
                         <p-iconField iconPosition="left">
                             <p-inputIcon>
@@ -70,7 +74,7 @@
                                 pInputText 
                                 type="text" 
                                 (input)="dt2.filterGlobal(inputF.value, 'contains')" 
-                                placeholder="Search keyword" />
+                                placeholder="{{'roomsAdministrationPage.table.search.placeholder'|translate}}" />
                         </p-iconField>
                     </div>
                     <p-button icon="pi pi-plus" severity="success" (click)="isAddNewRoomDialogVisible = true"/>
@@ -79,8 +83,8 @@
             <ng-template pTemplate="header">
                 <tr>
                     <th style="width:10%"></th>
-                    <th style="width:40%">Room number</th>
-                    <th style="width:40%">Number of students</th>
+                    <th style="width:40%">{{'roomsAdministrationPage.table.header.roomNumber'|translate}}</th>
+                    <th style="width:40%">{{'roomsAdministrationPage.table.header.numberOfStudents'|translate}}</th>
                     <th style="width:10%"></th>
                 </tr>
             </ng-template>
@@ -124,8 +128,8 @@
                             <p-table [value]="getStudentsFromRoom(room)" dataKey="name">
                                 <ng-template pTemplate="header">
                                     <tr>
-                                        <th>Id</th>
-                                        <th>Customer</th>
+                                        <th>{{"roomsAdministrationPage.table.extended.header.studentName"|translate}}</th>
+                                        <th>{{"roomsAdministrationPage.table.extended.header.studentEmail"|translate}}</th>
                                     </tr>
                                 </ng-template>
                                 <ng-template pTemplate="body" let-student>
@@ -136,7 +140,7 @@
                                 </ng-template>
                                 <ng-template pTemplate="emptymessage">
                                     <tr>
-                                        <td colspan="6">There are no order for this product yet.</td>
+                                        <td colspan="6">{{"roomsAdministrationPage.table.extended.noStudents"|translate}}</td>
                                     </tr>
                                 </ng-template>
                             </p-table>
@@ -146,7 +150,7 @@
             </ng-template>
             <ng-template pTemplate="emptymessage">
                 <tr>
-                    <td colspan="5">No customers found.</td>
+                    <td colspan="5">{{"roomsAdministrationPage.table.noRooms"|translate}}</td>
                 </tr>
             </ng-template>
         </p-table>

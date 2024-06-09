@@ -8,6 +8,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { RoomService } from '../../services/room.service';
 import { RoomNumberDto } from '../../interfaces/room-number-dto';
 import { LightUserDto } from '../../interfaces/light-user-dto';
+import { TranslateService } from '@ngx-translate/core';
 
 interface expandedRoom {
   roomNumber: string;
@@ -49,7 +50,8 @@ export class RoomsAdministrationPageComponent {
     private userSerivce: UserService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private roomService: RoomService
+    private roomService: RoomService,
+    private translate: TranslateService
   ) {}
 
   private updateRooms(): void {
@@ -72,7 +74,10 @@ export class RoomsAdministrationPageComponent {
 
   deleteRoom(room: DetailedRoomDto): void {
     this.confirmationService.confirm({
-      message: `Are you sure you want to delete room ${room.roomNumber}?`,
+      message:
+        this.translate.instant(
+          'roomsAdministrationPage.deleteRoom.dialog.message'
+        ) + ` ${room.roomNumber}?`,
       accept: () => {
         let roomNumberDto: RoomNumberDto = {
           roomNumber: room.roomNumber,
@@ -82,18 +87,24 @@ export class RoomsAdministrationPageComponent {
             this.updateRooms();
             this.messageService.add({
               severity: 'success',
-              summary: 'Success',
-              detail: `Room ${room.roomNumber} has been deleted`,
+              summary: this.translate.instant(
+                'roomsAdministrationPage.deleteRoom.dialog.success.summary'
+              ),
+              detail: this.translate.instant(
+                'roomsAdministrationPage.deleteRoom.dialog.success.detail'
+              ),
             });
           },
           error: (error) => {
             console.error('Error deleting room: ', error);
             this.messageService.add({
               severity: 'error',
-              summary: 'Error',
-              detail:
-                `Error deleting room ${room.roomNumber}: ` +
-                error?.error?.message,
+              summary: this.translate.instant(
+                'roomsAdministrationPage.deleteRoom.dialog.error.summary'
+              ),
+              detail: this.translate.instant(
+                'roomsAdministrationPage.deleteRoom.dialog.error.detail'
+              ),
             });
           },
         });
@@ -120,18 +131,24 @@ export class RoomsAdministrationPageComponent {
         this.addNewRoomForm.reset();
         this.messageService.add({
           severity: 'success',
-          summary: 'Success',
-          detail: `Room ${roomNumberDto.roomNumber} has been added`,
+          summary: this.translate.instant(
+            'roomsAdministrationPage.addNewRoomDialog.success.summary'
+          ),
+          detail: this.translate.instant(
+            'roomsAdministrationPage.addNewRoomDialog.success.detail'
+          ),
         });
       },
       error: (error) => {
         console.error('Error adding room: ', error);
         this.messageService.add({
           severity: 'error',
-          summary: 'Error',
-          detail:
-            `Error adding room ${roomNumberDto.roomNumber}: ` +
-            error?.error?.message,
+          summary: this.translate.instant(
+            'roomsAdministrationPage.addNewRoomDialog.error.summary'
+          ),
+          detail: this.translate.instant(
+            'roomsAdministrationPage.addNewRoomDialog.error.detail'
+          ),
         });
       },
     });
@@ -165,10 +182,12 @@ export class RoomsAdministrationPageComponent {
         console.error('Error getting students from room: ', error);
         this.messageService.add({
           severity: 'error',
-          summary: 'Error',
-          detail:
-            `Error getting students from room ${room.roomNumber}: ` +
-            error?.error?.message,
+          summary: this.translate.instant(
+            'roomsAdministrationPage.getStudentsFromRoom.error.summary'
+          ),
+          detail: this.translate.instant(
+            'roomsAdministrationPage.getStudentsFromRoom.error.detail'
+          ),
         });
         return [];
       },

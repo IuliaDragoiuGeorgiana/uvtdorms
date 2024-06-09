@@ -4,7 +4,6 @@ import { UserDetailsDto } from '../../interfaces/user-details-dto';
 import { ListedRegisterRequestDto } from '../../interfaces/listed-register-request-dto';
 import { RegisterRequestService } from '../../services/register-request.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { RoomService } from '../../services/room.service';
 import { DormService } from '../../services/dorm.service';
 import { MatDialog } from '@angular/material/dialog';
 import { NewRegisterRequestDialogComponent } from '../../elements/dialogs/new-register-request-dialog/new-register-request-dialog.component';
@@ -19,15 +18,14 @@ import { TicketService } from '../../services/ticket.service';
 import { StudentTicketsDto } from '../../interfaces/student-tickets-dto';
 import { EvenimentDto } from '../../interfaces/eveniment-dto';
 import { EvenimentService } from '../../services/eveniment.service';
-import { Router } from '@angular/router';
 import { CreateEvenimentDto } from '../../interfaces/create-eveniment-dto';
 import { IdDto } from '../../interfaces/id-dto';
 import { Editor } from 'primeng/editor';
 import { UpdateEvenimentDto } from '../../interfaces/update-eveniment-dto';
-import { get } from 'http';
 import { DormAdministratorDetailsService } from '../../services/dorm-administrator-details.service';
 import { StatisticsCountDto } from '../../interfaces/statistics-count-dto';
 import { StudentDetailsService } from '../../services/student-details.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-profile-page',
@@ -153,7 +151,8 @@ export class ProfilePageComponent {
     private dialog: MatDialog,
     private confirmService: ConfirmationService,
     private messageService: MessageService,
-    private evenimentService: EvenimentService
+    private evenimentService: EvenimentService,
+    private translate: TranslateService
   ) {}
 
   ngOnInit() {
@@ -289,6 +288,19 @@ export class ProfilePageComponent {
     });
   }
 
+  getLabelTicketStatus(status: string): string {
+    switch (status) {
+      case 'OPEN':
+        return this.translate.instant('ticketsAdministrationPage.status.open');
+      case 'RESOLVED':
+        return this.translate.instant(
+          'ticketsAdministrationPage.status.resolved'
+        );
+      default:
+        return 'Unknown Status';
+    }
+  }
+
   getRequestStatusSeverity(status: string) {
     switch (status) {
       case 'ACCEPTED':
@@ -420,9 +432,13 @@ export class ProfilePageComponent {
   confirmDeletion(event: Event) {
     this.confirmService.confirm({
       target: event.target as EventTarget,
-      message: 'Are you sure that you want to delete this appointment?',
+      message: this.translate.instant(
+        'profile.laundryAppointmentConfirmDeleteMessage'
+      ),
       icon: 'pi pi-exclamation-triangle',
-      header: 'Confirmation',
+      header: this.translate.instant(
+        'profile.laundryAppointmentConfirmDeleteHeader'
+      ),
       acceptButtonStyleClass: 'p-button-danger p-button-text',
       rejectButtonStyleClass: 'p-button-text p-button-text',
       acceptIcon: 'none',
@@ -438,11 +454,14 @@ export class ProfilePageComponent {
   deleteAppointment() {
     this.laundryAppointmentService.deleteAppointment().subscribe({
       next: () => {
-        console.log('Appointment deleted2');
         this.messageService.add({
           severity: 'info',
-          summary: 'Confirmed',
-          detail: 'You have deleted the appointment',
+          summary: this.translate.instant(
+            'profile.laundryAppointmentDeleteSuccesMessageHeader'
+          ),
+          detail: this.translate.instant(
+            'profile.laundryAppointmentDeleteSuccesMessage'
+          ),
         });
         window.location.reload();
       },
@@ -495,8 +514,10 @@ export class ProfilePageComponent {
         this.isLoadingScreenVisible = false;
         this.messageService.add({
           severity: 'success',
-          summary: 'Success',
-          detail: 'Eveniment created successfully',
+          summary: this.translate.instant(
+            'profile.createEventSuccessMessageHeader'
+          ),
+          detail: this.translate.instant('profile.createEventSuccessMessage'),
         });
       },
       error: (error) => {
@@ -504,8 +525,10 @@ export class ProfilePageComponent {
         this.isLoadingScreenVisible = false;
         this.messageService.add({
           severity: 'error',
-          summary: 'Error',
-          detail: 'Could not create the eveniment',
+          summary: this.translate.instant(
+            'profile.createEventErrorMessageHeader'
+          ),
+          detail: this.translate.instant('profile.createEventErrorMessage'),
         });
       },
     });
@@ -522,16 +545,20 @@ export class ProfilePageComponent {
         this.isLoadingScreenVisible = false;
         this.messageService.add({
           severity: 'success',
-          summary: 'Success',
-          detail: 'Eveniment deleted successfully',
+          summary: this.translate.instant(
+            'profile.deleteEventSuccesMessageHeader'
+          ),
+          detail: this.translate.instant('profile.deleteEventSuccesMessage'),
         });
       },
       error: (error) => {
         console.error(error);
         this.messageService.add({
           severity: 'error',
-          summary: 'Error',
-          detail: 'Could not delete the eveniment',
+          summary: this.translate.instant(
+            'profile.deleteEventErrorMessageHeader'
+          ),
+          detail: this.translate.instant('profile.deleteEventErrorMessage'),
         });
       },
     });
@@ -539,7 +566,7 @@ export class ProfilePageComponent {
 
   public deleteEveniment(eveniment: EvenimentDto) {
     this.confirmService.confirm({
-      message: 'Are you sure you want to delete this eveniment?',
+      message: this.translate.instant('profile.delete.ConfirmMessage'),
       accept: () => {
         this.deleteEvenimentConfirmed(eveniment);
       },
@@ -607,8 +634,12 @@ export class ProfilePageComponent {
         this.isLoadingScreenVisible = false;
         this.messageService.add({
           severity: 'success',
-          summary: 'Success',
-          detail: 'Eveniment updated successfully',
+          summary: this.translate.instant(
+            'profilPage.updateEveniment.popup.success.summary'
+          ),
+          detail: this.translate.instant(
+            'profilPage.updateEveniment.popup.success.detail'
+          ),
         });
       },
       error: (error) => {
@@ -616,8 +647,12 @@ export class ProfilePageComponent {
         this.isLoadingScreenVisible = false;
         this.messageService.add({
           severity: 'error',
-          summary: 'Error',
-          detail: 'Could not update the eveniment',
+          summary: this.translate.instant(
+            'profilPage.updateEveniment.popup.error.summary'
+          ),
+          detail: this.translate.instant(
+            'profilPage.updateEveniment.popup.error.detail'
+          ),
         });
       },
     });

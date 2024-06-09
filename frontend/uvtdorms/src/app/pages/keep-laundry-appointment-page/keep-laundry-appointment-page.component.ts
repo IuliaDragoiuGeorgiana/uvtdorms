@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModifiableLaundryAppointmentService } from '../../services/modifiable-laundry-appointment.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-keep-laundry-appointment-page',
@@ -19,7 +20,8 @@ export class KeepLaundryAppointmentPageComponent {
     private router: Router,
     private modifiableLaundryAppointmentService: ModifiableLaundryAppointmentService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private translate : TranslateService
   ) {
     this.id = this.route.snapshot.paramMap.get('id')!;
   }
@@ -51,8 +53,8 @@ export class KeepLaundryAppointmentPageComponent {
   public confirmCancel(): void {
     console.log('Confirm cancel');
     this.confirmationService.confirm({
-      message: 'Are you sure you want to cancel this laundry appointment?',
-      header: 'Please confirm',
+      message: this.translate.instant('keepLaundrAppointment.ConfimCancelMessage'),
+      header: this.translate.instant('keepLaundrAppointment.ConfirmCancelHeader'),
       icon: 'pi pi-exclamation-triangle',
       acceptIcon: 'none',
       rejectIcon: 'none',
@@ -68,8 +70,8 @@ export class KeepLaundryAppointmentPageComponent {
             error: (error) => {
               this.messageService.add({
                 severity: 'error',
-                summary: 'Something went wrong',
-                detail: 'Please try again later.',
+                summary: this.translate.instant('keepLaundrAppointment.CancelErrorHeader'),
+                detail: this.translate.instant('keepLaundrAppointment.CancelErrorMessage'),
                 life: 3000,
               });
             },
@@ -87,8 +89,8 @@ export class KeepLaundryAppointmentPageComponent {
   public confirmKeep(): void {
     console.log('Confirm keep');
     this.confirmationService.confirm({
-      message: 'Are you sure you want to keep this laundry appointment?',
-      header: 'Please confirm',
+      message: this.translate.instant('keepLaundrAppointment.ConfirmKeepMessage'),
+      header: this.translate.instant('keepLaundrAppointment.ConfirmKeepHeader'),
       icon: 'pi pi-exclamation-triangle',
       acceptIcon: 'none',
       rejectIcon: 'none',
@@ -104,8 +106,8 @@ export class KeepLaundryAppointmentPageComponent {
             error: () => {
               this.messageService.add({
                 severity: 'error',
-                summary: 'Something went wrong',
-                detail: 'Please try again later.',
+                summary: this.translate.instant('keepLaundrAppointment.KeepErrorHeader'),
+                detail: this.translate.instant('keepLaundrAppointment.KeepErrorMessage'),
                 life: 3000,
               });
             },

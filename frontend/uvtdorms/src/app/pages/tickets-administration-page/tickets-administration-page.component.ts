@@ -3,6 +3,7 @@ import { TicketService } from '../../services/ticket.service';
 import { TicketDto } from '../../interfaces/ticket-dto';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ChangeStatusTicketDto } from '../../interfaces/change-status-ticket-dto';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-tickets-administration-page',
@@ -11,12 +12,20 @@ import { ChangeStatusTicketDto } from '../../interfaces/change-status-ticket-dto
 })
 export class TicketsAdministrationPageComponent {
   public tickets: TicketDto[] = [];
-  public changeStatusTicketDto : ChangeStatusTicketDto = {ticketId: ''};
+  public changeStatusTicketDto: ChangeStatusTicketDto = { ticketId: '' };
 
-  constructor(private ticketService: TicketService,private confirmationService: ConfirmationService, private messageService: MessageService) {
+  constructor(
+    private ticketService: TicketService,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService,
+    private translate: TranslateService
+  ) {
+    this.updateTickets();
+  }
+
+  private updateTickets(): void {
     this.ticketService.getTicketsFromDorm().subscribe({
       next: (value) => {
-        console.log(value);
         this.tickets = value;
       },
       error(error) {
@@ -53,27 +62,34 @@ export class TicketsAdministrationPageComponent {
   getButtonLabelTicketStatus(status: string): string {
     switch (status) {
       case 'OPEN':
-        return 'OPEN';
+        return this.translate.instant('ticketsAdministrationPage.status.open');
       case 'RESOLVED':
-        return 'RESOLVED';
+        return this.translate.instant(
+          'ticketsAdministrationPage.status.resolved'
+        );
       default:
         return 'Unknown Status';
     }
   }
-  
 
   confirmChangeStatus(event: Event, ticket: TicketDto) {
     this.confirmationService.confirm({
       target: event.target!,
-      message: 'Are you sure you want to change the status of this ticket?',
+      message: this.translate.instant(
+        'ticketsAdministrationPage.changeStatus.dialog.message'
+      ),
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.changeStatus(ticket);
-        
-      }
+      },
+      acceptLabel: this.translate.instant(
+        'ticketsAdministrationPage.changeStatus.dialog.buttons.yes'
+      ),
+      rejectLabel: this.translate.instant(
+        'ticketsAdministrationPage.changeStatus.dialog.buttons.no'
+      ),
     });
   }
-  
 
   changeStatus(ticketDto: TicketDto) {
     let changeStatusTicketDto: ChangeStatusTicketDto = {
@@ -84,21 +100,27 @@ export class TicketsAdministrationPageComponent {
       next: () => {
         this.messageService.add({
           severity: 'info',
-          summary: 'Confirmed',
-          detail: 'You have changed the status of the ticket'
+          summary: this.translate.instant(
+            'ticketsAdministrationPage.changeStatus.dialog.success.summary'
+          ),
+          detail: this.translate.instant(
+            'ticketsAdministrationPage.changeStatus.dialog.success.detail'
+          ),
         });
-        window.location.reload();
-        console.log('Ticket status changed');
+        this.updateTickets();
       },
       error: (err) => {
         console.error(err);
         this.messageService.add({
           severity: 'error',
-          summary: 'Error',
-          detail: 'Failed to change the status of the ticket'
+          summary: this.translate.instant(
+            'ticketsAdministrationPage.changeStatus.dialog.error.summary'
+          ),
+          detail: this.translate.instant(
+            'ticketsAdministrationPage.changeStatus.dialog.error.detail'
+          ),
         });
-      }
+      },
     });
   }
-  
 }

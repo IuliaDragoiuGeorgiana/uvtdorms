@@ -12,6 +12,7 @@ import { FreeIntervalsDto } from '../../interfaces/free-intervals-dto';
 import { CreateLaundryAppointmentDto } from '../../interfaces/create-laundry-appointment-dto';
 
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { TranslateService } from '@ngx-translate/core';
 
 interface MachinePair {
   washingMachine: WashingMachine;
@@ -31,13 +32,13 @@ export class LaundryAppointmentsPageComponent {
   private selectedInterval: number = 0;
 
   public tabs = [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
+    this.translate.instant('laundryAppointments.Days.Sunday'),
+    this.translate.instant('laundryAppointments.Days.Monday'),
+    this.translate.instant('laundryAppointments.Days.Tuesday'),
+    this.translate.instant('laundryAppointments.Days.Wednesday'),
+    this.translate.instant('laundryAppointments.Days.Thursday'),
+    this.translate.instant('laundryAppointments.Days.Friday'),
+    this.translate.instant('laundryAppointments.Days.Saturday'),
   ];
   public currentDay = new Date().getDay();
   public selectedDay = new FormControl(this.currentDay);
@@ -58,7 +59,8 @@ export class LaundryAppointmentsPageComponent {
     private dryerService: DryerService,
     private studentService: StudentDetailsService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private translate: TranslateService
   ) {}
 
   ngOnInit() {
@@ -121,9 +123,9 @@ export class LaundryAppointmentsPageComponent {
     }
 
     this.confirmationService.confirm({
-      header: 'Are you sure?',
+      header: this.translate.instant('laundryAppointments.ConfimAppointmentHeader'),
       message:
-        'Do you want to create an appointment for ' +
+        this.translate.instant('laundryAppointments.ConfimAppointmentMessage') +
         this.getSelectedMachines()?.washingMachine.name +
         ' at ' +
         this.laundryAppointmentForm.value.selectedIntervalStartHour?.toString() +
@@ -174,11 +176,11 @@ export class LaundryAppointmentsPageComponent {
   private displayErrorMessage(error: any): void {
     let errorMsg: string = error.error.message;
     if (errorMsg === 'The student already has an appointment for this week') {
-      errorMsg = 'You already have an appointment for this week.';
+      errorMsg = this.translate.instant('laundryAppointments.ErrorMessageAlreadyAnAppointment');
     }
     this.messageService.add({
       severity: 'error',
-      summary: 'Something went wrong',
+      summary: this.translate.instant('laundryAppointments.ErrorMessage'),
       detail: errorMsg,
       sticky: true,
     });
@@ -187,8 +189,8 @@ export class LaundryAppointmentsPageComponent {
   private displayConfirmMessage(): void {
     this.messageService.add({
       severity: 'success',
-      summary: 'Confirmed',
-      detail: 'Appointment successfuly created!',
+      summary: this.translate.instant('laundryAppointments.ConfirmSuccessHeader'),
+      detail: this.translate.instant(''),
       life: 3000,
     });
   }

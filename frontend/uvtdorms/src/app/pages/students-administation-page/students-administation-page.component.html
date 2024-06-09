@@ -1,7 +1,7 @@
 <div class="main-container">
   <div class="left-container">
     <div class="left-container-header">
-      <h1 class="left-container-header-text">Register requests</h1>
+      <h1 class="left-container-header-text">{{"studentsAdministrationPage.leftContainer.header"|translate}}</h1>
     </div>
     <div class="left-container-content-container-main">
       <div class="left-container-content-container">
@@ -33,12 +33,12 @@
   <div class="right-container">
     <div class="right-container-header">
       <div class="right-container-header-title">
-        <h1 class="right-container-header-title-text">Students</h1>
+        <h1 class="right-container-header-title-text">{{"studentsAdministrationPage.rightContainer.header"|translate}}</h1>
       </div>
       <div class="right-container-header-search">
         <mat-form-field appearance="outline">
-          <mat-label>Search</mat-label>
-          <input matInput placeholder="Any field..." (keyup)="applyFilter($event)"/>
+          <mat-label>{{"studentsAdministrationPage.rightContainer.search"|translate}}</mat-label>
+          <input matInput placeholder="{{'studentsAdministrationPage.rightContainer.search.placeholder'|translate}}" (keyup)="applyFilter($event)"/>
           <mat-icon matSuffix class="right-container-header-search-icon"
             >search</mat-icon
           >
@@ -53,45 +53,45 @@
           class="right-container-content-table"
         >
           <ng-container matColumnDef="First name">
-            <th mat-header-cell class="students-table-header" *matHeaderCellDef>First name</th>
+            <th mat-header-cell class="students-table-header" *matHeaderCellDef>{{"studentsAdministrationPage.rightContainer.table.header.firstName"|translate}}</th>
             <td mat-cell class="student-table-cell-content"  *matCellDef="let element">{{ element.firstName }}</td>
           </ng-container>
 
           <ng-container matColumnDef="Last name">
-            <th mat-header-cell class="students-table-header"*matHeaderCellDef>Last name</th>
+            <th mat-header-cell class="students-table-header"*matHeaderCellDef>{{"studentsAdministrationPage.rightContainer.table.header.lastName"|translate}}</th>
             <td mat-cell class="student-table-cell-content" *matCellDef="let element">{{ element.lastName }}</td>
           </ng-container>
 
           <ng-container matColumnDef="Email">
-            <th mat-header-cell class="students-table-header" *matHeaderCellDef>Email</th>
+            <th mat-header-cell class="students-table-header" *matHeaderCellDef>{{"studentsAdministrationPage.rightContainer.table.header.email"|translate}}</th>
             <td mat-cell  class="student-table-cell-content" *matCellDef="let element">{{ element.email }}</td>
           </ng-container>
 
           <ng-container matColumnDef="Dorm name">
-            <th mat-header-cell class="students-table-header" *matHeaderCellDef>Dorm name</th>
+            <th mat-header-cell class="students-table-header" *matHeaderCellDef>{{"studentsAdministrationPage.rightContainer.table.header.dormName"|translate}}</th>
             <td mat-cell class="student-table-cell-content"  *matCellDef="let element">{{ element.dormName }}</td>
           </ng-container>
 
           <ng-container matColumnDef="Room number">
-            <th mat-header-cell class="students-table-header" *matHeaderCellDef>Room number</th>
+            <th mat-header-cell class="students-table-header" *matHeaderCellDef>{{"studentsAdministrationPage.rightContainer.table.header.roomNumber"|translate}}</th>
             <td mat-cell class="student-table-cell-content" *matCellDef="let element">{{ element.roomNumber }}</td>
           </ng-container>
           <ng-container matColumnDef="Matriculation number">
-            <th mat-header-cell class="students-table-header" *matHeaderCellDef>Matriculation number</th>
+            <th mat-header-cell class="students-table-header" *matHeaderCellDef>{{"studentsAdministrationPage.rightContainer.table.header.matriculationNumber"|translate}}</th>
             <td mat-cell class="student-table-cell-content" *matCellDef="let element">
               {{ element.matriculationNumber }}
             </td>
           </ng-container>
 
           <ng-container matColumnDef="Phone number">
-            <th mat-header-cell class="students-table-header" *matHeaderCellDef>Phone number</th>
+            <th mat-header-cell class="students-table-header" *matHeaderCellDef>{{"studentsAdministrationPage.rightContainer.table.header.phoneNumber"|translate}}</th>
             <td mat-cell class="student-table-cell-content" *matCellDef="let element">
               {{ element.phoneNumber }}
             </td>
           </ng-container>
 
           <ng-container matColumnDef="Edit">
-            <th class="students-table-header" mat-header-cell *matHeaderCellDef>Edit</th>
+            <th class="students-table-header" mat-header-cell *matHeaderCellDef>{{"studentsAdministrationPage.rightContainer.table.header.edit"|translate}}</th>
             <td mat-cell class="student-table-cell-content" *matCellDef="let element">
               <button  (click)="openEditRoomNumberDialog(element)" mat-button class="student-table-edit-button">
                 <mat-icon class="student-table-edit-button-icon">edit</mat-icon>
@@ -100,7 +100,7 @@
           </ng-container>
 
           <ng-container matColumnDef="Remove">
-            <th mat-header-cell class="students-table-header" *matHeaderCellDef>Remove from dorm</th>
+            <th mat-header-cell class="students-table-header" *matHeaderCellDef>{{"studentsAdministrationPage.rightContainer.table.header.delete"|translate}}</th>
             <td mat-cell class="student-table-cell-content" *matCellDef="let element">
               <button (click)="openRemoveStudentFromDormDialog(element)" mat-button class="student-table-remove-button">
                 <mat-icon class="student-table-remove-button-icon">delete_outline</mat-icon>

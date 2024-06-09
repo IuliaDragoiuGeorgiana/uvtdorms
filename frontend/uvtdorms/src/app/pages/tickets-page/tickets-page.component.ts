@@ -6,8 +6,8 @@ import {
   TipInterventie,
   convertStringtipInterventieToEnum,
 } from '../../enums/tip-interventie';
-import { Observable } from 'rxjs';
 import { MessageService } from 'primeng/api';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-tickets-page',
@@ -27,7 +27,8 @@ export class TicketsPageComponent {
 
   constructor(
     private ticketService: TicketService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private translate: TranslateService
   ) {
     let interventionTypes = Object.keys(TipInterventie);
     for (let i = 0; i < interventionTypes.length; i++) {
@@ -63,7 +64,6 @@ export class TicketsPageComponent {
       next: () => {
         this.displayConfirmMessage();
         this.loadigScreen = false;
-        console.log('Ticket created');
       },
       error: () => {
         this.displayErrorMessage();
@@ -73,11 +73,10 @@ export class TicketsPageComponent {
   }
 
   private displayErrorMessage(): void {
-    let errorMsg = 'Something went wrong';
     this.messageService.add({
       severity: 'error',
-      summary: 'Something went wrong',
-      detail: errorMsg,
+      summary: this.translate.instant('ticketsPage.display.error.summary'),
+      detail: this.translate.instant('ticketsPage.display.error.detail'),
       sticky: true,
     });
   }
@@ -85,8 +84,8 @@ export class TicketsPageComponent {
   private displayConfirmMessage(): void {
     this.messageService.add({
       severity: 'success',
-      summary: 'Confirmed',
-      detail: 'Ticket successfuly created!',
+      summary: this.translate.instant('ticketsPage.display.success.summary'),
+      detail: this.translate.instant('ticketsPage.display.success.detail'),
       life: 3000,
     });
   }

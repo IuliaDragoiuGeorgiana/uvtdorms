@@ -2,7 +2,7 @@
     <div class="laundry-appointments-form-container">
         <div class="laundry-appointments-form-header">
             <h1 class="laundry-appiontments-form-header-content">
-                Laundry Appointment
+                {{"laundryAppointments.Header" | translate}}
             </h1>
         </div>
         <p-toast position="top-center"></p-toast>
@@ -15,8 +15,8 @@
                     <span class="confirmation-popup-body-message-header">{{ message.header }}</span>
                     <p class="confirmation-popup-body-message">{{ message.message }}</p>
                     <div class="confirmation-popup-body-buttons flex align-items-center gap-2 mt-4">
-                        <button pButton label="Save" (click)="cd.accept()" class="w-8rem"></button>
-                        <button pButton label="Cancel" (click)="cd.reject()" class="p-button-outlined w-8rem "></button>
+                        <button pButton label="{{'laundryAppointments.SaveButton'|translate}}" (click)="cd.accept()" class="w-8rem"></button>
+                        <button pButton label="{{'laundryAppointments.CancelButton'|translate}}" (click)="cd.reject()" class="p-button-outlined w-8rem "></button>
                     </div>
                 </div>
             </ng-template>
@@ -36,7 +36,7 @@
                 </div>
 
                 <mat-form-field class="laundry-appointments-select-machine">
-                    <mat-label>Choose a washing machine</mat-label>
+                    <mat-label>{{"laundryAppointments.ChoooseWashingMachine"|translate}}</mat-label>
                     <mat-select
                         (selectionChange)="updateIntervals()"
                         formControlName="selectedMachineId">
@@ -52,7 +52,7 @@
                 </mat-form-field>
 
                 <mat-form-field class="laundry-appointments-select-dryer">
-                    <mat-label>Associated dryer</mat-label>
+                    <mat-label>{{"laundryAppointments.AssoicatedDryer"|translate}}</mat-label>
                     <input [readonly]="true"  matInput [value]="getSelectedMachines()?.dryer?.name">
                 </mat-form-field>
             </div>
@@ -82,7 +82,7 @@
                 mat-raised-button
                 (click)="makeAppointment()"
                 class="laundry-appointments-form-submit-button">
-                Make an appointment
+                {{"laundryAppointments.MakeAppointment" | translate}}
             </button>
         </div>
     </div>

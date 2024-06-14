@@ -259,6 +259,8 @@ public class InitialDataLoader implements CommandLineRunner {
         @Transactional
         public void run(String... args) throws Exception {
                 Dorm dorm13 = createDorm("D13", "Street1");
+                Dorm dorm14 = createDorm("D14", "Street1");
+                Room room4 = createRoom("4", dorm14);
 
                 WashingMachine dorm13Machine1 = createWashingMachine("Machine1", dorm13, StatusMachine.FUNCTIONAL,
                                 null);
@@ -280,6 +282,7 @@ public class InitialDataLoader implements CommandLineRunner {
 
                 Room room1 = createRoom("1", dorm13);
                 Room room2 = createRoom("2", dorm13);
+                Room room3 = createRoom("3", dorm13);
 
                 StudentDetails taylorSwift = createStudent("Taylor", "Swift", "taylor.swift@e-uvt.ro", "0765891234",
                                 "hello",
@@ -298,7 +301,7 @@ public class InitialDataLoader implements CommandLineRunner {
 
                 createRegisterRequest("Vin", "Diesel", "vin.diesel@e-uvt.ro", "0789123456", "hello", room1, "I1235",
                                 "user-profile.jpg");
-                createRegisterRequest("IuliBuli", "Geo", "iuliadragoiu2@gmail.com", "0789133456", "hello", room2,
+                createRegisterRequest("IuliBuli", "Geo", "iuliadragoiu2002@gmail.com", "0789133456", "hello", room2,
                                 "I1834",
                                 "user-profile.jpg");
 

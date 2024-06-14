@@ -36,9 +36,6 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<RepairTicket> repairTickets;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Announcement> announcements;
-
     @Enumerated(EnumType.STRING)
     private Role role;
 
@@ -46,7 +43,7 @@ public class User {
     private DormAdministratorDetails dormAdministratorDetails;
 
     @ManyToMany
-    private List<Eveniment> events;
+    private List<Eveniment> attendingToEvents;
 
     private Boolean isActive;
 

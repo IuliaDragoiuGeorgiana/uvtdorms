@@ -74,7 +74,7 @@ public class StudentDetailsService implements IStudentDetailsService {
                                 .email(registerStudentDto.email())
                                 .phoneNumber(registerStudentDto.phoneNumber())
                                 .password(passwordEncoder.encode(generatedPassword))
-                                .role(Role.STUDENT)
+                                .role(Role.INACTIV_STUDENT)
                                 .isActive(false)
                                 .build();
 

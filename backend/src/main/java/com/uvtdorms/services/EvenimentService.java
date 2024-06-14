@@ -20,6 +20,7 @@ import com.uvtdorms.repository.entity.DormAdministratorDetails;
 import com.uvtdorms.repository.entity.Eveniment;
 import com.uvtdorms.repository.entity.User;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -29,6 +30,7 @@ public class EvenimentService {
     private final IUserRepository userRepository;
     private final ModelMapper modelMapper;
 
+    @Transactional
     public List<EvenimentDetailsDto> getEvenimentsFromDorm(String userEmail) {
         User user = userRepository.getByEmail(userEmail).orElseThrow(
                 () -> new AppException("User not found", HttpStatus.NOT_FOUND));

@@ -271,6 +271,177 @@
     class="profile-page-tabs-conatiner profile-page-inside-containers profile-page-inside-containers-responsive"
   >
     <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center">
+      <mat-tab *ngIf="isStudent()">
+        <ng-template mat-tab-label>
+          <mat-icon class="example-tab-icon">calendar_today </mat-icon>
+          {{ "profile.laundryAppointmentTitleLabel" | translate }}
+        </ng-template>
+        <p-table
+          [value]="studentLaundryAppointments"
+          [tableStyle]="{ 'min-width': '100%' }"
+          [paginator]="true"
+          [rows]="10"
+          [showCurrentPageReport]="true"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} requests"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th>
+                <div class="userLaundryAppointmentsCell">
+                  {{ "profile.laundryAppointmentWashingMachine" | translate }}
+                </div>
+              </th>
+              <th>
+                <div class="userLaundryAppointmentsCell">
+                  {{ "profile.laundryAppointmentDryer" | translate }}
+                </div>
+              </th>
+              <th>
+                <div class="userLaundryAppointmentsCell">
+                  {{ "profile.laundryAppointmentDate" | translate }}
+                </div>
+              </th>
+              <th>
+                <div class="userLaundryAppointmentsCell">
+                  {{ "profile.laundryAppointmentStatus" | translate }}
+                </div>
+              </th>
+              <th>
+                <div class="userLaundryAppointmentsCell">
+                  {{ "profile.laundryAppointmentAnuleaza" | translate }}
+                </div>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-laundry>
+            <tr>
+              <td>
+                <div class="userLaundryAppointmentsCell">
+                  {{ laundry.washingMachineNumber }}
+                </div>
+              </td>
+              <td>
+                <div class="userLaundryAppointmentsCell">
+                  {{ laundry.dryerNumber }}
+                </div>
+              </td>
+              <td>
+                <div class="userLaundryAppointmentsCell">
+                  {{ formatLaundryAppoitnmentDate(laundry.intervalBeginDate) }}
+                </div>
+              </td>
+              <td>
+                <div class="userLaundryAppointmentsCell">
+                  <p-tag
+                    [value]="laundry.statusLaundry"
+                    [severity]="getLaundryStatusSeverity(laundry.statusLaundry)"
+                  ></p-tag>
+                </div>
+              </td>
+              <td>
+                <div *ngIf = "isScheduledLaundrtyStatus(laundry.statusLaundry )" class="userLaundryAppointmentsCell">
+                  <p-toast />
+                  <p-button
+                    (click)="confirmDeletion($event)"
+                    icon="pi pi-times"
+                    [rounded]="true"
+                    severity="danger"
+                    
+                  ></p-button>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </mat-tab>
+
+      <mat-tab *ngIf="isStudent()">
+        <ng-template mat-tab-label>
+          <mat-icon> report_problem</mat-icon>
+          {{ "profile.ticketsTitleLabel" | translate }}
+        </ng-template>
+        <p-table
+          [value]="studentTickets"
+          [tableStyle]="{ 'min-width': '100%' }"
+          [paginator]="true"
+          [rows]="10"
+          [showCurrentPageReport]="true"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} requests"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th style="width: 20%;">
+                <div class="userTicketsCell">
+                  {{ "profile.ticketsTitleTicket" | translate }}
+                </div>
+              </th>
+              <!-- <th style="width: 10vw;">
+                <div class="userTicketsCell">
+                  {{ "profile.ticketsDescription" | translate }}
+                </div>
+              </th> -->
+              <th style="width: 20%;">
+                <div class="userTicketsCell">
+                  {{ "profile.ticketsCreationDateLabel" | translate }}
+                </div>
+              </th>
+              <th style="width: 20%;">
+                <div class="userTicketsCell">
+                  {{ "profile.ticketsIntervationType" | translate }}
+                </div>
+              </th>
+              <th style="width: 20%;">
+                <div class="userTicketsCell">
+                  {{ "profile.ticketsAlreadyAnuncement" | translate }}
+                </div>
+              </th>
+              <th style="width: 20%;">
+                <div class="userTicketsCell">
+                  {{ "profile.ticketsStatus" | translate }}
+                </div>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-ticket>
+            <tr>
+              <td>
+                <div class="userTicketsCell">
+                  {{ ticket.title }}
+                </div>
+              </td>
+              <!-- <td style="width: 10vw;">
+                <div
+                  class="userTicketsCell"
+                  [innerHTML]="ticket.description"
+                ></div>
+              </td> -->
+              <td>
+                <div class="userTicketsCell">
+                  {{ formatTicketDate(ticket.creationDate) }}
+                </div>
+              </td>
+              <td>
+                <div class="userTicketsCell">
+                  {{ ticket.tipInterventie }}
+                </div>
+              </td>
+              <td>
+                <div class="userTicketsCell">
+                  {{ ticket.alreadyAnuncement }}
+                </div>
+              </td>
+              <td>
+                <div class="userTicketsCell">
+                  <p-tag
+                    [value]="ticket.statusTicket"
+                    [severity]="getTicketStatusSeverity(ticket.statusTicket)"
+                  ></p-tag>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </mat-tab>
       <mat-tab
         class="profile-page-tab"
         *ngIf="isStudent() || isInactivStudent()"
@@ -357,176 +528,6 @@
           </ng-template>
         </p-table>
       </mat-tab>
-      <mat-tab *ngIf="isStudent()">
-        <ng-template mat-tab-label>
-          <mat-icon class="example-tab-icon">calendar_today </mat-icon>
-          {{ "profile.laundryAppointmentTitleLabel" | translate }}
-        </ng-template>
-        <p-table
-          [value]="studentLaundryAppointments"
-          [tableStyle]="{ 'min-width': '100%' }"
-          [paginator]="true"
-          [rows]="10"
-          [showCurrentPageReport]="true"
-          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} requests"
-        >
-          <ng-template pTemplate="header">
-            <tr>
-              <th>
-                <div class="userLaundryAppointmentsCell">
-                  {{ "profile.laundryAppointmentWashingMachine" | translate }}
-                </div>
-              </th>
-              <th>
-                <div class="userLaundryAppointmentsCell">
-                  {{ "profile.laundryAppointmentDryer" | translate }}
-                </div>
-              </th>
-              <th>
-                <div class="userLaundryAppointmentsCell">
-                  {{ "profile.laundryAppointmentDate" | translate }}
-                </div>
-              </th>
-              <th>
-                <div class="userLaundryAppointmentsCell">
-                  {{ "profile.laundryAppointmentStatus" | translate }}
-                </div>
-              </th>
-              <th>
-                <div class="userLaundryAppointmentsCell">
-                  {{ "profile.laundryAppointmentAnuleaza" | translate }}
-                </div>
-              </th>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-laundry>
-            <tr>
-              <td>
-                <div class="userLaundryAppointmentsCell">
-                  {{ laundry.washingMachineNumber }}
-                </div>
-              </td>
-              <td>
-                <div class="userLaundryAppointmentsCell">
-                  {{ laundry.dryerNumber }}
-                </div>
-              </td>
-              <td>
-                <div class="userLaundryAppointmentsCell">
-                  {{ formatLaundryAppoitnmentDate(laundry.intervalBeginDate) }}
-                </div>
-              </td>
-              <td>
-                <div class="userLaundryAppointmentsCell">
-                  <p-tag
-                    [value]="laundry.statusLaundry"
-                    [severity]="getLaundryStatusSeverity(laundry.statusLaundry)"
-                  ></p-tag>
-                </div>
-              </td>
-              <td>
-                <div class="userLaundryAppointmentsCell">
-                  <p-toast />
-                  <p-button
-                    (click)="confirmDeletion($event)"
-                    icon="pi pi-times"
-                    [rounded]="true"
-                    severity="danger"
-                  ></p-button>
-                </div>
-              </td>
-            </tr>
-          </ng-template>
-        </p-table>
-      </mat-tab>
-
-      <mat-tab *ngIf="isStudent()">
-        <ng-template mat-tab-label>
-          <mat-icon> report_problem</mat-icon>
-          {{ "profile.ticketsTitleLabel" | translate }}
-        </ng-template>
-        <p-table
-          [value]="studentTickets"
-          [tableStyle]="{ 'min-width': '100%' }"
-          [paginator]="true"
-          [rows]="10"
-          [showCurrentPageReport]="true"
-          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} requests"
-        >
-          <ng-template pTemplate="header">
-            <tr>
-              <th>
-                <div class="userTicketsCell">
-                  {{ "profile.ticketsTitleTicket" | translate }}
-                </div>
-              </th>
-              <th>
-                <div class="userTicketsCell">
-                  {{ "profile.ticketsDescription" | translate }}
-                </div>
-              </th>
-              <th>
-                <div class="userTicketsCell">
-                  {{ "profile.ticketsCreationDateLabel" | translate }}
-                </div>
-              </th>
-              <th>
-                <div class="userTicketsCell">
-                  {{ "profile.ticketsIntervationType" | translate }}
-                </div>
-              </th>
-              <th>
-                <div class="userTicketsCell">
-                  {{ "profile.ticketsAlreadyAnuncement" | translate }}
-                </div>
-              </th>
-              <th>
-                <div class="userTicketsCell">
-                  {{ "profile.ticketsStatus" | translate }}
-                </div>
-              </th>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-ticket>
-            <tr>
-              <td>
-                <div class="userTicketsCell">
-                  {{ ticket.title }}
-                </div>
-              </td>
-              <td>
-                <div
-                  class="userTicketsCell"
-                  [innerHTML]="ticket.description"
-                ></div>
-              </td>
-              <td>
-                <div class="userTicketsCell">
-                  {{ formatTicketDate(ticket.creationDate) }}
-                </div>
-              </td>
-              <td>
-                <div class="userTicketsCell">
-                  {{ ticket.tipInterventie }}
-                </div>
-              </td>
-              <td>
-                <div class="userTicketsCell">
-                  {{ ticket.alreadyAnuncement }}
-                </div>
-              </td>
-              <td>
-                <div class="userTicketsCell">
-                  <p-tag
-                    [value]="ticket.statusTicket"
-                    [severity]="getTicketStatusSeverity(ticket.statusTicket)"
-                  ></p-tag>
-                </div>
-              </td>
-            </tr>
-          </ng-template>
-        </p-table>
-      </mat-tab>
       <mat-tab class="x" *ngIf="isDormAdmin()">
         <ng-template mat-tab-label>
           <mat-icon>whatshot</mat-icon>
@@ -574,7 +575,7 @@
                   <button
                     pButton
                     type="button"
-                    label="Delete"
+                    label="{{'profile.createEventDeleteButton' | translate}}"
                     severity="danger"
                     class="attend-button"
                     (click)="deleteEveniment(eveniment)"

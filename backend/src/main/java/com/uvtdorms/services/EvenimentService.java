@@ -126,6 +126,7 @@ public class EvenimentService {
         evenimentRepository.delete(eveniment);
     }
 
+    @Transactional
     public void attendToEveniment(String userEmail, IdDto idDto) {
         User user = userRepository.getByEmail(userEmail).orElseThrow(
                 () -> new AppException("User not found", HttpStatus.NOT_FOUND));

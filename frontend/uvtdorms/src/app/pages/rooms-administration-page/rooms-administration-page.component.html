@@ -59,7 +59,8 @@
             [loading]="loading"
             [paginator]="true"
             [globalFilterFields]="['roomNumber', 'numberOfStudents']"
-            [tableStyle]="{ 'min-width': '75vw'}"
+            [tableStyle]="{ 'min-width': '75vw', 'max-height': '80vh'}"
+            class="rooms-table"
         >
             <ng-template pTemplate="caption">
                 <div class="rooms-table-caption">

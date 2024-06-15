@@ -6,11 +6,13 @@ import com.uvtdorms.repository.entity.enums.RegisterRequestStatus;
 import com.uvtdorms.repository.entity.enums.Role;
 import com.uvtdorms.repository.entity.enums.StatusMachine;
 import com.uvtdorms.repository.entity.enums.StatusTicket;
+import com.uvtdorms.repository.entity.enums.TipInterventie;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.cglib.core.Local;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -114,7 +116,8 @@ public class InitialDataLoader implements CommandLineRunner {
         }
 
         private void createRegisterRequest(String firstName, String lastName, String email, String phoneNumber,
-                        String password, Room room, String matriculationNumber, String profilePictureFileName) {
+                        String password, Room room, String matriculationNumber, String profilePictureFileName,
+                        LocalDate createdOn) {
                 byte[] profilePicture = new byte[0];
                 try {
                         profilePicture = loadImage(profilePictureFileName);
@@ -143,10 +146,25 @@ public class InitialDataLoader implements CommandLineRunner {
                 user.setStudentDetails(student);
                 userRepository.save(user);
 
-                RegisterRequest registerRequest = RegisterRequest.builder().createdOn(LocalDate.now()).room(room)
+                RegisterRequest registerRequest = RegisterRequest.builder().createdOn(createdOn).room(room)
                                 .student(student).status(RegisterRequestStatus.RECEIVED).build();
 
                 registerRequestRepository.save(registerRequest);
+
+                student.getStudentRegisterRequests().add(registerRequest);
+                studentDetailsRepository.save(student);
+        }
+
+        private void createRegisterRequestForExistingStudent(StudentDetails student, LocalDate createdOn, Room room,
+                        RegisterRequestStatus status) {
+                RegisterRequest registerRequest = RegisterRequest.builder().createdOn(createdOn).room(room)
+                                .student(student).status(status).build();
+
+                registerRequestRepository.save(registerRequest);
+
+                if (student.getStudentRegisterRequests() == null) {
+                        student.setStudentRegisterRequests(new ArrayList<>());
+                }
 
                 student.getStudentRegisterRequests().add(registerRequest);
                 studentDetailsRepository.save(student);
@@ -238,18 +256,20 @@ public class InitialDataLoader implements CommandLineRunner {
                 eveniment.getAttendees().add(user);
                 evenimentRepository.save(eveniment);
         }
-        
-        public Ticket createTicket(String title, String description, Dorm dorm, StudentDetails student) {
+
+        public Ticket createTicket(String title, String description, Dorm dorm, TipInterventie tipInterventie,
+                        StudentDetails student, LocalDateTime creationDate) {
                 Ticket ticket = Ticket.builder()
                                 .title(title)
                                 .description(description)
                                 .statusTicket(StatusTicket.OPEN)
-                                .creationDate(LocalDateTime.now())
+                                .creationDate(creationDate)
                                 .alreadyAnuncement(false)
+                                .tipInterventie(tipInterventie)
                                 .dorm(dorm)
                                 .student(student)
                                 .build();
-                
+
                 ticketRepository.save(ticket);
 
                 return ticket;
@@ -264,6 +284,9 @@ public class InitialDataLoader implements CommandLineRunner {
 
                 WashingMachine dorm13Machine1 = createWashingMachine("Machine1", dorm13, StatusMachine.FUNCTIONAL,
                                 null);
+                WashingMachine dorm13Machine4 = createWashingMachine("Machine4", dorm13, StatusMachine.FUNCTIONAL,
+                                null);
+
                 WashingMachine dorm13Machine2 = createWashingMachine("Machine2", dorm13, StatusMachine.FUNCTIONAL,
                                 null);
                 WashingMachine dorm13Machine3 = createWashingMachine("Machine3", dorm13, StatusMachine.FUNCTIONAL,
@@ -299,11 +322,14 @@ public class InitialDataLoader implements CommandLineRunner {
                                 room2, "I1239",
                                 "user-profile.jpg");
 
-                createRegisterRequest("Vin", "Diesel", "vin.diesel@e-uvt.ro", "0789123456", "hello", room1, "I1235",
-                                "user-profile.jpg");
-                createRegisterRequest("IuliBuli", "Geo", "iuliadragoiu2002@gmail.com", "0789133456", "hello", room2,
-                                "I1834",
-                                "user-profile.jpg");
+                createRegisterRequest("Ion", "Dumitrescu", "vin.diesel@e-uvt.ro", "0781123456", "hello", room1, "I1235",
+                                "user-profile.jpg", LocalDate.now().minusMonths(1).minusDays(13));
+                createRegisterRequest("Iulia", "Marin", "iuliadragoiu2002@gmail.com", "0729133456", "hello", room2,
+                                "I1833",
+                                "user-profile.jpg", LocalDate.now().minusMonths(2).minusDays(1));
+                createRegisterRequest("Gabriel", "Filip", "filipgabi02@gmail.com", "0723134456", "hello", room3,
+                                "I1844",
+                                "user-profile.jpg", LocalDate.now().minusDays(4));
 
                 createLaundryAppointment(LocalDateTime.now().plusDays(1).withHour(8).withMinute(0).withSecond(0),
                                 taylorSwift,
@@ -314,8 +340,10 @@ public class InitialDataLoader implements CommandLineRunner {
                 createLaundryAppointment(LocalDateTime.now().plusDays(1).withHour(10).withMinute(0).withSecond(0),
                                 iuliaDragoiu,
                                 dorm13Machine1);
-                createLaundryAppointment(LocalDateTime.now().withHour(10).withMinute(0).withSecond(0), emmaWatson,
-                                dorm13Machine1);
+                createLaundryAppointment(LocalDateTime.now().minusWeeks(3).withHour(10).withMinute(0).withSecond(0),
+                                iuliaDragoiu, dorm13Machine3);
+                createLaundryAppointment(LocalDateTime.now().minusWeeks(2).withHour(10).withMinute(0).withSecond(0),
+                                iuliaDragoiu, dorm13Machine2);
 
                 createApplicationAdministrator("Adam", "Sandler", "adam.sandler@yahoo.com", "0789189456", "hello",
                                 "user-profile.jpg");
@@ -336,7 +364,22 @@ public class InitialDataLoader implements CommandLineRunner {
                 createEveniment("Plant Swap Party: Grow Your Collection!",
                                 "<p>Calling all plant lovers! Join us for a fun and sustainable Plant Swap Party. Bring a healthy, unwanted plant from your collection and swap it for something new! It's a great way to expand your plant family, declutter your space, and meet other plant enthusiasts. We'll also have resources and tips on plant care available.</p><p>What to Bring:<br>- A healthy, unwanted plant (pots included)<br>- Your enthusiasm for all things green!</p>",
                                 dorm13, dorm13.getDormAdministratorDetails(), LocalDateTime.now().plusWeeks(3));
-                createTicket("Test ticket", "Detailed description.", dorm13, iuliaDragoiu);
+                createTicket("Nu se închide ușa", "Este necesară verificarea și posibila înlocuire a șuruburilor",
+                                dorm13, TipInterventie.TAMPLAR, iuliaDragoiu, LocalDateTime.now().minusDays(10));
+                createTicket("Apa caldă nu funcționează", "Apa caldă nu funcționeaza în baie.", dorm13,
+                                TipInterventie.INSTALATOR, taylorSwift,
+                                LocalDateTime.now().minusMonths(2).minusDays(2));
+                createTicket("Înlocuire bec", "Unul dintre becuri s-a ars și necesită înlocuire", dorm13,
+                                TipInterventie.ELECTRICIAN, iuliaDragoiu, LocalDateTime.now().minusDays(1));
+
+                createRegisterRequestForExistingStudent(iuliaDragoiu,
+                                LocalDate.now().minusYears(1).minusMonths(1).minusDays(13), room1,
+                                RegisterRequestStatus.ACCEPTED);
+                createRegisterRequestForExistingStudent(iuliaDragoiu, LocalDate.now().minusYears(2), room3,
+                                RegisterRequestStatus.DECLINED);
+                createRegisterRequestForExistingStudent(iuliaDragoiu,
+                                LocalDate.now().minusYears(1).minusMonths(1).minusDays(13), room2,
+                                RegisterRequestStatus.ACCEPTED);
         }
 
         private byte[] loadImage(String resourceName) throws IOException {

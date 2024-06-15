@@ -24,6 +24,7 @@ import com.uvtdorms.repository.entity.StudentDetails;
 import com.uvtdorms.repository.entity.enums.RegisterRequestStatus;
 import com.uvtdorms.repository.entity.enums.Role;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -102,7 +103,7 @@ public class RegisterRequestService {
                 .collect(Collectors.toList());
     }
 
-    @SuppressWarnings("null")
+    @Transactional
     public void createNewRegisterRequestForExistingStudent(final NewRegisterRequestDto newRegisterRequestDto,
             final String studentEmail) {
         

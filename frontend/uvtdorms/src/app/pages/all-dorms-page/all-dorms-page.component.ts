@@ -22,7 +22,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class AllDormsPageComponent {
   public dorms: DormDto[] = [];
   public defaultAvailableAdministrators: DormAdministratorDto[] = [
-    { name: 'No administrator', email: '' },
+    { name: this.translate.instant("allDorms.add.noAdministrator"), email: '' },
   ];
   public availableAdministrators: DormAdministratorDto[] = [];
   public loading: boolean = true;

@@ -223,6 +223,9 @@
   align-items: center;
   z-index: 100;
 }
+.slider-button-media {
+  display: none;
+}
 
 @media (max-width: 600px) {
   .login-page-login-container {

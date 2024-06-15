@@ -33,6 +33,7 @@ public class Ticket{
     private TipInterventie tipInterventie;
 
     private String title;
+    @Column(columnDefinition = "TEXT")
     private String description;
     private boolean alreadyAnuncement;
 

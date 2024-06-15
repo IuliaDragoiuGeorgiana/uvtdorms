@@ -89,7 +89,7 @@ export class KeepLaundryAppointmentPageComponent {
   public confirmKeep(): void {
     console.log('Confirm keep');
     this.confirmationService.confirm({
-      message: this.translate.instant('keepLaundrAppointment.ConfirmKeepMessage'),
+      message: this.translate.instant('keepLaundrAppointment.ConfirmKeepMessage '),
       header: this.translate.instant('keepLaundrAppointment.ConfirmKeepHeader'),
       icon: 'pi pi-exclamation-triangle',
       acceptIcon: 'none',

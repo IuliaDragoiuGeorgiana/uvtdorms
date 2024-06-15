@@ -160,14 +160,14 @@ export class ProfilePageComponent {
       next: (userDetails) => {
         this.user = userDetails;
 
-        if (this.isStudent() || this.isInactivStudent()) {
+        if (this.isStudent()) {
           this.getStudentRelatedData();
         } else if (this.isDormAdmin()) {
           this.getDormAdministratorRelatedData();
         } else if (this.isApplicationAdministrator()) {
           this.getApplicationAdministratorRelatedData();
-        } else {
-          console.log('x');
+        } else if(this.isInactivStudent()) {
+          this.getInavtiveStudentRelatedData();
         }
       },
       error(err) {
@@ -288,6 +288,19 @@ export class ProfilePageComponent {
     });
   }
 
+  private getInavtiveStudentRelatedData() {
+    this.registerRequestService.getRegisterRequestsForStudent().subscribe({
+      next: (value) => {
+        this.registerRequests = value;
+        this.isLoadingScreenVisible = false;
+      },
+      error(err) {
+        console.error(err);
+      },
+    });
+  }
+
+
   getLabelTicketStatus(status: string): string {
     switch (status) {
       case 'OPEN':
@@ -326,6 +339,9 @@ export class ProfilePageComponent {
         return 'info';
     }
   }
+  isScheduledLaundrtyStatus(status: string): boolean {
+    return status === 'SCHEDULED';
+  }
 
   getTicketStatusSeverity(status: string) {
     switch (status) {
@@ -337,6 +353,9 @@ export class ProfilePageComponent {
         return 'info';
     }
   }
+
+
+
 
   public formatLaundryAppoitnmentDate(date: any): string {
     return (

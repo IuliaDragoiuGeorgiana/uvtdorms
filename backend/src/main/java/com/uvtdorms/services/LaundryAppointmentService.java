@@ -61,8 +61,9 @@ public class LaundryAppointmentService {
                 Predicate studentPredicate = cb.equal(appointment.get("student"), student);
                 Predicate datePredicate = cb.greaterThanOrEqualTo(appointment.get("intervalBeginDate"), startOfWeek);
                 Predicate endDatePredicate = cb.lessThanOrEqualTo(appointment.get("intervalBeginDate"), endOfWeek);
+                Predicate statusPredicate = cb.equal(appointment.get("statusLaundry"), StatusLaundry.SCHEDULED);
 
-                cq.where(studentPredicate, datePredicate, endDatePredicate);
+                cq.where(studentPredicate, datePredicate, endDatePredicate, statusPredicate);
 
                 List<LaundryAppointment> appointments = entityManager.createQuery(cq).getResultList();
 
@@ -174,8 +175,9 @@ public class LaundryAppointmentService {
                                 dorm);
                 Predicate datePredicate = cb.greaterThanOrEqualTo(appointment.get("intervalBeginDate"), startOfWeek);
                 Predicate endDatePredicate = cb.lessThanOrEqualTo(appointment.get("intervalBeginDate"), endOfWeek);
+                Predicate statusPredicate = cb.equal(appointment.get("statusLaundry"), StatusLaundry.SCHEDULED);
 
-                cq.where(washingMachinePredicate, dormPredicate, datePredicate, endDatePredicate);
+                cq.where(washingMachinePredicate, dormPredicate, datePredicate, endDatePredicate, statusPredicate);
 
                 List<LaundryAppointment> appointments = entityManager.createQuery(cq).getResultList();
 
@@ -213,8 +215,9 @@ public class LaundryAppointmentService {
                                 dorm);
                 Predicate datePredicate = cb.greaterThanOrEqualTo(appointment.get("intervalBeginDate"), startOfWeek);
                 Predicate endDatePredicate = cb.lessThanOrEqualTo(appointment.get("intervalBeginDate"), endOfWeek);
+                Predicate statusPredicate = cb.equal(appointment.get("statusLaundry"), StatusLaundry.SCHEDULED);
 
-                cq.where(dryerPredicate, dormPredicate, datePredicate, endDatePredicate);
+                cq.where(dryerPredicate, dormPredicate, datePredicate, endDatePredicate, statusPredicate);
 
                 List<LaundryAppointment> appointments = entityManager.createQuery(cq).getResultList();
 
@@ -223,6 +226,7 @@ public class LaundryAppointmentService {
                                 .toList();
         }
 
+        @Transactional
         public List<StudentLaundryAppointmentsDto> getStudentLaundryAppointments(String email) {
 
                 User user = userRepository.getByEmail(email)
@@ -264,23 +268,11 @@ public class LaundryAppointmentService {
                                 .orElseThrow(() -> new AppException("The user is not a student",
                                                 HttpStatus.BAD_REQUEST));
 
-                CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-                CriteriaQuery<LaundryAppointment> cq = cb.createQuery(LaundryAppointment.class);
-                Root<LaundryAppointment> appointment = cq.from(LaundryAppointment.class);
+                LaundryAppointment appointment = laundryAppointmentRepository.findByStudentAndStatusLaundry(student, StatusLaundry.SCHEDULED)
+                                .orElseThrow(() -> new AppException("The student has no scheduled appointments", HttpStatus.BAD_REQUEST));
 
-                Predicate studentPredicate = cb.equal(appointment.get("student"), student);
-                Predicate statusPredicate = cb.equal(appointment.get("statusLaundry"), StatusLaundry.SCHEDULED);
-                cq.where(studentPredicate, statusPredicate);
-
-                List<LaundryAppointment> appointments = entityManager.createQuery(cq).getResultList();
-
-                if (appointments.isEmpty()) {
-                        throw new AppException("The student has no scheduled appointments", HttpStatus.BAD_REQUEST);
-                }
-
-                for (LaundryAppointment appointmentEntity : appointments) {
-                        laundryAppointmentRepository.delete(appointmentEntity);
-                }
+                appointment.setStatusLaundry(StatusLaundry.CANCELED);
+                laundryAppointmentRepository.save(appointment);
         }
 
 }

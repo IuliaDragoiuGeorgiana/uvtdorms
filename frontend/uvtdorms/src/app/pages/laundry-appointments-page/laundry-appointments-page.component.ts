@@ -125,7 +125,7 @@ export class LaundryAppointmentsPageComponent {
     this.confirmationService.confirm({
       header: this.translate.instant('laundryAppointments.ConfimAppointmentHeader'),
       message:
-        this.translate.instant('laundryAppointments.ConfimAppointmentMessage') +
+        this.translate.instant('laundryAppointments.ConfimAppointmentMessage') + ' ' +
         this.getSelectedMachines()?.washingMachine.name +
         ' at ' +
         this.laundryAppointmentForm.value.selectedIntervalStartHour?.toString() +
@@ -190,7 +190,7 @@ export class LaundryAppointmentsPageComponent {
     this.messageService.add({
       severity: 'success',
       summary: this.translate.instant('laundryAppointments.ConfirmSuccessHeader'),
-      detail: this.translate.instant(''),
+      detail: this.translate.instant('laundryAppointments.ConfirmSuccessMessage'),
       life: 3000,
     });
   }

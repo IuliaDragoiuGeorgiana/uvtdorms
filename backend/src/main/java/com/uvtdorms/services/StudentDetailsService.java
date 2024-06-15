@@ -25,12 +25,17 @@ import com.uvtdorms.utils.PasswordGenerator;
 
 import lombok.RequiredArgsConstructor;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.commons.io.IOUtils;
 import org.modelmapper.ModelMapper;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -45,6 +50,7 @@ public class StudentDetailsService implements IStudentDetailsService {
         private final IRegisterRequestRepository registerRequestRepository;
         private final PasswordEncoder passwordEncoder;
         private final EmailService emailService;
+        private final ResourceLoader resourceLoader;
         private final ModelMapper modelMapper;
 
         @Override
@@ -67,6 +73,14 @@ public class StudentDetailsService implements IStudentDetailsService {
                 verifyDataUniqueness(registerStudentDto);
                 Room room = getSelectedRoomOnRegister(registerStudentDto.dormName(), registerStudentDto.roomNumber());
                 String generatedPassword = PasswordGenerator.generateRandomPassword();
+                String defaultProfilePicturePath = "user-profile.jpg";
+
+                byte[] profilePicture = new byte[0];
+                try {
+                        profilePicture = loadImage(defaultProfilePicturePath);
+                } catch (IOException e) {
+                        e.printStackTrace();
+                }
 
                 User user = User.builder()
                                 .firstName(registerStudentDto.firstName())
@@ -75,6 +89,7 @@ public class StudentDetailsService implements IStudentDetailsService {
                                 .phoneNumber(registerStudentDto.phoneNumber())
                                 .password(passwordEncoder.encode(generatedPassword))
                                 .role(Role.INACTIV_STUDENT)
+                                .profilePicture(profilePicture)
                                 .isActive(false)
                                 .build();
 
@@ -111,6 +126,13 @@ public class StudentDetailsService implements IStudentDetailsService {
                 roomRepository.save(room);
                 emailService.sendRegisterConfirm(user.getEmail(), user.getFirstName() + " " + user.getLastName(),
                                 generatedPassword);
+        }
+
+        private byte[] loadImage(String resourceName) throws IOException {
+                Resource resource = resourceLoader.getResource("classpath:images/" + resourceName);
+                try (InputStream inputStream = resource.getInputStream()) {
+                        return IOUtils.toByteArray(inputStream);
+                }
         }
 
         private void verifyDataUniqueness(final RegisterStudentDto registerStudentDto) {

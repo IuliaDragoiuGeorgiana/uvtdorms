@@ -23,7 +23,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class DormAdministratorsPageComponent {
   public dormAdministrators: DetailedDormAdministratorDto[] = [];
   public defaultAvailableDorm: AvailableDormDto[] = [
-    { dormName: 'No dorm', id: '' },
+    { dormName: this.translate.instant("dormAdministrators.addDormAdministrator.noDorm"), id: '' },
   ];
 
   public availableDorms: AvailableDormDto[] = [];

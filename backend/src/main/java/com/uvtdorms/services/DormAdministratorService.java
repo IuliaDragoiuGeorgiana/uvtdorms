@@ -8,11 +8,17 @@ import com.uvtdorms.repository.dto.response.DormAdministratorDto;
 import com.uvtdorms.repository.dto.response.DormIdDto;
 import com.uvtdorms.repository.dto.response.StatisticsCountDto;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.commons.io.IOUtils;
 import org.modelmapper.ModelMapper;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.uvtdorms.exception.AppException;
@@ -22,6 +28,7 @@ import com.uvtdorms.repository.IUserRepository;
 import com.uvtdorms.repository.entity.Dorm;
 import com.uvtdorms.repository.entity.DormAdministratorDetails;
 import com.uvtdorms.repository.entity.User;
+import com.uvtdorms.repository.entity.enums.Role;
 import com.uvtdorms.utils.PasswordGenerator;
 
 import lombok.RequiredArgsConstructor;
@@ -34,6 +41,9 @@ public class DormAdministratorService {
         private final IDormRepository dormRepository;
         private final EmailService emailService;
         private final ModelMapper modelMapper;
+        private final PasswordEncoder passwordEncoder;
+        private final ResourceLoader resourceLoader;
+
 
         public Dorm getAdministratorDormByEmail(String email) {
                 User user = userRepository.getByEmail(email)
@@ -83,6 +93,13 @@ public class DormAdministratorService {
                                                 DetailedDormAdministratorDto.class))
                                 .toList();
         }
+         private byte[] loadImage(String resourceName) throws IOException {
+                Resource resource = resourceLoader.getResource("classpath:images/" + resourceName);
+                try (InputStream inputStream = resource.getInputStream()) {
+                        return IOUtils.toByteArray(inputStream);
+                }
+        }
+
 
         public void addNewDormAdministrator(AddNewDormAdministratorDto newDormAdministratorDto) {
                 Boolean userAlreadyExists = userRepository.getByEmail(newDormAdministratorDto.email()).isPresent()
@@ -92,14 +109,24 @@ public class DormAdministratorService {
                 }
 
                 String password = PasswordGenerator.generateRandomPassword();
+                String defaultProfilePicturePath = "user-profile.jpg";
+
+                byte[] profilePicture = new byte[0];
+                try {
+                        profilePicture = loadImage(defaultProfilePicturePath);
+                } catch (IOException e) {
+                        e.printStackTrace();
+                }
 
                 User user = User.builder()
                                 .firstName(newDormAdministratorDto.firstName())
                                 .lastName(newDormAdministratorDto.lastName())
                                 .email(newDormAdministratorDto.email())
                                 .phoneNumber(newDormAdministratorDto.phoneNumber())
-                                .password(password)
+                                .password(passwordEncoder.encode(password))
+                                .role(Role.ADMINISTRATOR)
                                 .isActive(true)
+                                .profilePicture(profilePicture)
                                 .build();
 
                 Dorm dorm = null;

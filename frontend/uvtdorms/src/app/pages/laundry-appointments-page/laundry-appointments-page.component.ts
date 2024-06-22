@@ -126,8 +126,9 @@ export class LaundryAppointmentsPageComponent {
       header: this.translate.instant('laundryAppointments.ConfimAppointmentHeader'),
       message:
         this.translate.instant('laundryAppointments.ConfimAppointmentMessage') + ' ' +
-        this.getSelectedMachines()?.washingMachine.name +
-        ' at ' +
+        this.getSelectedMachines()?.washingMachine.name + ' ' +
+       this.translate.instant('laundryAppointments.ConfimAppointmentMessageDate') +
+        ' ' +
         this.laundryAppointmentForm.value.selectedIntervalStartHour?.toString() +
         ':00 ?',
       accept: () => {

@@ -16,6 +16,7 @@ import {
   convertStringStatusMachineToEnum,
 } from '../../enums/status-machine';
 import { TranslateService } from '@ngx-translate/core';
+import { OverlayListenerOptions, OverlayOptions } from 'primeng/api';
 
 @Component({
   selector: 'app-dorm-machines-page',
@@ -58,6 +59,17 @@ export class DormMachinesPageComponent {
 
   public machineType = MachineType;
   public selectedMachineType: MachineType | null = null;
+
+  getOverlayOptions(): OverlayOptions {
+    return {
+      listener: (event: Event, options?: OverlayListenerOptions) => {
+        if (options?.type === 'scroll') {
+          return false;
+        }
+        return options?.valid;
+      },
+    };
+  }
 
   private initialAvailableWashingMachines: AvailableWashingMachineDto[] = [
     {
@@ -552,7 +564,6 @@ export class DormMachinesPageComponent {
     dryer.statusMachine = this.newMachineStatus;
     dryer.associatedWashingMachineId = this.newAssociatedMachine;
     dryer.name = this.newMachineName;
-    console.log(dryer);
     this.dryerService.updateDryer(dryer).subscribe({
       next: (dryer) => {
         for (let d of this.dryers) {
@@ -564,6 +575,7 @@ export class DormMachinesPageComponent {
             d.weeklyAppointments = dryer.weeklyAppointments;
           }
         }
+        window.location.reload();
       },
       error(err) {
         console.error(err);

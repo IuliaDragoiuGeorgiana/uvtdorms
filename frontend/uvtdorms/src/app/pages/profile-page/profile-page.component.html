@@ -273,7 +273,7 @@
     <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center">
       <mat-tab *ngIf="isStudent()">
         <ng-template mat-tab-label>
-          <mat-icon class="example-tab-icon">calendar_today </mat-icon>
+          <mat-icon class="example-tab-icon">calendar_today</mat-icon>
           {{ "profile.laundryAppointmentTitleLabel" | translate }}
         </ng-template>
         <p-table
@@ -282,7 +282,7 @@
           [paginator]="true"
           [rows]="10"
           [showCurrentPageReport]="true"
-          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} requests"
+          currentPageReportTemplate='{{"profile.laundryAppointment.pageText"|translate}}'
         >
           <ng-template pTemplate="header">
             <tr>
@@ -333,7 +333,7 @@
               <td>
                 <div class="userLaundryAppointmentsCell">
                   <p-tag
-                    [value]="laundry.statusLaundry"
+                    [value]="getLaundryStatusValue(laundry.statusLaundry)"
                     [severity]="getLaundryStatusSeverity(laundry.statusLaundry)"
                   ></p-tag>
                 </div>
@@ -357,29 +357,26 @@
 
       <mat-tab *ngIf="isStudent()">
         <ng-template mat-tab-label>
-          <mat-icon> report_problem</mat-icon>
+          <mat-icon>report_problem</mat-icon>
           {{ "profile.ticketsTitleLabel" | translate }}
         </ng-template>
         <p-table
           [value]="studentTickets"
           [tableStyle]="{ 'min-width': '100%' }"
           [paginator]="true"
+          dataKey="title"
           [rows]="10"
           [showCurrentPageReport]="true"
-          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} requests"
+          currentPageReportTemplate='{{"profile.tickets.pageText"|translate}}'
         >
           <ng-template pTemplate="header">
             <tr>
+              <th style="width: 5rem"></th>
               <th style="width: 20%;">
                 <div class="userTicketsCell">
                   {{ "profile.ticketsTitleTicket" | translate }}
                 </div>
               </th>
-              <!-- <th style="width: 10vw;">
-                <div class="userTicketsCell">
-                  {{ "profile.ticketsDescription" | translate }}
-                </div>
-              </th> -->
               <th style="width: 20%;">
                 <div class="userTicketsCell">
                   {{ "profile.ticketsCreationDateLabel" | translate }}
@@ -402,19 +399,16 @@
               </th>
             </tr>
           </ng-template>
-          <ng-template pTemplate="body" let-ticket>
+          <ng-template pTemplate="body" let-ticket let-expanded="expanded">
             <tr>
+              <td>
+                <p-button type="button" pRipple [pRowToggler]="ticket" [text]="true" [rounded]="true" [plain]="true" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" />
+              </td>
               <td>
                 <div class="userTicketsCell">
                   {{ ticket.title }}
                 </div>
               </td>
-              <!-- <td style="width: 10vw;">
-                <div
-                  class="userTicketsCell"
-                  [innerHTML]="ticket.description"
-                ></div>
-              </td> -->
               <td>
                 <div class="userTicketsCell">
                   {{ formatTicketDate(ticket.creationDate) }}
@@ -440,6 +434,14 @@
               </td>
             </tr>
           </ng-template>
+          <ng-template pTemplate="rowexpansion" let-ticket>
+            <tr>
+              <td colspan="7">
+                <div class="ticket-expansion" [innerHTML]="ticket.description">
+                </div>
+              </td>
+            </tr>
+          </ng-template>
         </p-table>
       </mat-tab>
       <mat-tab
@@ -455,7 +457,7 @@
           [paginator]="true"
           [rows]="10"
           [showCurrentPageReport]="true"
-          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} requests"
+          currentPageReportTemplate='{{"profile.registerRequest.pageText"|translate}}'
         >
           <ng-template pTemplate="header">
             <tr>
@@ -511,7 +513,7 @@
               <td>
                 <div class="userRegisterRequestsCell">
                   <p-tag
-                    [value]="request.status"
+                    [value]="getRequestStatusValue(request.status)"
                     [severity]="getRequestStatusSeverity(request.status)"
                   ></p-tag>
                 </div>
@@ -520,6 +522,7 @@
           </ng-template>
           <ng-template pTemplate="paginatorright">
             <p-button
+              *ngIf="isInactivStudent()"
               type="button"
               icon="pi pi-plus"
               styleClass="p-button-text"

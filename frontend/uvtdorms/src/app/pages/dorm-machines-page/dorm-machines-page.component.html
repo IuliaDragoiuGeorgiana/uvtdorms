@@ -1,12 +1,18 @@
 <div class="dorm-machines-page-body">
   <div class="card">
     <p-table
-      [value]="isWashingMachineLabelingSelected() ? washingMachines : isDryerLabelingSelected() ? dryers : []"
+      [value]="
+        isWashingMachineLabelingSelected()
+          ? washingMachines
+          : isDryerLabelingSelected()
+          ? dryers
+          : []
+      "
       dataKey="name"
-      [tableStyle]="{ 'min-width': '60rem' }">
+      [tableStyle]="{ 'min-width': '60rem' }"
+    >
       <ng-template pTemplate="caption">
-        <div
-          class="washing-machines-table-caption">
+        <div class="washing-machines-table-caption">
           <div class="listed-machines-type-select-container">
             <p-dropdown
               [options]="listableMachineTypes"
@@ -16,20 +22,34 @@
             >
             </p-dropdown>
           </div>
-          <p-button icon="pi pi-plus" (click)="openNew()" severity="success"></p-button>
+          <p-button
+            icon="pi pi-plus"
+            (click)="openNew()"
+            severity="success"
+          ></p-button>
         </div>
       </ng-template>
       <ng-template pTemplate="header">
         <tr>
           <th style="width: 5rem"></th>
           <th pSortableColumn="name">
-            {{"dormMachines.AllMachine.NameLabel"|translate}}<p-sortIcon field="name"></p-sortIcon>
+            {{ "dormMachines.AllMachine.NameLabel" | translate
+            }}<p-sortIcon field="name"></p-sortIcon>
           </th>
           <th>
-            {{isDryerLabelingSelected() ? ('dormMachines.AllMachine.AsociatedWashingMachine'|translate) : ''}}
-            {{isWashingMachineLabelingSelected() ? ('dormMachines.AllMachine.AsociatedDryer'|translate) : ''}}
+            {{
+              isDryerLabelingSelected()
+                ? ("dormMachines.AllMachine.AsociatedWashingMachine"
+                  | translate)
+                : ""
+            }}
+            {{
+              isWashingMachineLabelingSelected()
+                ? ("dormMachines.AllMachine.AsociatedDryer" | translate)
+                : ""
+            }}
           </th>
-          <th>{{"dormMachines.AllMachine.StatusLabel"|translate}}</th>
+          <th>{{ "dormMachines.AllMachine.StatusLabel" | translate }}</th>
           <th></th>
         </tr>
       </ng-template>
@@ -42,17 +62,27 @@
               pRipple
               [pRowToggler]="product"
               class="p-button-text p-button-rounded p-button-plain"
-              [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+              [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+            ></button>
           </td>
           <td>{{ product.name }}</td>
           <td>
-            {{ isWashingMachineLabelingSelected() ? getAssociatedDryerName(product) : ''}}
-            {{ isDryerLabelingSelected() ? getAssociatedWashingMachineName(product) : ''}}
+            {{
+              isWashingMachineLabelingSelected()
+                ? getAssociatedDryerName(product)
+                : ""
+            }}
+            {{
+              isDryerLabelingSelected()
+                ? getAssociatedWashingMachineName(product)
+                : ""
+            }}
           </td>
           <td>
             <p-tag
               [value]="getStatus(product)"
-              [severity]="getStatusSeverity(product)"></p-tag>
+              [severity]="getStatusSeverity(product)"
+            ></p-tag>
           </td>
           <td>
             <button
@@ -62,8 +92,7 @@
               icon="pi pi-pencil"
               (click)="editMachine(product)"
               severity="info"
-            >
-            </button>
+            ></button>
           </td>
         </tr>
       </ng-template>
@@ -73,14 +102,23 @@
             <div class="p-3">
               <p-table
                 [value]="getWeeklyAppointments(product)"
-                dataKey="intervalBeginDate">
+                dataKey="intervalBeginDate"
+              >
                 <ng-template pTemplate="header">
                   <tr>
                     <th pSortableColumn="intervalBeginDate">
-                     {{"dormMachines.AllMachine.DetailsAppointmentHour"|translate}} <p-sortIcon field="intervalBeginDate"></p-sortIcon>
+                      {{
+                        "dormMachines.AllMachine.DetailsAppointmentHour"
+                          | translate
+                      }}
+                      <p-sortIcon field="intervalBeginDate"></p-sortIcon>
                     </th>
                     <th pSortableColumn="studentEmail">
-                      {{"dormMachines.AllMachine.DetailsAppointmentStudent"|translate}} <p-sortIcon field="studentEmail"></p-sortIcon>
+                      {{
+                        "dormMachines.AllMachine.DetailsAppointmentStudent"
+                          | translate
+                      }}
+                      <p-sortIcon field="studentEmail"></p-sortIcon>
                     </th>
                   </tr>
                 </ng-template>
@@ -93,7 +131,10 @@
                 <ng-template pTemplate="emptymessage">
                   <tr>
                     <td colspan="6">
-                      {{"dormMachines.AllMachine.DetailsAppointment.NoAppointments"|translate}}
+                      {{
+                        "dormMachines.AllMachine.DetailsAppointment.NoAppointments"
+                          | translate
+                      }}
                     </td>
                   </tr>
                 </ng-template>
@@ -107,75 +148,108 @@
   <p-dialog
     [(visible)]="addSomething"
     [style]="{ width: '60vw' }"
-    header="{{'dormMachine.AddMachine.SelectTypeStepper'|translate}}"
+    header="{{ 'dormMachine.AddMachine.SelectTypeStepper' | translate }}"
     [modal]="true"
-    styleClass="p-fluid">
+    styleClass="p-fluid"
+  >
     <p-stepper [linear]="true">
-      <p-stepperPanel header="{{'dormMachine.AddMachine.SelectTypeStepper'|translate}}">
+      <p-stepperPanel
+        header="{{ 'dormMachine.AddMachine.SelectTypeStepper' | translate }}"
+      >
         <ng-template
           pTemplate="content"
           let-nextCallback="nextCallback"
-          let-index="index">
+          let-index="index"
+        >
           <div class="select-machine-type-header">
             <h1 class="select-machine-type-header-h">
-             {{"dormMachine.AddMachine.SelectTypeHeader"|translate}}
+              {{ "dormMachine.AddMachine.SelectTypeHeader" | translate }}
             </h1>
           </div>
           <div class="select-machine-type-buttons">
             <div class="select-machine-type-buttons-left">
               <p-button
                 class="select-machine-type-button"
-                label="{{'dormMachine.AddMachine.SelectTypeWashingMachine'|translate}}"
+                label="{{
+                  'dormMachine.AddMachine.SelectTypeWashingMachine' | translate
+                }}"
                 severity="info"
                 [raised]="true"
                 (onClick)="
                   nextCallback.emit();
                   selectMachine(machineType.WASHING_MACHINE)
-                "></p-button>
+                "
+              ></p-button>
             </div>
             <div class="select-machine-type-buttons-right">
               <p-button
                 class="select-machine-type-button"
-                label="{{'dormMachine.AddMachine.SelectTypeDryer'|translate}}"
+                label="{{
+                  'dormMachine.AddMachine.SelectTypeDryer' | translate
+                }}"
                 severity="info"
                 [raised]="true"
                 (onClick)="
                   nextCallback.emit(); selectMachine(machineType.DRYER)
-                "></p-button>
-            </div></div></ng-template>
+                "
+              ></p-button>
+            </div></div
+        ></ng-template>
       </p-stepperPanel>
 
-      <p-stepperPanel header="{{'dormMachine.AddMachine.SelectMachineDetails'|translate}}">
+      <p-stepperPanel
+        header="{{ 'dormMachine.AddMachine.SelectMachineDetails' | translate }}"
+      >
         <ng-template
           pTemplate="content"
           let-prevCallback="prevCallback"
           let-nextCallback="nextCallback"
-          let-index="index">
+          let-index="index"
+        >
           <div class="set-machine-details-body">
-            <form 
+            <form
               [formGroup]="newMachineForm"
-              class="set-machine-details-body-form">
+              class="set-machine-details-body-form"
+            >
               <p-floatLabel class="set-machine-details-body-form-item">
                 <input
                   pInputText
                   formControlName="name"
                   type="text"
                   id="machine-name"
-                  [ngClass]="{'ng-invalid ng-dirty': newMachineForm.get('name')?.invalid && newMachineForm.get('name')?.touched}"
-                  />
+                  [ngClass]="{
+                    'ng-invalid ng-dirty':
+                      newMachineForm.get('name')?.invalid &&
+                      newMachineForm.get('name')?.touched
+                  }"
+                />
                 <label for="machine-name">
-                  {{isDryerSelected() ? ('dormMachine.AddMachine.SelectMachineDetailsDryerName'|translate) :''}}
-                  {{isWashingMachineSelected() ? ('dormMachine.AddMachine.SelectMachineDetailsWashingMachineName'|translate) :''}}
+                  {{
+                    isDryerSelected()
+                      ? ("dormMachine.AddMachine.SelectMachineDetailsDryerName"
+                        | translate)
+                      : ""
+                  }}
+                  {{
+                    isWashingMachineSelected()
+                      ? ("dormMachine.AddMachine.SelectMachineDetailsWashingMachineName"
+                        | translate)
+                      : ""
+                  }}
                 </label>
               </p-floatLabel>
 
               <p-dropdown
                 [options]="getAvailableMachines()"
+                [overlayOptions]="getOverlayOptions()"
                 formControlName="associatedDryerOrWashingMachineId"
                 optionLabel="name"
                 optionValue="id"
-                placeholder="{{'dormMachine.AddMachine.SelectDryerPlaceholder'|translate}}"
-                class="set-machine-details-body-form-item">
+                placeholder="{{
+                  'dormMachine.AddMachine.SelectDryerPlaceholder' | translate
+                }}"
+                class="set-machine-details-body-form-item"
+              >
               </p-dropdown>
             </form>
           </div>
@@ -183,60 +257,92 @@
           <div class="set-machine-details-buttons-form">
             <div class="set-machine-details-buttons-form-left">
               <p-button
-                label="{{'dormMachine.AddMachine.BackButton'|translate}}"
+                label="{{ 'dormMachine.AddMachine.BackButton' | translate }}"
                 icon="pi pi-arrow-left"
                 severity="warning"
                 [raised]="true"
                 class="set-machine-details-buttons-form-button"
-                (onClick)="prevCallback.emit(); newMachineForm.reset()" />
+                (onClick)="prevCallback.emit(); newMachineForm.reset()"
+              />
             </div>
 
             <div class="set-machine-details-buttons-form-right">
               <p-button
-                label="{{'dormMachine.AddMachine.NextButton'|translate}}"
+                label="{{ 'dormMachine.AddMachine.NextButton' | translate }}"
                 icon="pi pi-arrow-right"
                 iconPos="right"
                 [raised]="true"
                 severity="success"
                 class="set-machine-details-buttons-form-button"
-                (onClick)="newMachineForm.valid ? nextCallback.emit() : newMachineForm.controls['name'].markAsTouched()" />
+                (onClick)="
+                  newMachineForm.valid
+                    ? nextCallback.emit()
+                    : newMachineForm.controls['name'].markAsTouched()
+                "
+              />
             </div>
           </div>
         </ng-template>
       </p-stepperPanel>
 
-      <p-stepperPanel header="{{'dormMachine.AddMachine.ConfirmStepper'|translate}}">
+      <p-stepperPanel
+        header="{{ 'dormMachine.AddMachine.ConfirmStepper' | translate }}"
+      >
         <ng-template
           pTemplate="content"
           let-prevCallback="prevCallback"
-          let-index="index">
-
+          let-index="index"
+        >
           <div class="set-machine-confirm-body-header">
-            <h1>{{"dormMachine.AddMachine.ConfirmHeader"|translate}}</h1>
+            <h1>{{ "dormMachine.AddMachine.ConfirmHeader" | translate }}</h1>
           </div>
 
           <div class="set-machine-confirm-body">
             <div class="set-machine-confirm-body-left">
-              <p>{{"dormMachine.AddMachine.ConfirmDetailsMachineType"|translate}}:</p>
-              <p>{{"dormMachine.AddMachine.ConfirmDetailsMachineName"|translate}}:</p>
-              <p>{{"dormMachine.AddMachine.ConfirmDetailsAssociattedMachine"|translate}}:</p>
+              <p>
+                {{
+                  "dormMachine.AddMachine.ConfirmDetailsMachineType"
+                    | translate
+                }}:
+              </p>
+              <p>
+                {{
+                  "dormMachine.AddMachine.ConfirmDetailsMachineName"
+                    | translate
+                }}:
+              </p>
+              <p>
+                {{
+                  "dormMachine.AddMachine.ConfirmDetailsAssociattedMachine"
+                    | translate
+                }}:
+              </p>
             </div>
             <div class="set-machine-confirm-body-right">
-              <p>{{isDryerSelected() ? ('dormMacine.AddMachine.ConfirmBodyRightDryer'|translate) : ('dormMachine.AddMachine.ConfirmBodyRightWashingMachine'|translate)}}</p>
-              <p>{{newMachineForm.get('name')?.value}}</p>
-              <p>{{getAssociatedMachineName()}}</p>
+              <p>
+                {{
+                  isDryerSelected()
+                    ? ("dormMacine.AddMachine.ConfirmBodyRightDryer"
+                      | translate)
+                    : ("dormMachine.AddMachine.ConfirmBodyRightWashingMachine"
+                      | translate)
+                }}
+              </p>
+              <p>{{ newMachineForm.get("name")?.value }}</p>
+              <p>{{ getAssociatedMachineName() }}</p>
             </div>
           </div>
 
           <div class="set-machine-confirm-buttons">
             <div class="set-machine-confirm-buttons-left">
               <p-button
-                label="{{'dormMachine.AddMachine.BackButton'|translate}}"
+                label="{{ 'dormMachine.AddMachine.BackButton' | translate }}"
                 icon="pi pi-arrow-left"
                 [raised]="true"
                 severity="warning"
                 class="set-machine-confirm-buttons-button"
-                (onClick)="prevCallback.emit();" />
+                (onClick)="prevCallback.emit()"
+              />
             </div>
 
             <div class="set-machine-confirm-buttons-right">
@@ -247,55 +353,102 @@
                 [raised]="true"
                 severity="success"
                 class="set-machine-confirm-buttons-button"
-                (onClick)="submitNewMachineForm()" />
+                (onClick)="submitNewMachineForm()"
+              />
             </div>
           </div>
         </ng-template>
       </p-stepperPanel>
-
     </p-stepper>
   </p-dialog>
-  <p-dialog 
-    [header]="isWashingMachineLabelingSelected() ? ('dormMachine.EditMachine.EditWashinMachineHeader'|translate) :
-              isDryerLabelingSelected() ? ('dormMachine.EditMachine.EditDryerHeader'|translate) : ''"
+  <p-dialog
+    [header]="
+      isWashingMachineLabelingSelected()
+        ? ('dormMachine.EditMachine.EditWashinMachineHeader' | translate)
+        : isDryerLabelingSelected()
+        ? ('dormMachine.EditMachine.EditDryerHeader' | translate)
+        : ''
+    "
     [modal]="true"
     [(visible)]="isEditDialogVisible"
-    [style]="{ width: '25rem' }">
+    [style]="{ width: '25rem' }"
+  >
     <div class="edit-machine-body">
       <div class="edit-machine-name edit-machine-item-container">
-          <label for="name" class="edit-machine-name-label">
-            {{isWashingMachineLabelingSelected() ? ('dormMachine.EditMachine.EditWashingMachineName'|translate) : ''}}
-            {{isDryerLabelingSelected() ? ('dormMachine.EditMachine.EditDryerName'|translate) : ''}}
-          </label>
-          <input pInputText [(ngModel)]="newMachineName" id="name" class="edit-machine-name-input edit-machine-item" autocomplete="off" />
+        <label for="name" class="edit-machine-name-label">
+          {{
+            isWashingMachineLabelingSelected()
+              ? ("dormMachine.EditMachine.EditWashingMachineName" | translate)
+              : ""
+          }}
+          {{
+            isDryerLabelingSelected()
+              ? ("dormMachine.EditMachine.EditDryerName" | translate)
+              : ""
+          }}
+        </label>
+        <input
+          pInputText
+          [(ngModel)]="newMachineName"
+          id="name"
+          class="edit-machine-name-input edit-machine-item"
+          autocomplete="off"
+        />
       </div>
 
       <div class="edit-associated-machine edit-machine-item-container">
         <label for="associated-machine" class="edit-associated-machine-label">
-          {{isWashingMachineLabelingSelected() ? ('dormMachine.EditMachine.EditWashingMachineAssociattedDryer'|translate) : ''}}
-          {{isDryerLabelingSelected() ? ('dormMachine.EditMachine.EditDryerAssociattedWashingMachine'|translate) : ''}}
+          {{
+            isWashingMachineLabelingSelected()
+              ? ("dormMachine.EditMachine.EditWashingMachineAssociattedDryer"
+                | translate)
+              : ""
+          }}
+          {{
+            isDryerLabelingSelected()
+              ? ("dormMachine.EditMachine.EditDryerAssociattedWashingMachine"
+                | translate)
+              : ""
+          }}
         </label>
         <p-dropdown
           [options]="getAvailableMachinesForEditing()"
+          [overlayOptions]="getOverlayOptions()"
           [(ngModel)]="newAssociatedMachine"
           optionLabel="name"
           optionValue="id"
           class="edit-machine-item"
           [placeholder]="
-            isDryerLabelingSelected() ? ('dormMachine.EditMachine.SelectAssociattedWashingMachine'|translate) :
-            isWashingMachineLabelingSelected() ? ('dormMachine.EditMachine.SelectAssociattedDryer'|translate) : ''
+            isDryerLabelingSelected()
+              ? ('dormMachine.EditMachine.SelectAssociattedWashingMachine'
+                | translate)
+              : isWashingMachineLabelingSelected()
+              ? ('dormMachine.EditMachine.SelectAssociattedDryer' | translate)
+              : ''
           "
-          emptyMessage="{{'dormMachine.EditMachine.NoAvailableMachine'|translate}}"
-          id="associated-machine">
+          emptyMessage="{{
+            'dormMachine.EditMachine.NoAvailableMachine' | translate
+          }}"
+          id="associated-machine"
+        >
         </p-dropdown>
       </div>
 
       <div class="edit-machine-status edit-machine-item-container">
         <label for="machine-status" class="edit-machine-status-label">
-          {{isWashingMachineLabelingSelected() ? ('dormMachine.EditMachine.WashingMachineStatus'|translate) : ''}}
-          {{isDryerLabelingSelected() ? ('dormMachine.EditMachine.DryerStatus'|translate) : ''}}
+          {{
+            isWashingMachineLabelingSelected()
+              ? ("dormMachine.EditMachine.WashingMachineStatus" | translate)
+              : ""
+          }}
+          {{
+            isDryerLabelingSelected()
+              ? ("dormMachine.EditMachine.DryerStatus" | translate)
+              : ""
+          }}
         </label>
         <p-dropdown
+          [overlayOptions]="getOverlayOptions()"
           [options]="machineStatusOptions"
           [(ngModel)]="newMachineStatus"
           optionLabel="label"
@@ -306,8 +459,15 @@
       </div>
     </div>
     <div class="edit-machine-buttons">
-        <p-button label="{{'dormMachine.EditMachine.CancelButton'|translate}}" severity="secondary" (click)="isEditDialogVisible = false" />
-        <p-button label="{{'dormMachine.EditMachine.SaveButton'|translate}}" (click)="saveMachine()" />
+      <p-button
+        label="{{ 'dormMachine.EditMachine.CancelButton' | translate }}"
+        severity="secondary"
+        (click)="isEditDialogVisible = false"
+      />
+      <p-button
+        label="{{ 'dormMachine.EditMachine.SaveButton' | translate }}"
+        (click)="saveMachine()"
+      />
     </div>
-</p-dialog>
+  </p-dialog>
 </div>

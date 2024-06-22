@@ -1,6 +1,11 @@
 <div class="eveniments-page-main-container">
     <div class="eveniments-list-container">
-        <div class="eveniments-list">
+        <div class="noeveniments">
+            <p *ngIf="getEvenimentListisEmpty()">
+                {{"eveniments.NoEveniments" | translate}}
+            </p>
+        </div>
+        <div class="eveniments-list" *ngIf="!getEvenimentListisEmpty()">
             <p-panel *ngFor="let eveniment of eveniments" class="eveniment" [toggleable]="true">
                 <ng-template pTemplate="header">
                     <div class="panel-header">

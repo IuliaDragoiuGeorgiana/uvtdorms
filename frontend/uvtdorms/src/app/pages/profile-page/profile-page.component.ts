@@ -313,6 +313,7 @@ export class ProfilePageComponent {
         return 'Unknown Status';
     }
   }
+  
 
   getRequestStatusSeverity(status: string) {
     switch (status) {
@@ -322,6 +323,19 @@ export class ProfilePageComponent {
         return 'danger';
       case 'RECEIVED':
         return 'warning';
+      default:
+        return 'info';
+    }
+  }
+
+  getRequestStatusValue(status: string) {
+    switch (status) {
+      case 'ACCEPTED':
+        return this.translate.instant("profile.registerRequest.status.accepted");
+      case 'DECLINED':
+        return this.translate.instant("profile.registerRequest.status.declined");
+      case 'RECEIVED':
+        return this.translate.instant("profile.registerRequest.status.received");
       default:
         return 'info';
     }
@@ -339,6 +353,20 @@ export class ProfilePageComponent {
         return 'info';
     }
   }
+
+  getLaundryStatusValue(status: string) {
+    switch (status) {
+      case 'SCHEDULED':
+        return this.translate.instant("profile.laundryAppointment.status.scheduled");
+      case 'COMPLETED':
+        return this.translate.instant("profile.laundryAppointment.status.completed");
+      case 'CANCELED':
+        return this.translate.instant("profile.laundryAppointment.status.canceled");
+      default:
+        return this.translate.instant("profile.laundryAppointment.status.canceled");
+    }
+  }
+
   isScheduledLaundrtyStatus(status: string): boolean {
     return status === 'SCHEDULED';
   }
@@ -353,9 +381,6 @@ export class ProfilePageComponent {
         return 'info';
     }
   }
-
-
-
 
   public formatLaundryAppoitnmentDate(date: any): string {
     return (

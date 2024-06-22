@@ -23,6 +23,10 @@ export class EvenimentsPageComponent {
     });
   }
 
+getEvenimentListisEmpty(): boolean {
+    return this.eveniments.length === 0;
+  }
+
   public formatDate(date: any[]): string {
     return (
       date[0] +

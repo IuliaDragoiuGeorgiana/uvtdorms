@@ -302,6 +302,8 @@ public class InitialDataLoader implements CommandLineRunner {
                 DormAdministratorDetails dorm13Admin = createDormAdministrator("Tom", "Hanks", "tom.hanks@e-uvt.ro",
                                 "0712345678", "hello", dorm13,
                                 "user-profile.jpg");
+                DormAdministratorDetails dorm14Admin = createDormAdministrator("Jim", "Carrey", "jim.carrey@e-uvt.ro", "0777345678", "hello", dorm14,
+                                "user-profile.jpg");
 
                 Room room1 = createRoom("1", dorm13);
                 Room room2 = createRoom("2", dorm13);

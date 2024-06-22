@@ -120,8 +120,9 @@ public class LaundryAppointmentService {
                 Predicate dryerPredicate = cb.equal(appointment.get("dryer").get("id"),
                                 UUID.fromString(freeIntervalDto.getDryerId()));
                 Predicate machineOrDryerPredicate = cb.or(washMachinePredicate, dryerPredicate);
+                Predicate scheduledPredicate = cb.equal(appointment.get("statusLaundry"), StatusLaundry.SCHEDULED);
 
-                cq.where(dormPredicate, datePredicate, endDatePredicate, machineOrDryerPredicate);
+                cq.where(dormPredicate, datePredicate, endDatePredicate, machineOrDryerPredicate, scheduledPredicate);
 
                 List<LaundryAppointment> appointments = entityManager.createQuery(cq).getResultList();
 

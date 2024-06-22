@@ -26,6 +26,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -74,6 +75,7 @@ public class TicketService {
     return tickets.stream().map(ticket -> modelMapper.map(ticket, TicketDto.class)).collect(Collectors.toList());
   }
 
+  @Transactional
   public List<StudentTicketsDto> getStudentTickets(String email) {
     User user = userRepository.getByEmail(email)
         .orElseThrow(() -> new AppException("User not found", HttpStatus.NOT_FOUND));

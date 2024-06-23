@@ -57,11 +57,15 @@ export class NavbarComponent {
   }
 
   isDormAdmistrator(): boolean {
-    return this.role() === Role.ADMINISTRATOR;
+    return this.role() === Role.ADMINISTRATOR && !this.isInactiveDormAdministrator;
   }
 
   isAppAdministrator(): boolean {
     return this.role() === Role.APPLICATION_ADMINISTRATOR;
+  }
+
+  get isInactiveDormAdministrator(): boolean {
+    return this.userSevice.isAccessBlockedToInactiveDormAdministrator;
   }
 
   logout() {

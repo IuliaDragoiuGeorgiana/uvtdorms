@@ -421,7 +421,7 @@
               </td>
               <td>
                 <div class="userTicketsCell">
-                  {{ ticket.alreadyAnuncement }}
+                  {{ wasTicketAnnouncedBefore(ticket.alreadyAnuncement) }}
                 </div>
               </td>
               <td>
@@ -531,7 +531,7 @@
           </ng-template>
         </p-table>
       </mat-tab>
-      <mat-tab class="x" *ngIf="isDormAdmin()">
+      <mat-tab class="x" *ngIf="isDormAdmin() && !isInactiveDormAdministrator">
         <ng-template mat-tab-label>
           <mat-icon>whatshot</mat-icon>
           {{ "profile.myevenets" | translate }}

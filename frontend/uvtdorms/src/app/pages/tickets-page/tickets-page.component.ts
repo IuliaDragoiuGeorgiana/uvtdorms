@@ -63,6 +63,7 @@ export class TicketsPageComponent {
     this.ticketService.createTicket(createTicketDto).subscribe({
       next: () => {
         this.displayConfirmMessage();
+        this.ticketForm.reset();
         this.loadigScreen = false;
       },
       error: () => {

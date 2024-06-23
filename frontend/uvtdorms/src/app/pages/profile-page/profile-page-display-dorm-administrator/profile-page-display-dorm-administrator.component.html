@@ -11,11 +11,13 @@
       <span class="label">{{"profile.displayDormAdministratorDetails.PhoneNumberLabel"|translate}}: </span>
       <span class="value">{{
         displayDormAdministratorDetails?.phoneNumber
-      }}</span>
+        }}</span>
     </div>
     <div class="detail-item">
       <span class="label">{{"profile.displayDormAdministratorDetails.DormLabel"|translate}}: </span>
-      <span class="value">{{ displayDormAdministratorDetails?.dormName }}</span>
+      <span class="value">{{ displayDormAdministratorDetails?.dormName != '' &&
+        displayDormAdministratorDetails?.dormName != null ? displayDormAdministratorDetails?.dormName
+        : ("profile.displayDormAdministratorDetails.withoutAssociatedDorm" | translate) }}</span>
     </div>
   </div>
 </div>

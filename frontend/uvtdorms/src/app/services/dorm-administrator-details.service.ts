@@ -27,6 +27,7 @@ export class DormAdministratorDetailsService {
     '/update-dorm-administrator-associated-dorm';
   private deleteDormAdministratorUrl = '/delete-dorm-administrator';
   private getNumberOfDormAdministratorsUrl = '/get-number-of-dorm-administrators';
+  private hasDormAdministratorAssociatedDormUrl = '/has-dorm-administrator-associated-dorm';
 
   constructor(private http: HttpClient, private auth: AuthService) {}
 
@@ -94,6 +95,14 @@ export class DormAdministratorDetailsService {
     return this.http.get<StatisticsCountDto>(
       this.dormAdministratorDetailsServiceUrl +
         this.getNumberOfDormAdministratorsUrl,
+      { headers: this.auth.getHeader() }
+    );
+  }
+
+  hasDormAdministratorAssociatedDorm(): Observable<boolean> {
+    return this.http.get<boolean>(
+      this.dormAdministratorDetailsServiceUrl +
+        this.hasDormAdministratorAssociatedDormUrl,
       { headers: this.auth.getHeader() }
     );
   }

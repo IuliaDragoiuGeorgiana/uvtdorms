@@ -96,7 +96,6 @@ export class RoomsAdministrationPageComponent {
             });
           },
           error: (error) => {
-            console.error('Error deleting room: ', error);
             this.messageService.add({
               severity: 'error',
               summary: this.translate.instant(
@@ -104,7 +103,7 @@ export class RoomsAdministrationPageComponent {
               ),
               detail: this.translate.instant(
                 'roomsAdministrationPage.deleteRoom.dialog.error.detail'
-              ),
+              ) + ": " + error.error.message,
             });
           },
         });
@@ -148,7 +147,7 @@ export class RoomsAdministrationPageComponent {
           ),
           detail: this.translate.instant(
             'roomsAdministrationPage.addNewRoomDialog.error.detail'
-          ),
+          ) + ": " + error.error.message,
         });
       },
     });

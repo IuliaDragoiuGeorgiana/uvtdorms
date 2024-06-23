@@ -76,6 +76,7 @@ public class DryerService implements IDryerService {
         List<Dryer> dryers = dryerRepository.findByDormAndAssociatedWashingMachineIsNull(dorm);
 
         return dryers.stream()
+                .filter(dryer -> dryer.getAssociatedWashingMachine() == null)
                 .map(dryer -> modelMapper.map(dryer, AvailableDryerDto.class))
                 .collect(Collectors.toList());
     }
@@ -146,6 +147,10 @@ public class DryerService implements IDryerService {
             }
             dryer.setWashingMachine(washingMachine);
         } else {
+            if(dryer.getAssociatedWashingMachine() != null)
+            {
+                dryer.getAssociatedWashingMachine().setAssociatedDryer(null);
+            }
             dryer.setWashingMachine(null);
         }
         dryerRepository.save(dryer);

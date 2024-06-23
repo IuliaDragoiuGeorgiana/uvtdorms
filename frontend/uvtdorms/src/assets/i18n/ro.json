@@ -272,6 +272,7 @@
 	"profile.displayDormAdministratorDetails.DormLabel": "Cămin",
 	"profile.displayDormAdministratorDetails.EmailLabel": "Email",
 	"profile.displayDormAdministratorDetails.Header": "Administrator cămin",
+	"profile.displayDormAdministratorDetails.withoutAssociatedDorm": "Fără cămin asociat",
 	"profile.displayDormAdministratorDetails.PhoneNumberLabel": "Număr de telefon",
 	"profile.displayInactiveStudentDetails.EmailLabel": "Email",
 	"profile.displayInactiveStudentDetails.Header": "Student inactiv",

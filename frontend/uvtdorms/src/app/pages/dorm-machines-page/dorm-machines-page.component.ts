@@ -24,6 +24,7 @@ import { OverlayListenerOptions, OverlayOptions } from 'primeng/api';
   styleUrl: './dorm-machines-page.component.css',
 })
 export class DormMachinesPageComponent {
+  public isLoadingScreenVisible: boolean = false;
   private dormId!: string;
   public washingMachines!: WashingMachine[];
   public dryers!: Dryer[];
@@ -45,16 +46,26 @@ export class DormMachinesPageComponent {
     private laundryAppointmentService: AppointmentService,
     private translate: TranslateService
   ) {
+    this.showLoadingScreen();
     this.dormAdministratorDetailsService.getAdministratedDormId().subscribe({
       next: (dormIdDto) => {
         this.dormId = dormIdDto.id;
         this.getWashingMachines();
         this.getDryers();
+        this.hideLoadingScreen();
       },
       error(err) {
         console.error(err);
       },
     });
+  }
+
+  private showLoadingScreen(): void {
+    this.isLoadingScreenVisible = true;
+  }
+
+  private hideLoadingScreen(): void {
+    this.isLoadingScreenVisible = false;
   }
 
   public machineType = MachineType;
@@ -136,21 +147,13 @@ export class DormMachinesPageComponent {
   public newMachineName: string = '';
 
   private getWashingMachines(): void {
+    this.showLoadingScreen();
     this.washingMachineService
       .getWashingMachinesFromDorm(this.dormId)
       .subscribe({
         next: (washingMachines) => {
-          this.washingMachines = [];
-          washingMachines.forEach((washingMachine) => {
-            this.washingMachines.push({
-              id: washingMachine.id,
-              name: washingMachine.name,
-              isAvailable: washingMachine.isAvailable,
-              associatedDryerId: washingMachine.associatedDryerId,
-              weeklyAppointments: null,
-              statusMachine: washingMachine.statusMachine,
-            });
-          });
+          this.washingMachines = washingMachines;
+          this.hideLoadingScreen();
         },
         error(err) {
           console.error(err);
@@ -159,9 +162,11 @@ export class DormMachinesPageComponent {
   }
 
   private getDryers(): void {
+    this.showLoadingScreen();
     this.dryerService.getDryerFromDorm(this.dormId).subscribe({
       next: (dryers) => {
         this.dryers = dryers;
+        this.hideLoadingScreen();
       },
       error(err) {
         console.error(err);
@@ -396,6 +401,8 @@ export class DormMachinesPageComponent {
 
   public openNew(): void {
     this.addSomething = true;
+    this.getAvailableDryer();
+    this.getAvailableWashingMachine();
   }
 
   public hideDialog(): void {
@@ -542,17 +549,13 @@ export class DormMachinesPageComponent {
     washingMachine.statusMachine = this.newMachineStatus;
     washingMachine.associatedDryerId = this.newAssociatedMachine;
     washingMachine.name = this.newMachineName;
+    this.showLoadingScreen();
     this.washingMachineService.updateWashingMachine(washingMachine).subscribe({
-      next: (washingMachine) => {
-        for (let wm of this.washingMachines) {
-          if (wm.id === washingMachine.id) {
-            wm.associatedDryerId = washingMachine.associatedDryerId;
-            wm.isAvailable = washingMachine.isAvailable;
-            wm.name = washingMachine.name;
-            wm.statusMachine = washingMachine.statusMachine;
-            wm.weeklyAppointments = washingMachine.weeklyAppointments;
-          }
-        }
+      next: () => {
+        this.getWashingMachines();
+        this.getAvailableDryer();
+        this.getAvailableWashingMachine();
+        this.hideLoadingScreen();
       },
       error(err) {
         console.error(err);
@@ -564,18 +567,14 @@ export class DormMachinesPageComponent {
     dryer.statusMachine = this.newMachineStatus;
     dryer.associatedWashingMachineId = this.newAssociatedMachine;
     dryer.name = this.newMachineName;
+    this.showLoadingScreen();
     this.dryerService.updateDryer(dryer).subscribe({
-      next: (dryer) => {
-        for (let d of this.dryers) {
-          if (d.id === dryer.id) {
-            d.associatedWashingMachineId = dryer.associatedWashingMachineId;
-            d.isAvailable = dryer.isAvailable;
-            d.name = dryer.name;
-            d.statusMachine = dryer.statusMachine;
-            d.weeklyAppointments = dryer.weeklyAppointments;
-          }
-        }
-        window.location.reload();
+      next: () => {
+        this.getDryers();
+        this.getWashingMachines();
+        this.getAvailableDryer();
+        this.getAvailableWashingMachine();
+        this.hideLoadingScreen();
       },
       error(err) {
         console.error(err);

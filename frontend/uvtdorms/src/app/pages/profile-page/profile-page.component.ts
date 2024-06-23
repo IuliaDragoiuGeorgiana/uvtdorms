@@ -177,7 +177,6 @@ export class ProfilePageComponent {
   }
 
   private getApplicationAdministratorRelatedData() {
-    console.log('hello world');
     let l1 = false;
     let l2 = false;
     let l3 = false;
@@ -314,6 +313,11 @@ export class ProfilePageComponent {
     }
   }
   
+  wasTicketAnnouncedBefore(status: boolean): string {
+    return status
+      ? this.translate.instant("ticketsAdministrationPage.table.expanded.header.alreadyAnnounced.yes")
+      : this.translate.instant("ticketsAdministrationPage.table.expanded.header.alreadyAnnounced.no");
+  }
 
   getRequestStatusSeverity(status: string) {
     switch (status) {
@@ -440,6 +444,10 @@ export class ProfilePageComponent {
 
   openChangePasswordDialog() {
     this.dialog.open(ChangePasswordDialogComponent);
+  }
+
+  get isInactiveDormAdministrator(): boolean {
+    return this.userService.isAccessBlockedToInactiveDormAdministrator;
   }
 
   private extractBase64Data(base64String: string): string {

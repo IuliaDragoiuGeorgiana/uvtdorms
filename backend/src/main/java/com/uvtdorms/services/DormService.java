@@ -112,6 +112,10 @@ public class DormService {
             throw new AppException("Dorm has students", HttpStatus.BAD_REQUEST);
         }
 
+        if(dorm.getDormAdministratorDetails() != null) {
+            dorm.getDormAdministratorDetails().setDorm(null);
+        }
+
         dormRepository.delete(dorm);
     }
 

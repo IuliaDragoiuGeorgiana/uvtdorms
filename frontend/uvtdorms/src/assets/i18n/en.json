@@ -272,6 +272,7 @@
 	"profile.displayDormAdministratorDetails.DormLabel": "Dorm",
 	"profile.displayDormAdministratorDetails.EmailLabel": "Email",
 	"profile.displayDormAdministratorDetails.Header": "Dorm administrator",
+	"profile.displayDormAdministratorDetails.withoutAssociatedDorm": "Without associated dorm",
 	"profile.displayDormAdministratorDetails.PhoneNumberLabel": "Phone number",
 	"profile.displayInactiveStudentDetails.EmailLabel": "Email",
 	"profile.displayInactiveStudentDetails.Header": "Inactive student",

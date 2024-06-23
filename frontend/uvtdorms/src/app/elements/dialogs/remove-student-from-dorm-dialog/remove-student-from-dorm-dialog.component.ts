@@ -1,7 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { RemoveStudentDialogData } from '../../../interfaces/remove-student-dialog-data';
-import { on } from 'events';
 import { StudentDetailsService } from '../../../services/student-details.service';
 import { User } from '../../../interfaces/user';
 

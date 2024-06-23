@@ -64,6 +64,11 @@ public class RoomService {
     public void addNewRoomToDorm(String dormAdministratorEmail, RoomNumberDto addNewRoomDto) {
         DormAdministratorDetails dormAdministratorDetails = getDormAdministratorDetailsByEmail(dormAdministratorEmail);
 
+        if (dormAdministratorDetails.getDorm().getRooms().stream()
+                .anyMatch(room -> room.getRoomNumber().equals(addNewRoomDto.roomNumber()))) {
+            throw new AppException("Room already exists", HttpStatus.BAD_REQUEST);
+        }
+
         Room room = Room.builder()
                 .roomNumber(addNewRoomDto.roomNumber())
                 .dorm(dormAdministratorDetails.getDorm())

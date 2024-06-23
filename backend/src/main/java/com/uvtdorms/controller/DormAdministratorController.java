@@ -83,4 +83,11 @@ public class DormAdministratorController {
     public ResponseEntity<StatisticsCountDto> getDormAdministratorCount() {
         return ResponseEntity.ok(dormAdministratorService.getDormAdministratorCount());
     }
+
+    @GetMapping("/has-dorm-administrator-associated-dorm")
+    public ResponseEntity<Boolean> hasDormAdministratorAssociatedDorm(Authentication authentication) {
+        TokenDto token = (TokenDto) authentication.getPrincipal();
+
+        return ResponseEntity.ok(dormAdministratorService.hasDormAdministratorAssociatedDorm(token.getEmail()));
+    }
 }

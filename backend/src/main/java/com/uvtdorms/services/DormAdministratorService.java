@@ -197,6 +197,9 @@ public class DormAdministratorService {
                         throw new AppException("Dorm administrator is associated with a dorm.", HttpStatus.BAD_REQUEST);
                 }
 
+                dormAdministratorDetails.getAdministrator().setDormAdministratorDetails(null);
+                dormAdministratorDetails.setAdministrator(null);
+
                 dormAdministratorDetailsRepository.delete(dormAdministratorDetails);
                 userRepository.delete(user);
         }
@@ -206,5 +209,17 @@ public class DormAdministratorService {
                 StatisticsCountDto numberOfDormAdministrtor = new StatisticsCountDto();
                 numberOfDormAdministrtor.setCount(dormAdministratorDetailsRepository.findAll().size());
                 return numberOfDormAdministrtor;
+        }
+
+        public boolean hasDormAdministratorAssociatedDorm(String email) {
+                User user = userRepository.getByEmail(email)
+                                .orElseThrow(() -> new AppException("User not found.", HttpStatus.NOT_FOUND));
+                DormAdministratorDetails dormAdministratorDetails = user.getDormAdministratorDetails();
+
+                if (dormAdministratorDetails == null) {
+                        throw new AppException("User is not a dorm administrator.", HttpStatus.BAD_REQUEST);
+                }
+
+                return dormAdministratorDetails.getDorm() != null;
         }
 }
